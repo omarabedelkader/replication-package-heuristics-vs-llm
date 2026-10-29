@@ -69,7 +69,7 @@ On clusters, use `pipeline/job.oar.sh` (Grid5000/OAR), `pipeline/submit-shared.s
 | `data/checkpoints/NNNN/benchmarks/<kind>-<strategy>/part.json` | 1,367 checkpoints: per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
 | `data/experiment/` | Saved package selection (50, seed 42), the 47 analysed packages, image/source pins, model tags |
 | `data/provenance/` | `workers.json` (run ID, input SHA-256s), model digests, per-task timings and hosts, worker invocations, job and Ollama logs (usernames anonymized) |
-| `benchmark-source/` | Frozen Smalltalk benchmark source loaded in the image |
+| `lib/HeuristicCompletion-Benchmarks-Multiples/` | Frozen Smalltalk benchmark source loaded in the image; the pipeline uses this local copy |
 | `frozen-image/` | The exact Pharo 14 image, changes and sources files |
 | `pipeline/` | Benchmark pipeline and its 38 tests, byte-identical to the run; `workers.json` pins three of these files |
 | `analysis/` | `reproduce_paper.py`, `verify_paper.py` |

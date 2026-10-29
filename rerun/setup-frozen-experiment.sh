@@ -33,7 +33,7 @@ if [[ ! -x "$EXPERIMENT_DIR/image/pharo" ]]; then
     exit 1
 fi
 
-cp -R "$PACKAGE_DIR/benchmark-source" "$EXPERIMENT_DIR/repository"
+cp -R "$PACKAGE_DIR/lib/HeuristicCompletion-Benchmarks-Multiples" "$EXPERIMENT_DIR/repository"
 # No benchmark-selection.json: the pipeline saves the experiment's selection from the package
 # list of the run (rerun/run-benchmarks.sh: the 47 analysed packages by default).
 cp "$PACKAGE_DIR"/data/experiment/{image-source.json,llm-models.json} "$EXPERIMENT_DIR/"

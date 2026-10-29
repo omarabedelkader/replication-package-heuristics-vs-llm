@@ -88,7 +88,7 @@ fi
 # The experiment's source is a frozen copy of the local checkout (or, without one, of
 # the GitHub revision BENCHMARK_REF). When the code changes in the checkout, the copy
 # and the experiment image follow it on the next run (scripts/benchmark_source.py).
-BENCHMARK_CHECKOUT="${BENCHMARK_REPO_DIR:-$SCRIPT_DIR/../HeuristicCompletion-Benchmarks-Multiples}"
+BENCHMARK_CHECKOUT="${BENCHMARK_REPO_DIR:-$SCRIPT_DIR/../lib/HeuristicCompletion-Benchmarks-Multiples}"
 benchmark_source() {
     local action="$1"
     shift

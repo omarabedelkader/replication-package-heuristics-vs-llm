@@ -24,7 +24,7 @@ if [[ ! -f "$EXPERIMENT_DIR/image-source.json" || ! -d "$EXPERIMENT_DIR/reposito
     echo "$EXPERIMENT_DIR is not prepared; run rerun/setup-frozen-experiment.sh first." >&2
     exit 1
 fi
-export BENCHMARK_REPO_DIR="$PACKAGE_DIR/benchmark-source"
+export BENCHMARK_REPO_DIR="$PACKAGE_DIR/lib/HeuristicCompletion-Benchmarks-Multiples"
 export BENCHMARK_PACKAGES_FILE="${BENCHMARK_PACKAGES_FILE:-$PACKAGE_DIR/data/experiment/analysed-packages.txt}"
 export RESULTS_DIR="${RESULTS_DIR:-$EXPERIMENT_DIR/results}"
 export BENCHMARK_JOBS="${BENCHMARK_JOBS:-8}"

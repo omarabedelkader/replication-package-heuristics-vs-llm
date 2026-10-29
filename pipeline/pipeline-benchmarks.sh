@@ -19,7 +19,7 @@ for option in "$@"; do
             echo "  BENCHMARK_OLLAMA_HOST=host:port uses an existing server instead (start it with those settings)."
             echo "BENCHMARK_PACKAGE_COUNT=N: benchmark N seeded-random packages of the image (default 50; RANKING_SEED, default 42)."
             echo "BENCHMARK_PACKAGES_FILE=path: benchmark exactly these packages (one name per line, a JSON array, or a saved selection)."
-            echo "BENCHMARK_REPO_DIR=path: the benchmark checkout (default ../HeuristicCompletion-Benchmarks-Multiples)."
+            echo "BENCHMARK_REPO_DIR=path: the benchmark checkout (default ../lib/HeuristicCompletion-Benchmarks-Multiples)."
             echo "BENCHMARK_RESUME_DIR=path: continue an interrupted benchmark-run.* directory."
             echo "The benchmarks keep running when you press Ctrl-C, close the terminal or leave the SSH session;"
             echo "their output goes to a log file (BENCHMARK_LOG=path, default benchmark-<date>.log in the current directory)."
