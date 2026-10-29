@@ -24,7 +24,7 @@ setup:                ## experiment directory with the frozen image (downloads t
 smoke: 	              ## re-run the heuristic benchmarks of one package; no GPU needed
 	rerun/smoke-test.sh $(EXPERIMENT_DIR)
 
-rerun:                ## all 1,400 benchmarks (GPU, days); then analyse the new run
+rerun:                ## the 1,316 benchmarks of the 47 analysed packages (GPU, days); then analyse them
 	rerun/run-benchmarks.sh $(EXPERIMENT_DIR)
 
 checksums:            ## check that the shipped files are the released ones

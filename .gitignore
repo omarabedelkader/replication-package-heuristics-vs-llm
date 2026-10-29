@@ -1,4 +1,4 @@
-experiment/
+/experiment/
 .ollama-models/
 pipeline/.ollama-models/
 __pycache__/

@@ -105,20 +105,29 @@ class Aggregates:
         return self.tot[(kind, s)] if prefix is None else self.pre[(kind, s, prefix)]
 
 
+def ratio(num, den, scale=1):
+    """scale * num / den; NaN for an empty cell (e.g. a run without class observations)."""
+    return scale * num / den if den else math.nan
+
+
 def mrr(a):
-    return a["reciprocalRankSum"] / a["count"] if a["count"] else None
+    return ratio(a["reciprocalRankSum"], a["count"])
 
 
 def pct(a, field):
-    return 100 * a[field] / a["count"] if a["count"] else None
+    return ratio(a[field], a["count"], 100)
 
 
 def ms(a):
-    return a["timeMs"] / a["count"]
+    return ratio(a["timeMs"], a["count"])
+
+
+def per_obs(a, field):
+    return ratio(a[field], a["count"])
 
 
 def validity(a):
-    return 100 * a["valid"] / a["generated"] if a["generated"] else None
+    return ratio(a["valid"], a["generated"], 100)
 
 
 def sign_test(wins, losses):
@@ -128,25 +137,38 @@ def sign_test(wins, losses):
 
 
 # --------------------------------------------------------------------------- formatting
+# Empty cells (NaN) print as "--".
 def f3(x):
+    if math.isnan(x):
+        return "--"
     text = f"{x:.3f}"
     return text[1:] if text.startswith("0.") else text
 
 
 def f1(x):
-    return f"{x:.1f}"
+    return "--" if math.isnan(x) else f"{x:.1f}"
+
+
+def f2(x):
+    return "--" if math.isnan(x) else f"{x:.2f}"
 
 
 def thousands(x):
+    if math.isnan(x):
+        return "--"
     return f"{x:,.0f}".replace(",", "{,}")
 
 
 def half_up(x):
     """Integer label: nearest integer, .5 rounded upward (the paper's rule)."""
+    if math.isnan(x):
+        return "--"
     return int(math.floor(x + 0.5))
 
 
 def gain(v, ref):
+    if math.isnan(v) or math.isnan(ref) or not ref:
+        return ""
     return r"\textsuperscript{" + ("$+$" if v >= ref else "$-$") + f"{abs(100 * (v / ref - 1)):.1f}" + r"\%}"
 
 
@@ -154,8 +176,9 @@ def bold_best(columns):
     """Bold every cell equal to the column's best displayed value (ties included)."""
     out = []
     for column in columns:
-        best = max(column, key=lambda t: float(t))
-        out.append([r"\textbf{" + t + "}" if float(t) == float(best) else t for t in column])
+        values = [float(t) for t in column if t != "--"]
+        best = max(values, default=None)
+        out.append([r"\textbf{" + t + "}" if t != "--" and float(t) == best else t for t in column])
     return out
 
 
@@ -254,9 +277,9 @@ def tab_vocabulary(A):
         for i, (s, n) in enumerate(SIZES):
             u, c = A.get(kind, f"llmUnvalidated{s}"), A.get(kind, f"llm{s}")
             head = (task if i == 0 else "") + f" & {n} & "
-            main.append(head + f"{f1(validity(u))} & {u['generated'] / u['count']:.2f} & {c['generated'] / c['count']:.2f}" + r" \\")
+            main.append(head + f"{f1(validity(u))} & {f2(per_obs(u, 'generated'))} & {f2(per_obs(c, 'generated'))}" + r" \\")
             full.append(head + " & ".join([
-                f1(validity(u)), f1(validity(c)), f"{u['generated'] / u['count']:.2f}", f"{c['generated'] / c['count']:.2f}",
+                f1(validity(u)), f1(validity(c)), f2(per_obs(u, "generated")), f2(per_obs(c, "generated")),
                 f3(mrr(u)) + gain(mrr(u), mrr(dep)), f3(mrr(c)) + gain(mrr(c), mrr(dep)),
                 thousands(ms(u)), thousands(ms(c))]) + r" \\")
             full.append(r"% Original cross-environment ratio callouts (not controlled speedups): "
@@ -270,7 +293,7 @@ def tab_vocabulary(A):
 
 def coverage_rows(A, kind):
     P = lambda s, f: [pct(A.get(kind, s, p), f) for p in PREF]
-    cond = lambda s: [100 * A.get(kind, s, p)["top1"] / A.get(kind, s, p)["top10"] for p in PREF]
+    cond = lambda s: [ratio(A.get(kind, s, p)["top1"], A.get(kind, s, p)["top10"], 100) for p in PREF]
     return dict(rec_d=P(DEP, "top10"), rec_c=P("llm7B", "top10"), t1_d=P(DEP, "top1"),
                 t1_r=P("hybrid7B", "top1"), t1_c=P("llm7B", "top1"),
                 mrr_r=[mrr(A.get(kind, "hybrid7B", p)) for p in PREF],
@@ -340,7 +363,7 @@ def policy(A, kind, choose, m):
         rr += a["reciprocalRankSum"]; n += a["count"]; t += a["timeMs"]
         if not s.startswith("heuristics"):
             invoked += a["count"]
-    return rr / n, 100 * invoked / n, t / n
+    return ratio(rr, n), ratio(invoked, n, 100), ratio(t, n)
 
 
 def tab_prefix_policies(A):
@@ -358,7 +381,7 @@ def tab_prefix_policies(A):
             cells = []
             for kind in KINDS:
                 v, share, t = policy(A, kind, choose, m)
-                cells += [f3(v), f"{share:.0f}\\%", thousands(t)]
+                cells += [f3(v), "--" if math.isnan(share) else f"{share:.0f}\\%", thousands(t)]
             lines.append(f"{name} & {'--' if i == 0 else n} & " + " & ".join(cells) + r" \\")
         lines.append(r"\midrule" if m == "15B" else r"\bottomrule")
     lines += [r"\end{tabular}", r"\end{table}"]
@@ -479,7 +502,7 @@ def statistics(A, parts, complete, incomplete, manifest):
         for s, _ in SIZES:
             tb, ta = A.get(kind, f"llmUnvalidated{s}"), A.get(kind, f"llm{s}")
             for k, v in dict(valid_before=validity(tb), valid_after=validity(ta),
-                             cand_before=tb["generated"] / tb["count"], cand_after=ta["generated"] / ta["count"],
+                             cand_before=per_obs(tb, "generated"), cand_after=per_obs(ta, "generated"),
                              mrr_before=mrr(tb), mrr_after=mrr(ta), ms_before=ms(tb), ms_after=ms(ta),
                              gen_before=tb["generated"], valid_n_before=tb["valid"]).items():
                 st[f"val/{kind}/{s}/{k}"] = round(v, 4)
@@ -488,7 +511,7 @@ def statistics(A, parts, complete, incomplete, manifest):
         for s in STRATEGIES:
             t = A.get(kind, s)
             st[f"ms/{kind}/{s}"] = round(ms(t), 1)
-            st[f"memMB/{kind}/{s}"] = round(t["memoryBytes"] / t["count"] / 1e6, 5)
+            st[f"memMB/{kind}/{s}"] = round(per_obs(t, "memoryBytes") / 1e6, 5)
     for kind in KINDS:
         for x, y in SIGN_PAIRS:
             w = l = t = 0
@@ -550,7 +573,7 @@ def statistics(A, parts, complete, incomplete, manifest):
     for kind in KINDS:
         for s in ("hybrid7B", DEP):
             t = A.get(kind, s)
-            extra[f"cond_top1_pooled/{kind}/{s}"] = 100 * t["top1"] / t["top10"]
+            extra[f"cond_top1_pooled/{kind}/{s}"] = ratio(t["top1"], t["top10"], 100)
             extra[f"top1_exact/{kind}/{s}"] = pct(t, "top1")
         # Observation counts must be identical across strategies in every package/prefix cell.
         extra[f"counts_match/{kind}"] = all(
@@ -560,6 +583,17 @@ def statistics(A, parts, complete, incomplete, manifest):
     json_ready = {k: v for k, v in extra.items()}
     st["extra"] = json_ready
     return st
+
+
+def without_nan(x):
+    """Empty cells (NaN) as JSON null."""
+    if isinstance(x, float) and math.isnan(x):
+        return None
+    if isinstance(x, dict):
+        return {k: without_nan(v) for k, v in x.items()}
+    if isinstance(x, list):
+        return [without_nan(v) for v in x]
+    return x
 
 
 # --------------------------------------------------------------------------- main
@@ -602,7 +636,7 @@ def main(argv=None):
     st = statistics(A, parts, complete, incomplete, manifest)
     if selection.exists():
         st["extra"]["eligible_packages"] = len(json.loads(selection.read_text())["eligible"])
-    (out / "analysis-stats.json").write_text(json.dumps(st, indent=1) + "\n", encoding="utf-8")
+    (out / "analysis-stats.json").write_text(json.dumps(without_nan(st), indent=1, allow_nan=False) + "\n", encoding="utf-8")
     print(f"Checkpoints: {len(parts)} validated benchmark parts of {len(manifest['packages'])} selected packages")
     print(f"Matched population: {len(complete)} complete packages, "
           f"{st['obs_matched']['messages']:,} method and {st['obs_matched']['variables']:,} class observations per strategy")

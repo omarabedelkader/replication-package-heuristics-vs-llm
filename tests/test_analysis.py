@@ -75,6 +75,20 @@ class IncompleteRun(unittest.TestCase):
             self.assertEqual(reproduce_paper.main(["--checkpoints", str(copy), "--workers", str(workers),
                                                    "--out", str(Path(tmp) / "out")]), 0)
 
+    def test_run_without_class_observations(self):
+        """A small rerun (one package, no class completions) is analysed; empty cells print as --."""
+        with tempfile.TemporaryDirectory() as tmp:
+            copy, out = Path(tmp) / "packages", Path(tmp) / "out"
+            shutil.copytree(CHECKPOINTS / "0043", copy / "0043")  # BaselineOfReflectionMirrors
+            workers = ROOT / "data" / "provenance" / "workers.json"
+            self.assertEqual(reproduce_paper.main(["--checkpoints", str(copy), "--workers", str(workers),
+                                                   "--out", str(out)]), 0)
+            stats = json.loads((out / "analysis-stats.json").read_text())
+            self.assertEqual(stats["obs_matched"], {"messages": 13, "variables": 0})
+            self.assertIsNone(stats["mrr/variables/llm7B/avg"])
+            self.assertIn("& -- &", (out / "paper" / "tab-top-k-accuracy.tex").read_text())
+            self.assertEqual(verify_paper.main(["--results", str(out)]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

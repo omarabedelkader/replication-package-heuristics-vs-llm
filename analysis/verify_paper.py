@@ -214,7 +214,13 @@ def main(argv=None):
     print("3. Numbers quoted in the paper text")
     report = ["# Paper claims recomputed from the checkpoints", "",
               "| Section | Claim | Recomputed | Paper | |", "|---|---|---|---|---|"]
-    passed, checked = 0, claims(st)
+    try:
+        checked = claims(st)
+    except (TypeError, KeyError, ZeroDivisionError) as error:
+        # A partial run (e.g. a few packages, no class observations) lacks numbers the text uses.
+        checked = []
+        failures.append(f"the paper's text claims cannot be recomputed from these results ({error!r})")
+    passed = 0
     for section, claim, computed, paper in checked:
         ok = normalise(computed) == normalise(paper)
         passed += ok

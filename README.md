@@ -10,7 +10,7 @@ This package contains everything needed to reproduce the paper:
 |---|---|---|---|
 | 1. Reproduce every number in the paper from the checkpoints | `make` | Python 3.8+ (stdlib) | < 1 min |
 | 2. Rebuild the frozen experiment and re-run the heuristic benchmarks | `make setup smoke` | + curl, network for the Pharo VM | ~5 min |
-| 3. Re-run all 1,400 benchmarks | `make setup rerun` | + Ollama ≥ 0.12.11, GPU, ~25 GB of models | days |
+| 3. Re-run the benchmarks of the 47 analysed packages (1,316) | `make setup rerun` | + Ollama ≥ 0.12.11, GPU, ~25 GB of models | days |
 
 ## Level 1: reproduce the paper's results
 
@@ -44,13 +44,17 @@ make setup smoke EXPERIMENT_DIR=experiment
 
 `rerun/smoke-test.sh` re-runs the deterministic heuristic benchmarks of one package with the original worker. It checks that counts, Top-k hits and reciprocal-rank sums equal the released checkpoints (Network-Mail by default; `rerun/smoke-test.sh DIR PACKAGE` for another).
 
-## Level 3: full re-run
+## Level 3: re-run the benchmarks
 
 ```bash
 make setup rerun EXPERIMENT_DIR=experiment BENCHMARK_JOBS=8
 ```
 
-`rerun/run-benchmarks.sh` runs `pipeline/pipeline-benchmarks.sh` unchanged, with the Ollama server settings of the paper's run: `OLLAMA_NUM_PARALLEL=8`, `OLLAMA_MAX_LOADED_MODELS=4`, `OLLAMA_KEEP_ALIVE=-1` and `OLLAMA_CONTEXT_LENGTH=4096`. On Linux, the pipeline downloads Ollama itself; elsewhere, install it or set `OLLAMA_BIN`. The pipeline pulls the four models `pharo-llm/Qwen2.5-Coder-SFT:{0.5B,1.5B,3b,7b}` (F16); the expected digests are in `data/provenance/ollama-tags.json`.
+The re-run benchmarks the 47 packages the paper analyses (`data/experiment/analysed-packages.txt`): 47 × 28 = 1,316 benchmarks. The three packages whose runs did not finish are not in the paper, so they are not re-run. To run all 50 selected packages instead, set `BENCHMARK_PACKAGES_FILE=data/experiment/benchmark-selection.json`. The package list does not change any result: each benchmark measures its own package, and the packages left out of the list are not used by any benchmark.
+
+`rerun/run-benchmarks.sh` runs `pipeline/pipeline-benchmarks.sh` unchanged (its `BENCHMARK_PACKAGES_FILE` option gives the package list), with the Ollama server settings of the paper's run: `OLLAMA_NUM_PARALLEL=8`, `OLLAMA_MAX_LOADED_MODELS=4`, `OLLAMA_KEEP_ALIVE=-1` and `OLLAMA_CONTEXT_LENGTH=4096`. On Linux, the pipeline downloads Ollama itself; elsewhere, install it or set `OLLAMA_BIN`. The pipeline pulls the four models `pharo-llm/Qwen2.5-Coder-SFT:{0.5B,1.5B,3b,7b}` (F16); the expected digests are in `data/provenance/ollama-tags.json`.
+
+**GPU memory.** The defaults keep all four F16 models loaded (about 25 GB) and serve 8 benchmarks at once, as on the paper's 64 GB GPUs. With less memory, Ollama keeps evicting and reloading models, and benchmarks fail with `ConnectionTimedOut: Data receive timed out` in their `worker.log`. Lower the load instead, e.g. on a 36 GB Apple-silicon Mac: `BENCHMARK_JOBS=2 OLLAMA_MAX_LOADED_MODELS=1`. Quality metrics do not depend on these settings, only times do.
 
 An interrupted run resumes with `BENCHMARK_RESUME_DIR=experiment/benchmark-run.XXXXXX`. Completed benchmarks are kept. Afterwards, the paper tables of the new run are in `experiment/paper-results/`, and `analysis/verify_paper.py --results experiment/paper-results` compares them with the paper.
 
@@ -63,7 +67,7 @@ On clusters, use `pipeline/job.oar.sh` (Grid5000/OAR), `pipeline/submit-shared.s
 | Path | What |
 |---|---|
 | `data/checkpoints/NNNN/benchmarks/<kind>-<strategy>/part.json` | 1,367 checkpoints: per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
-| `data/experiment/` | Saved package selection, image/source pins, model tags |
+| `data/experiment/` | Saved package selection (50, seed 42), the 47 analysed packages, image/source pins, model tags |
 | `data/provenance/` | `workers.json` (run ID, input SHA-256s), model digests, per-task timings and hosts, worker invocations, job and Ollama logs (usernames anonymized) |
 | `benchmark-source/` | Frozen Smalltalk benchmark source loaded in the image |
 | `frozen-image/` | The exact Pharo 14 image, changes and sources files |

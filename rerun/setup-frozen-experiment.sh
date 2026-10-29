@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Create an experiment directory that holds exactly the inputs of the paper's run:
 # the frozen Pharo image (checked against its pinned SHA-256), the frozen benchmark
-# source, the saved package selection and the model list. Only the Pharo VM is
-# downloaded, for the current platform (the VM is not part of the pinned inputs).
+# source and the model list; the image is checked against the saved package selection.
+# Only the Pharo VM is downloaded, for the current platform (it is not a pinned input).
 #
 # Usage: rerun/setup-frozen-experiment.sh EXPERIMENT_DIR
 #   PHARO_VM_URL  zeroconf script that installs the VM (default https://get.pharo.org/64/vm140)
@@ -34,7 +34,9 @@ if [[ ! -x "$EXPERIMENT_DIR/image/pharo" ]]; then
 fi
 
 cp -R "$PACKAGE_DIR/benchmark-source" "$EXPERIMENT_DIR/repository"
-cp "$PACKAGE_DIR"/data/experiment/{benchmark-selection.json,image-source.json,llm-models.json} "$EXPERIMENT_DIR/"
+# No benchmark-selection.json: the pipeline saves the experiment's selection from the package
+# list of the run (rerun/run-benchmarks.sh: the 47 analysed packages by default).
+cp "$PACKAGE_DIR"/data/experiment/{image-source.json,llm-models.json} "$EXPERIMENT_DIR/"
 
 # Exit 0: the image is the pinned one and it holds the frozen source.
 "$PYTHON" "$PACKAGE_DIR/pipeline/scripts/benchmark_source.py" check-image \
@@ -43,7 +45,7 @@ cp "$PACKAGE_DIR"/data/experiment/{benchmark-selection.json,image-source.json,ll
 echo "Image and source match the pinned SHA-256 of the paper's run."
 
 # The image must see the same 733 eligible packages as the saved selection.
-(cd "$EXPERIMENT_DIR/image" && BENCHMARK_SELECTION_FILE="$EXPERIMENT_DIR/benchmark-selection.json" \
+(cd "$EXPERIMENT_DIR/image" && BENCHMARK_SELECTION_FILE="$PACKAGE_DIR/data/experiment/benchmark-selection.json" \
     ./pharo --headless Pharo.image eval "
 | split |
 split := CooBenchmarkSplit readFrom: (OSEnvironment current at: 'BENCHMARK_SELECTION_FILE') asFileReference.

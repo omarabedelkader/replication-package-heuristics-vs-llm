@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Run all 1,400 benchmarks (50 packages x 2 kinds x 14 strategies) of an experiment
-# prepared by setup-frozen-experiment.sh, with the original pipeline (pipeline/, unchanged)
-# and the Ollama settings of the paper's run, then regenerate the paper's tables from
-# the new checkpoints.
+# Re-run the benchmarks of the 47 packages analysed in the paper (47 x 2 kinds x 14
+# strategies = 1,316 benchmarks) in an experiment prepared by setup-frozen-experiment.sh,
+# with the original pipeline (pipeline/, unchanged) and the Ollama settings of the paper's
+# run, then regenerate the paper's tables from the new checkpoints.
 #
 # Usage: rerun/run-benchmarks.sh EXPERIMENT_DIR
+#   BENCHMARK_PACKAGES_FILE  packages to run (default data/experiment/analysed-packages.txt;
+#                            data/experiment/benchmark-selection.json for all 50 selected)
 #   BENCHMARK_JOBS         simultaneous benchmarks (default 8, as in the paper's run)
 #   BENCHMARK_RESUME_DIR   continue an interrupted EXPERIMENT_DIR/benchmark-run.* directory
 #   OLLAMA_BIN, OLLAMA_MODELS_DIR, BENCHMARK_OLLAMA_HOST  see pipeline/pipeline-benchmarks.sh --help
@@ -23,6 +25,7 @@ if [[ ! -f "$EXPERIMENT_DIR/image-source.json" || ! -d "$EXPERIMENT_DIR/reposito
     exit 1
 fi
 export BENCHMARK_REPO_DIR="$PACKAGE_DIR/benchmark-source"
+export BENCHMARK_PACKAGES_FILE="${BENCHMARK_PACKAGES_FILE:-$PACKAGE_DIR/data/experiment/analysed-packages.txt}"
 export RESULTS_DIR="${RESULTS_DIR:-$EXPERIMENT_DIR/results}"
 export BENCHMARK_JOBS="${BENCHMARK_JOBS:-8}"
 # Server settings of the paper's run (pipeline/job.oar.sh).
