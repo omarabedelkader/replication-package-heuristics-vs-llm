@@ -60,7 +60,10 @@ An interrupted run resumes with `BENCHMARK_RESUME_DIR=experiment/benchmark-run.X
 
 On clusters, use `pipeline/job.oar.sh` (Grid5000/OAR), `pipeline/submit-shared.sh` (several hosts sharing one run) or `pipeline/job.fir.sh` (Slurm).
 
-**What to expect.** Prompts and decoding are deterministic: temperature 0, seed 42, fixed beam search. Quality metrics should therefore match up to numerical differences across GPU and Ollama versions. The paper's run used AMD Instinct MI210 GPUs, 8 workers per host. Completion times depend on hardware and server load, and are not expected to match.
+**What to expect.** Prompts and decoding are deterministic: temperature 0, seed 42, fixed beam search. The paper's run used AMD Instinct MI210 GPUs, 8 workers per host.
+- **Heuristics (Baseline, Dependency):** identical to the paper.
+- **LLM configurations:** expect differences of about **±0.1%** on other hardware. F16 inference rounds slightly differently across GPUs and batch sizes, so when the model scores two candidates almost equally, their order can swap.
+- **Completion times:** depend on hardware and server load, and are not expected to match.
 
 ## Contents
 
