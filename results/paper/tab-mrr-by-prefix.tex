@@ -1,0 +1,75 @@
+% Main-paper selection; the complete export is retained in the support branch.
+\ifdefined\mainpaperresults
+\begin{table*}[t]
+\centering
+\caption{Pooled completion quality.}
+\label{tab:mrr-by-prefix}
+\setlength{\tabcolsep}{7pt}
+\small
+\begin{tabular}{lrrr@{\hspace{16pt}}rrr}
+\toprule
+ & \multicolumn{3}{c}{\textbf{Method selectors}} & \multicolumn{3}{c}{\textbf{Class names}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+\textbf{Configuration} & MRR@10 & Top-1 (\%) & Recall@10 (\%) & MRR@10 & Top-1 (\%) & Recall@10 (\%) \\
+\midrule
+\multicolumn{7}{l}{\textit{Heuristics}} \\
+Baseline & .262 & 17.3 & 47.7 & .407 & 25.6 & 74.2 \\
+Dependency & .517 & 37.4 & 81.1 & .592 & 45.4 & 84.8 \\
+\midrule
+\multicolumn{7}{l}{\textit{Unconstrained generation}} \\
+CLM 0.5B & .593 & 53.2 & 70.2 & .658 & 59.5 & 77.5 \\
+CLM 1.5B & .668 & 61.8 & 75.6 & .746 & 69.2 & 83.9 \\
+CLM 3B & .698 & 65.1 & 77.7 & .764 & 70.7 & 86.2 \\
+CLM 7B & .722 & 68.1 & 79.2 & .791 & 73.4 & 88.6 \\
+\midrule
+\multicolumn{7}{l}{\textit{Vocabulary-constrained generation}} \\
+CLM 0.5B & .675 & 62.0 & 76.1 & .786 & 73.2 & 85.7 \\
+CLM 1.5B & .729 & 68.3 & 80.0 & .846 & 80.3 & 89.9 \\
+CLM 3B & .754 & 71.3 & 81.6 & .861 & 81.6 & 92.1 \\
+CLM 7B & \textbf{.774} & \textbf{73.6} & \textbf{83.1} & \textbf{.879} & \textbf{83.3} & \textbf{93.8} \\
+\midrule
+\multicolumn{7}{l}{\textit{Dependency + CLM reranking}} \\
+CLM 0.5B & .588 & 48.3 & 81.1 & .739 & 66.7 & 84.8 \\
+CLM 1.5B & .630 & 53.8 & 81.1 & .782 & 73.8 & 84.8 \\
+CLM 3B & .641 & 55.3 & 81.1 & .802 & 76.9 & 84.8 \\
+CLM 7B & .656 & 57.4 & 81.1 & .813 & 78.6 & 84.8 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+\else
+\begin{table*}[t]
+\centering
+\caption{MRR by prefix length.}
+\label{tab:mrr-by-prefix}
+\setlength{\tabcolsep}{3.2pt}
+\small
+\begin{tabular}{lccccccc>{\columncolor{gray!6}}l@{\hspace{10pt}}ccccccc>{\columncolor{gray!6}}l}
+\toprule
+ & \multicolumn{8}{c}{\textbf{Method selectors}} & \multicolumn{8}{c}{\textbf{Class names}} \\
+\textbf{Configuration} & 2 & 3 & 4 & 5 & 6 & 7 & 8 & \textbf{Pooled} & 2 & 3 & 4 & 5 & 6 & 7 & 8 & \textbf{Pooled} \\
+\midrule
+\multicolumn{17}{l}{\textit{Heuristics}} \\
+Baseline & .061 & .104 & .190 & .265 & .358 & .470 & .590 & .262\textsuperscript{$-$49.3\%} & .095 & .282 & .394 & .456 & .544 & .577 & .614 & .407\textsuperscript{$-$31.2\%} \\
+Dependency & .316 & .401 & .486 & .549 & .602 & .658 & .765 & .517 & .342 & .503 & .633 & .666 & .684 & .679 & .705 & .592 \\
+\midrule
+\multicolumn{17}{l}{\textit{Unconstrained generation}} \\
+CLM 0.5B & .545 & .587 & .597 & .599 & .597 & .629 & .624 & .593\textsuperscript{$+$14.8\%} & .582 & .628 & .654 & .650 & .699 & .699 & .727 & .658\textsuperscript{$+$11.1\%} \\
+CLM 1.5B & .632 & .659 & .672 & .665 & .674 & .681 & .721 & .668\textsuperscript{$+$29.4\%} & .676 & .726 & .745 & .758 & .770 & .774 & .792 & .746\textsuperscript{$+$25.9\%} \\
+CLM 3B & .677 & .692 & .702 & .701 & .699 & .713 & .712 & .698\textsuperscript{$+$35.1\%} & .703 & .742 & .760 & .788 & .790 & .783 & .804 & .764\textsuperscript{$+$29.1\%} \\
+CLM 7B & .697 & .718 & .724 & .725 & .720 & .732 & .755 & .722\textsuperscript{$+$39.8\%} & .733 & .766 & .797 & .810 & .813 & .807 & .825 & .791\textsuperscript{$+$33.5\%} \\
+\midrule
+\multicolumn{17}{l}{\textit{Vocabulary-constrained generation}} \\
+CLM 0.5B & .590 & .644 & .668 & .681 & .692 & .721 & .788 & .675\textsuperscript{$+$30.5\%} & .678 & .744 & .803 & .802 & .833 & .828 & .848 & .786\textsuperscript{$+$32.8\%} \\
+CLM 1.5B & .666 & .703 & .726 & .725 & .739 & .758 & .844 & .729\textsuperscript{$+$41.2\%} & .767 & .814 & .861 & .866 & .872 & .877 & .888 & .846\textsuperscript{$+$42.9\%} \\
+CLM 3B & .705 & .730 & .750 & .753 & .759 & .777 & .846 & .754\textsuperscript{$+$45.9\%} & .784 & .835 & .873 & .882 & .892 & .885 & .899 & .861\textsuperscript{$+$45.5\%} \\
+CLM 7B & \textbf{.727} & \textbf{.754} & \textbf{.770} & \textbf{.773} & \textbf{.775} & \textbf{.791} & \textbf{.867} & \textbf{.774}\textsuperscript{$+$49.7\%} & \textbf{.805} & \textbf{.856} & \textbf{.898} & .893 & .905 & .901 & .912 & \textbf{.879}\textsuperscript{$+$48.4\%} \\
+\midrule
+\multicolumn{17}{l}{\textit{Dependency + CLM reranking}} \\
+CLM 0.5B & .377 & .502 & .570 & .615 & .656 & .726 & .820 & .588\textsuperscript{$+$13.8\%} & .443 & .629 & .790 & .818 & .839 & .861 & .880 & .739\textsuperscript{$+$24.9\%} \\
+CLM 1.5B & .419 & .550 & .622 & .662 & .697 & .757 & .842 & .630\textsuperscript{$+$21.9\%} & .471 & .684 & .851 & .865 & .884 & .890 & .901 & .782\textsuperscript{$+$32.0\%} \\
+CLM 3B & .434 & .562 & .634 & .673 & .705 & .763 & .851 & .641\textsuperscript{$+$24.0\%} & .486 & .703 & .871 & .894 & .906 & .912 & .920 & .802\textsuperscript{$+$35.5\%} \\
+CLM 7B & .447 & .582 & .650 & .690 & .718 & .776 & .863 & .656\textsuperscript{$+$26.9\%} & .502 & .713 & .887 & \textbf{.907} & \textbf{.912} & \textbf{.917} & \textbf{.923} & .813\textsuperscript{$+$37.2\%} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+\fi

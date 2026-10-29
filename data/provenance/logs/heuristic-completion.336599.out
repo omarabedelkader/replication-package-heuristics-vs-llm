@@ -1,0 +1,558 @@
+[2026-10-19 19:00:19] ============================================================
+[2026-10-19 19:00:19] JOB STARTED
+[2026-10-19 19:00:19] ============================================================
+[2026-10-19 19:00:19] Job ID: 336599
+[2026-10-19 19:00:19] Host: larochette-3.luxembourg.grid5000.fr
+[2026-10-19 19:00:19] Root directory:
+[2026-10-19 19:00:19] /home/USER/heuristics-vs-llm
+[2026-10-19 19:00:19] Run directory:
+[2026-10-19 19:00:19] /home/USER/heuristics-vs-llm/oar-runs/336588
+[2026-10-19 19:00:19] Results directory:
+[2026-10-19 19:00:19] /home/USER/heuristics-vs-llm/oar-runs/336588/results
+[2026-10-19 19:00:19] Ollama models directory:
+[2026-10-19 19:00:19] /home/USER/heuristics-vs-llm/.ollama-models
+[2026-10-19 19:00:19] ============================================================
+[2026-10-19 19:00:19] SYSTEM INFORMATION
+[2026-10-19 19:00:19] ============================================================
+Linux larochette-3.luxembourg.grid5000.fr 6.12.111+deb13-amd64 #1+g5k1 SMP PREEMPT_DYNAMIC Wed Sep 30 15:42:48 CEST 2026 x86_64 GNU/Linux
+CPU(s):                                  192
+On-line CPU(s) list:                     0-191
+Model name:                              INTEL(R) XEON(R) PLATINUM 8568Y+
+Thread(s) per core:                      2
+Core(s) per socket:                      48
+Socket(s):                               2
+CPU(s) scaling MHz:                      29%
+NUMA node0 CPU(s):                       0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178,180,182,184,186,188,190
+NUMA node1 CPU(s):                       1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179,181,183,185,187,189,191
+[2026-10-19 19:00:19] NVIDIA GPU detected
+NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.
+
+[2026-10-19 19:00:19] ============================================================
+[2026-10-19 19:00:19] 1. INSTALLING OLLAMA LOCALLY
+[2026-10-19 19:00:19] ============================================================
+[2026-10-19 19:00:19] Architecture: x86_64
+[2026-10-19 19:00:19] Reusing the Ollama installation of this run: /home/USER/heuristics-vs-llm/oar-runs/336588/ollama-bin
+[2026-10-19 19:00:19] Ollama executable:
+[2026-10-19 19:00:19] /home/USER/heuristics-vs-llm/oar-runs/336588/ollama-bin/bin/ollama
+Warning: could not connect to a running Ollama instance
+Warning: client version is 0.40.5
+[2026-10-19 19:00:20] 1-INSTALL OLLAMA OK
+[2026-10-19 19:00:20] ============================================================
+[2026-10-19 19:00:20] 2. CONFIGURING OLLAMA
+[2026-10-19 19:00:20] ============================================================
+[2026-10-19 19:00:20] OLLAMA_MODELS=/home/USER/heuristics-vs-llm/.ollama-models
+[2026-10-19 19:00:20] OLLAMA_HOST=127.0.0.1:11434
+[2026-10-19 19:00:20] OLLAMA_NUM_PARALLEL=8 OLLAMA_MAX_LOADED_MODELS=4
+[2026-10-19 19:00:20] OLLAMA_CONTEXT_LENGTH=4096
+[2026-10-19 19:00:20] 2-CONFIGURE OLLAMA OK
+[2026-10-19 19:00:20] ============================================================
+[2026-10-19 19:00:20] 3. STARTING OLLAMA SERVER
+[2026-10-19 19:00:20] ============================================================
+[2026-10-19 19:00:20] Ollama PID: 43780
+[2026-10-19 19:00:20] Ollama log:
+[2026-10-19 19:00:20] /home/USER/heuristics-vs-llm/oar-runs/336588/ollama.larochette-3.log
+[2026-10-19 19:00:20] Waiting for Ollama API...
+[2026-10-19 19:00:24] Ollama API is ready
+[2026-10-19 19:00:24] Ollama uses these GPUs:
+time=2026-10-19T19:00:24.924+02:00 level=INFO source=types.go:32 msg="inference compute" id=0 filter_id=0 library=ROCm compute=gfx90a name=ROCm0 description="AMD Instinct MI210" libdirs=ollama,rocm_v7_2 driver=0.0 pci_id=0000:41:00.0 type=discrete total="64.0 GiB" available="63.9 GiB"
+time=2026-10-19T19:00:24.924+02:00 level=INFO source=types.go:32 msg="inference compute" id=1 filter_id=1 library=ROCm compute=gfx90a name=ROCm1 description="AMD Instinct MI210" libdirs=ollama,rocm_v7_2 driver=0.0 pci_id=0000:58:00.0 type=discrete total="64.0 GiB" available="63.9 GiB"
+time=2026-10-19T19:00:24.924+02:00 level=INFO source=types.go:32 msg="inference compute" id=2 filter_id=2 library=ROCm compute=gfx90a name=ROCm2 description="AMD Instinct MI210" libdirs=ollama,rocm_v7_2 driver=0.0 pci_id=0000:c5:00.0 type=discrete total="64.0 GiB" available="63.9 GiB"
+time=2026-10-19T19:00:24.924+02:00 level=INFO source=types.go:32 msg="inference compute" id=3 filter_id=3 library=ROCm compute=gfx90a name=ROCm3 description="AMD Instinct MI210" libdirs=ollama,rocm_v7_2 driver=0.0 pci_id=0000:dc:00.0 type=discrete total="64.0 GiB" available="63.9 GiB"
+[2026-10-19 19:00:24] Testing Ollama API
+{"models":[{"name":"pharo-llm/Qwen2.5-Coder-SFT:7b","model":"pharo-llm/Qwen2.5-Coder-SFT:7b","modified_at":"2026-10-16T19:04:30.915755872+02:00","size":15237851979,"digest":"6b73d1f15657fb4b9aee4976275091ae691bd74723c33b09782dc32292496294","details":{"parent_model":"","format":"gguf","family":"qwen2","families":["qwen2"],"parameter_size":"7.6B","quantization_level":"F16","context_length":32768,"embedding_length":3584,"runner":"ggml"},"capabilities":["completion","insert"]},{"name":"pharo-llm/Qwen2.5-Coder-SFT:3b","model":"pharo-llm/Qwen2.5-Coder-SFT:3b","modified_at":"2026-10-16T19:02:32.419646937+02:00","size":6178315563,"digest":"682e1a92e4e11b7db228d14814d98dd21c4bb3997cb7c4296222deab50f970f7","details":{"parent_model":"","format":"gguf","family":"qwen2","families":["qwen2"],"parameter_size":"3.1B","quantization_level":"F16","context_length":32768,"embedding_length":2048,"runner":"ggml"},"capabilities":["completion","insert"]},{"name":"pharo-llm/Qwen2.5-Coder-SFT:1.5B","model":"pharo-llm/Qwen2.5-Coder-SFT:1.5B","modified_at":"2026-10-16T19:01:44.839603139+02:00","size":3093667755,"digest":"4e0f5d526c65727148edfc5ae40e19e5eb60b60d608ecb3ce7b74a595b19c3fa","details":{"parent_model":"","format":"gguf","family":"qwen2","families":["qwen2"],"parameter_size":"1.5B","quantization_level":"F16","context_length":32768,"embedding_length":1536,"runner":"ggml"},"capabilities":["completion","insert"]},{"name":"pharo-llm/Qwen2.5-Coder-SFT:0.5B","model":"pharo-llm/Qwen2.5-Coder-SFT:0.5B","modified_at":"2026-10-16T19:01:18.96757931+02:00","size":994155246,"digest":"57db830e311b33dc554bd410f66c19073596828587142351a59c9860194cb2f9","details":{"parent_model":"","format":"gguf","family":"qwen2","families":["qwen2"],"parameter_size":"494.03M","quantization_level":"F16","context_length":32768,"embedding_length":896,"runner":"ggml"},"capabilities":["completion","insert"]}]}
+[2026-10-19 19:00:24] 3-START OLLAMA OK
+[2026-10-19 19:00:24] ============================================================
+[2026-10-19 19:00:24] 4. PULLING OLLAMA MODELS
+[2026-10-19 19:00:24] ============================================================
+[2026-10-19 19:00:24] ------------------------------------------------------------
+[2026-10-19 19:00:24] Model: pharo-llm/Qwen2.5-Coder-SFT:0.5B
+[2026-10-19 19:00:24] ------------------------------------------------------------
+[2026-10-19 19:00:24] Checking whether model is already available...
+[2026-10-19 19:00:24] Model already downloaded:
+[2026-10-19 19:00:24] pharo-llm/Qwen2.5-Coder-SFT:0.5B
+[2026-10-19 19:00:24] ------------------------------------------------------------
+[2026-10-19 19:00:24] Model: pharo-llm/Qwen2.5-Coder-SFT:1.5B
+[2026-10-19 19:00:24] ------------------------------------------------------------
+[2026-10-19 19:00:24] Checking whether model is already available...
+[2026-10-19 19:00:25] Model already downloaded:
+[2026-10-19 19:00:25] pharo-llm/Qwen2.5-Coder-SFT:1.5B
+[2026-10-19 19:00:25] ------------------------------------------------------------
+[2026-10-19 19:00:25] Model: pharo-llm/Qwen2.5-Coder-SFT:3b
+[2026-10-19 19:00:25] ------------------------------------------------------------
+[2026-10-19 19:00:25] Checking whether model is already available...
+[2026-10-19 19:00:25] Model already downloaded:
+[2026-10-19 19:00:25] pharo-llm/Qwen2.5-Coder-SFT:3b
+[2026-10-19 19:00:25] ------------------------------------------------------------
+[2026-10-19 19:00:25] Model: pharo-llm/Qwen2.5-Coder-SFT:7b
+[2026-10-19 19:00:25] ------------------------------------------------------------
+[2026-10-19 19:00:25] Checking whether model is already available...
+[2026-10-19 19:00:25] Model already downloaded:
+[2026-10-19 19:00:25] pharo-llm/Qwen2.5-Coder-SFT:7b
+[2026-10-19 19:00:25] ============================================================
+[2026-10-19 19:00:25] INSTALLED OLLAMA MODELS
+[2026-10-19 19:00:25] ============================================================
+NAME                                ID              SIZE      MODIFIED   
+pharo-llm/Qwen2.5-Coder-SFT:7b      6b73d1f15657    15 GB     3 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:3b      682e1a92e4e1    6.2 GB    3 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:1.5B    4e0f5d526c65    3.1 GB    3 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:0.5B    57db830e311b    994 MB    3 days ago    
+[2026-10-19 19:00:25] 4-PULL MODELS OK
+[2026-10-19 19:00:25] ============================================================
+[2026-10-19 19:00:25] 7. CHECKING OLLAMA BEFORE BENCHMARK
+[2026-10-19 19:00:25] ============================================================
+[2026-10-19 19:00:25] Ollama is running
+[2026-10-19 19:00:25] Available models:
+NAME                                ID              SIZE      MODIFIED   
+pharo-llm/Qwen2.5-Coder-SFT:7b      6b73d1f15657    15 GB     3 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:3b      682e1a92e4e1    6.2 GB    3 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:1.5B    4e0f5d526c65    3.1 GB    3 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:0.5B    57db830e311b    994 MB    3 days ago    
+[2026-10-19 19:00:25] Loading model into memory: pharo-llm/Qwen2.5-Coder-SFT:0.5B
+[2026-10-19 19:00:33] Loading model into memory: pharo-llm/Qwen2.5-Coder-SFT:1.5B
+[2026-10-19 19:00:57] Loading model into memory: pharo-llm/Qwen2.5-Coder-SFT:3b
+[2026-10-19 19:01:43] Loading model into memory: pharo-llm/Qwen2.5-Coder-SFT:7b
+[2026-10-19 19:03:32] Loaded models:
+NAME                                ID              SIZE      PROCESSOR    CONTEXT    RUNNER      UNTIL   
+pharo-llm/Qwen2.5-Coder-SFT:7b      6b73d1f15657    16 GB     100% GPU     4096       llamacpp    Forever    
+pharo-llm/Qwen2.5-Coder-SFT:3b      682e1a92e4e1    7.6 GB    100% GPU     4096       llamacpp    Forever    
+pharo-llm/Qwen2.5-Coder-SFT:1.5B    4e0f5d526c65    4.2 GB    100% GPU     4096       llamacpp    Forever    
+pharo-llm/Qwen2.5-Coder-SFT:0.5B    57db830e311b    1.5 GB    100% GPU     4096       llamacpp    Forever    
+[2026-10-19 19:03:32] ============================================================
+[2026-10-19 19:03:32] 8. RUNNING BENCHMARKS
+[2026-10-19 19:03:32] ============================================================
+[2026-10-19 19:03:32] Benchmark packages: 50; benchmarks running at the same time: 8
+[2026-10-19 19:03:32] Seed: 42
+[2026-10-19 19:03:32] Experiment: /home/USER/heuristics-vs-llm/oar-runs/336588
+Saved selection: 50 benchmark packages
+/home/USER/heuristics-vs-llm/oar-runs/336588/benchmark-selection.json
+StdioStream: #stdout
+Benchmark packages (saved): /home/USER/heuristics-vs-llm/oar-runs/336588/benchmark-selection.json
+Run directory: /home/USER/heuristics-vs-llm/oar-runs/336588/benchmark-run.zrN2cB
+Benchmarks running at the same time (BENCHMARK_JOBS): 8
+Using the existing Ollama server at 127.0.0.1:11434 (start it with OLLAMA_NUM_PARALLEL and OLLAMA_MAX_LOADED_MODELS for parallel requests)
+Ollama model available: pharo-llm/Qwen2.5-Coder-SFT:0.5B
+Ollama model available: pharo-llm/Qwen2.5-Coder-SFT:1.5B
+Ollama model available: pharo-llm/Qwen2.5-Coder-SFT:3b
+Ollama model available: pharo-llm/Qwen2.5-Coder-SFT:7b
+Running baseline, dependency, LLM completion and hybrid benchmarks on the saved packages
+1143 benchmarks left in this run; this host (larochette-3.luxembourg.grid5000.fr) runs up to 8 at a time, sharing them with the other hosts of the run
+Started BaselineOfSlot [variables hybrid7B] (1/8 slots)
+Started HeuristicCompletion-Benchmarks-Tests [variables hybrid7B] (2/8 slots)
+Started FFI-Kernel [variables hybrid7B] (3/8 slots)
+Started Calypso-SystemTools-QueryBrowser [variables hybrid7B] (4/8 slots)
+Started Morphic-Widgets-Scrolling [variables hybrid7B] (5/8 slots)
+Started NewTools-DependencyAnalyser-Tests [variables hybrid7B] (6/8 slots)
+Started Reflectivity-Tests [variables hybrid7B] (7/8 slots)
+Started Epicea [variables hybrid7B] (8/8 slots)
+  BaselineOfSlot [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.0 min
+  BaselineOfSlot [variables hybrid7B]: done in 0.0 min
+Packages left in this run: 50/50
+Started System-Localization-Tests [variables hybrid7B] (8/8 slots)
+  FFI-Kernel [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 5.7 min
+  FFI-Kernel [variables hybrid7B]: done in 5.7 min
+Packages left in this run: 50/50
+Started Tool-DependencyAnalyser-UI-Tab [variables hybrid7B] (8/8 slots)
+  System-Localization-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 6.0 min
+  System-Localization-Tests [variables hybrid7B]: done in 6.0 min
+Packages left in this run: 50/50
+Started Commander2 [variables hybrid7B] (8/8 slots)
+  Commander2 [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 2.0 min
+  Commander2 [variables hybrid7B]: done in 2.0 min
+Packages left in this run: 50/50
+Started FormCanvas-Tests [variables hybrid7B] (8/8 slots)
+  FormCanvas-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.4 min
+  FormCanvas-Tests [variables hybrid7B]: done in 0.4 min
+Packages left in this run: 50/50
+Started BaselineOfSystemFinalization [variables hybrid7B] (8/8 slots)
+  BaselineOfSystemFinalization [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.0 min
+  BaselineOfSystemFinalization [variables hybrid7B]: done in 0.0 min
+Packages left in this run: 50/50
+Started BaselineOfCommander2 [variables hybrid7B] (8/8 slots)
+  BaselineOfCommander2 [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.0 min
+  BaselineOfCommander2 [variables hybrid7B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Debugging-Utils-Tests [variables hybrid7B] (8/8 slots)
+  Tool-DependencyAnalyser-UI-Tab [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 3.9 min
+  Tool-DependencyAnalyser-UI-Tab [variables hybrid7B]: done in 3.9 min
+Packages left in this run: 50/50
+Started Roassal-Animation [variables hybrid7B] (8/8 slots)
+  Calypso-SystemTools-QueryBrowser [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 10.0 min
+  Calypso-SystemTools-QueryBrowser [variables hybrid7B]: done in 10.1 min
+Packages left in this run: 50/50
+Started NewTools-WindowManager-Tests [variables hybrid7B] (8/8 slots)
+  HeuristicCompletion-Benchmarks-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 10.3 min
+  HeuristicCompletion-Benchmarks-Tests [variables hybrid7B]: done in 10.3 min
+Packages left in this run: 50/50
+Started Calypso-NavigationModel-Tests [variables hybrid7B] (8/8 slots)
+  Roassal-Animation [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 3.7 min
+  Roassal-Animation [variables hybrid7B]: done in 3.7 min
+Packages left in this run: 50/50
+Started TaskIt [variables hybrid7B] (8/8 slots)
+  NewTools-WindowManager-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 3.8 min
+  NewTools-WindowManager-Tests [variables hybrid7B]: done in 3.8 min
+Packages left in this run: 50/50
+Started RottenTestsFinder-FakeTests [variables hybrid7B] (8/8 slots)
+  RottenTestsFinder-FakeTests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.0 min
+  RottenTestsFinder-FakeTests [variables hybrid7B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Keymapping-Tests [variables hybrid7B] (8/8 slots)
+  Morphic-Widgets-Scrolling [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 16.3 min
+  Morphic-Widgets-Scrolling [variables hybrid7B]: done in 16.3 min
+Packages left in this run: 50/50
+Started BaselineOfEquals [variables hybrid7B] (8/8 slots)
+  BaselineOfEquals [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.0 min
+  BaselineOfEquals [variables hybrid7B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Hiedra-Tests [variables hybrid7B] (8/8 slots)
+  Hiedra-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 3.9 min
+  Hiedra-Tests [variables hybrid7B]: done in 3.9 min
+Packages left in this run: 50/50
+Started Athens-Cairo [variables hybrid7B] (8/8 slots)
+  Debugging-Utils-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 13.2 min
+  Debugging-Utils-Tests [variables hybrid7B]: done in 13.2 min
+Packages left in this run: 50/50
+Started BaselineOfReflectionMirrors [variables hybrid7B] (8/8 slots)
+  BaselineOfReflectionMirrors [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.0 min
+  BaselineOfReflectionMirrors [variables hybrid7B]: done in 0.0 min
+Packages left in this run: 50/50
+Started System-Finalization-Tests [variables hybrid7B] (8/8 slots)
+  System-Finalization-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 3.5 min
+  System-Finalization-Tests [variables hybrid7B]: done in 3.5 min
+Packages left in this run: 50/50
+Started BaselineOfGeometry [variables hybrid7B] (8/8 slots)
+  BaselineOfGeometry [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.0 min
+  BaselineOfGeometry [variables hybrid7B]: done in 0.0 min
+Packages left in this run: 50/50
+Started BaselineOfMonticello [variables hybrid7B] (8/8 slots)
+  BaselineOfMonticello [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.0 min
+  BaselineOfMonticello [variables hybrid7B]: done in 0.0 min
+Packages left in this run: 50/50
+Started DrTests-TestCoverage-Tests [variables hybrid7B] (8/8 slots)
+  Keymapping-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 14.5 min
+  Keymapping-Tests [variables hybrid7B]: done in 14.5 min
+Packages left in this run: 50/50
+Started Collections-Support [variables hybrid7B] (8/8 slots)
+  Collections-Support [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 0.2 min
+  Collections-Support [variables hybrid7B]: done in 0.2 min
+Packages left in this run: 50/50
+Started Network-Mail [messages llmUnvalidated3B] (8/8 slots)
+  DrTests-TestCoverage-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 7.1 min
+  DrTests-TestCoverage-Tests [variables hybrid7B]: done in 7.1 min
+Packages left in this run: 50/50
+Started Spec2-ListView [messages llmUnvalidated3B] (8/8 slots)
+  TaskIt [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 19.2 min
+  TaskIt [variables hybrid7B]: done in 19.2 min
+Packages left in this run: 50/50
+Started System-Settings-Core [messages llmUnvalidated3B] (8/8 slots)
+  Epicea [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 33.5 min
+  Epicea [variables hybrid7B]: done in 33.5 min
+Packages left in this run: 50/50
+Started NewTools-Core [messages llmUnvalidated3B] (8/8 slots)
+  Athens-Cairo [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 17.4 min
+  Athens-Cairo [variables hybrid7B]: done in 17.4 min
+Packages left in this run: 50/50
+Started SystemCommands-MethodCommands-Tests [messages llmUnvalidated3B] (8/8 slots)
+  NewTools-DependencyAnalyser-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 54.0 min
+  NewTools-DependencyAnalyser-Tests [variables hybrid7B]: done in 54.0 min
+Packages left in this run: 50/50
+Started Spec2-Code-Commands [messages llmUnvalidated3B] (8/8 slots)
+  SystemCommands-MethodCommands-Tests [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 22.3 min: 1234 of 3937 generated candidates are real Pharo names (31.3%)
+  SystemCommands-MethodCommands-Tests [messages llmUnvalidated3B]: done in 22.3 min
+Packages left in this run: 50/50
+Started Tool-Profilers-Tests [messages llmUnvalidated3B] (8/8 slots)
+  Spec2-Code-Commands [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 22.8 min: 1299 of 4061 generated candidates are real Pharo names (32.0%)
+  Spec2-Code-Commands [messages llmUnvalidated3B]: done in 22.8 min
+Packages left in this run: 50/50
+Started Iceberg-Libgit-Filetree [messages llmUnvalidated3B] (8/8 slots)
+  Calypso-NavigationModel-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 72.1 min
+  Calypso-NavigationModel-Tests [variables hybrid7B]: done in 72.1 min
+Packages left in this run: 50/50
+Started Slot-Tests [messages llmUnvalidated3B] (8/8 slots)
+  Tool-Profilers-Tests [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 46.9 min: 2036 of 8849 generated candidates are real Pharo names (23.0%)
+  Tool-Profilers-Tests [messages llmUnvalidated3B]: done in 46.9 min
+Packages left in this run: 50/50
+Started SUnit-Rules-Tests [messages llmUnvalidated3B] (8/8 slots)
+  SUnit-Rules-Tests [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 13.5 min: 741 of 2679 generated candidates are real Pharo names (27.7%)
+  SUnit-Rules-Tests [messages llmUnvalidated3B]: done in 13.5 min
+Packages left in this run: 50/50
+Started BaselineOfSlot [messages llmUnvalidated3B] (8/8 slots)
+  BaselineOfSlot [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 2.8 min: 184 of 603 generated candidates are real Pharo names (30.5%)
+  BaselineOfSlot [messages llmUnvalidated3B]: done in 2.8 min
+Packages left in this run: 50/50
+Started HeuristicCompletion-Benchmarks-Tests [messages llmUnvalidated3B] (8/8 slots)
+  Iceberg-Libgit-Filetree [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 66.8 min: 3695 of 12203 generated candidates are real Pharo names (30.3%)
+  Iceberg-Libgit-Filetree [messages llmUnvalidated3B]: done in 66.8 min
+Packages left in this run: 50/50
+Started Calypso-SystemTools-QueryBrowser [messages llmUnvalidated3B] (8/8 slots)
+  NewTools-Core [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 121.9 min: 6501 of 23146 generated candidates are real Pharo names (28.1%)
+  NewTools-Core [messages llmUnvalidated3B]: done in 121.9 min
+Packages left in this run: 50/50
+Started Morphic-Widgets-Scrolling [messages llmUnvalidated3B] (8/8 slots)
+  System-Settings-Core [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 152.6 min: 7232 of 30353 generated candidates are real Pharo names (23.8%)
+  System-Settings-Core [messages llmUnvalidated3B]: done in 152.6 min
+Packages left in this run: 50/50
+Started Reflectivity-Tests [messages llmUnvalidated3B] (8/8 slots)
+  HeuristicCompletion-Benchmarks-Tests [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 66.0 min: 1943 of 11698 generated candidates are real Pharo names (16.6%)
+  HeuristicCompletion-Benchmarks-Tests [messages llmUnvalidated3B]: done in 66.0 min
+Packages left in this run: 50/50
+Started Epicea [messages llmUnvalidated3B] (8/8 slots)
+  Reflectivity-Tests [variables hybrid7B]: Classes - Hybrid Rerank + 7B done in 213.8 min
+  Reflectivity-Tests [variables hybrid7B]: done in 213.8 min
+Packages left in this run: 50/50
+Started Commander2 [messages llmUnvalidated3B] (8/8 slots)
+  Network-Mail [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 192.0 min: 9223 of 40799 generated candidates are real Pharo names (22.6%)
+  Network-Mail [messages llmUnvalidated3B]: done in 192.0 min
+Packages left in this run: 50/50
+Started BaselineOfSystemFinalization [messages llmUnvalidated3B] (8/8 slots)
+  BaselineOfSystemFinalization [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 2.0 min: 118 of 393 generated candidates are real Pharo names (30.0%)
+  BaselineOfSystemFinalization [messages llmUnvalidated3B]: done in 2.0 min
+Packages left in this run: 50/50
+Started BaselineOfCommander2 [messages llmUnvalidated3B] (8/8 slots)
+  BaselineOfCommander2 [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 4.7 min: 289 of 938 generated candidates are real Pharo names (30.8%)
+  BaselineOfCommander2 [messages llmUnvalidated3B]: done in 4.7 min
+Packages left in this run: 50/50
+Started NewTools-WindowManager-Tests [messages llmUnvalidated3B] (8/8 slots)
+  NewTools-WindowManager-Tests [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 29.0 min: 1545 of 5563 generated candidates are real Pharo names (27.8%)
+  NewTools-WindowManager-Tests [messages llmUnvalidated3B]: done in 29.0 min
+Packages left in this run: 50/50
+Started TaskIt [messages llmUnvalidated3B] (8/8 slots)
+  Calypso-SystemTools-QueryBrowser [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 121.3 min: 5573 of 20356 generated candidates are real Pharo names (27.4%)
+  Calypso-SystemTools-QueryBrowser [messages llmUnvalidated3B]: done in 121.3 min
+Packages left in this run: 50/50
+Started RottenTestsFinder-FakeTests [messages llmUnvalidated3B] (8/8 slots)
+  Commander2 [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 55.8 min: 2764 of 9886 generated candidates are real Pharo names (28.0%)
+  Commander2 [messages llmUnvalidated3B]: done in 55.8 min
+Packages left in this run: 50/50
+Started Keymapping-Tests [messages llmUnvalidated3B] (8/8 slots)
+  RottenTestsFinder-FakeTests [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 7.9 min: 295 of 1484 generated candidates are real Pharo names (19.9%)
+  RottenTestsFinder-FakeTests [messages llmUnvalidated3B]: done in 7.9 min
+Packages left in this run: 50/50
+Started BaselineOfBaseLibraries [messages llmUnvalidated3B] (8/8 slots)
+  BaselineOfBaseLibraries [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 6.0 min: 342 of 1295 generated candidates are real Pharo names (26.4%)
+  BaselineOfBaseLibraries [messages llmUnvalidated3B]: done in 6.0 min
+Packages left in this run: 50/50
+Started BaselineOfEquals [messages llmUnvalidated3B] (8/8 slots)
+  BaselineOfEquals [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 1.3 min: 94 of 253 generated candidates are real Pharo names (37.2%)
+  BaselineOfEquals [messages llmUnvalidated3B]: done in 1.3 min
+Packages left in this run: 50/50
+Started Hiedra-Tests [messages llmUnvalidated3B] (8/8 slots)
+  Spec2-ListView [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 280.4 min: 14794 of 50677 generated candidates are real Pharo names (29.2%)
+  Spec2-ListView [messages llmUnvalidated3B]: done in 280.5 min
+Packages left in this run: 50/50
+Started Athens-Cairo [messages llmUnvalidated3B] (8/8 slots)
+  Hiedra-Tests [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 58.2 min: 2339 of 9675 generated candidates are real Pharo names (24.2%)
+  Hiedra-Tests [messages llmUnvalidated3B]: done in 58.2 min
+Packages left in this run: 50/50
+Started BaselineOfGeometry [messages llmUnvalidated3B] (8/8 slots)
+  BaselineOfGeometry [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 1.8 min: 110 of 393 generated candidates are real Pharo names (28.0%)
+  BaselineOfGeometry [messages llmUnvalidated3B]: done in 1.8 min
+Packages left in this run: 50/50
+Started BaselineOfMonticello [messages llmUnvalidated3B] (8/8 slots)
+  BaselineOfMonticello [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 9.3 min: 734 of 2121 generated candidates are real Pharo names (34.6%)
+  BaselineOfMonticello [messages llmUnvalidated3B]: done in 9.3 min
+Packages left in this run: 50/50
+Started System-OSEnvironments [messages llmUnvalidated3B] (8/8 slots)
+  System-OSEnvironments [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 18.4 min: 700 of 3099 generated candidates are real Pharo names (22.6%)
+  System-OSEnvironments [messages llmUnvalidated3B]: done in 18.4 min
+Packages left in this run: 50/50
+Started Collections-Support [messages llmUnvalidated3B] (8/8 slots)
+  Collections-Support [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 14.9 min: 653 of 3052 generated candidates are real Pharo names (21.4%)
+  Collections-Support [messages llmUnvalidated3B]: done in 14.9 min
+Packages left in this run: 50/50
+Started Spec2-ListView [variables llmUnvalidated3B] (8/8 slots)
+  Spec2-ListView [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 23.5 min: 604 of 4730 generated candidates are real Pharo names (12.8%)
+  Spec2-ListView [variables llmUnvalidated3B]: done in 23.5 min
+Packages left in this run: 50/50
+Started Tool-Profilers-Tests [variables llmUnvalidated3B] (8/8 slots)
+  Tool-Profilers-Tests [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 10.9 min: 327 of 2003 generated candidates are real Pharo names (16.3%)
+  Tool-Profilers-Tests [variables llmUnvalidated3B]: done in 10.9 min
+Packages left in this run: 50/50
+Started Iceberg-Libgit-Filetree [variables llmUnvalidated3B] (8/8 slots)
+  Iceberg-Libgit-Filetree [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 9.9 min: 304 of 1520 generated candidates are real Pharo names (20.0%)
+  Iceberg-Libgit-Filetree [variables llmUnvalidated3B]: done in 9.9 min
+Packages left in this run: 50/50
+Started BaselineOfEnlumineurFormatter [variables llmUnvalidated3B] (8/8 slots)
+  BaselineOfEnlumineurFormatter [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 0.0 min: 0 of 0 generated candidates are real Pharo names
+  BaselineOfEnlumineurFormatter [variables llmUnvalidated3B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Text-Scanning [variables llmUnvalidated3B] (8/8 slots)
+  Text-Scanning [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 2.6 min: 98 of 653 generated candidates are real Pharo names (15.0%)
+  Text-Scanning [variables llmUnvalidated3B]: done in 2.6 min
+Packages left in this run: 50/50
+Started SUnit-Rules-Tests [variables llmUnvalidated3B] (8/8 slots)
+  TaskIt [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 179.3 min: 8556 of 34545 generated candidates are real Pharo names (24.8%)
+  TaskIt [messages llmUnvalidated3B]: done in 179.3 min
+Packages left in this run: 50/50
+Started BaselineOfSlot [variables llmUnvalidated3B] (8/8 slots)
+  BaselineOfSlot [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 0.0 min: 0 of 0 generated candidates are real Pharo names
+  BaselineOfSlot [variables llmUnvalidated3B]: done in 0.0 min
+Packages left in this run: 50/50
+Started HeuristicCompletion-Benchmarks-Tests [variables llmUnvalidated3B] (8/8 slots)
+  SUnit-Rules-Tests [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 7.1 min: 79 of 560 generated candidates are real Pharo names (14.1%)
+  SUnit-Rules-Tests [variables llmUnvalidated3B]: done in 7.1 min
+Packages left in this run: 50/50
+Started FFI-Kernel [variables llmUnvalidated3B] (8/8 slots)
+  FFI-Kernel [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 6.8 min: 316 of 1846 generated candidates are real Pharo names (17.1%)
+  FFI-Kernel [variables llmUnvalidated3B]: done in 6.8 min
+Packages left in this run: 50/50
+Started Morphic-Widgets-Scrolling [variables llmUnvalidated3B] (8/8 slots)
+  HeuristicCompletion-Benchmarks-Tests [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 10.4 min: 277 of 2450 generated candidates are real Pharo names (11.3%)
+  HeuristicCompletion-Benchmarks-Tests [variables llmUnvalidated3B]: done in 10.4 min
+Packages left in this run: 50/50
+Started NewTools-DependencyAnalyser-Tests [variables llmUnvalidated3B] (8/8 slots)
+  Morphic-Widgets-Scrolling [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 27.1 min: 563 of 4575 generated candidates are real Pharo names (12.3%)
+  Morphic-Widgets-Scrolling [variables llmUnvalidated3B]: done in 27.1 min
+Packages left in this run: 50/50
+Started BaselineOfSystemFinalization [variables llmUnvalidated3B] (8/8 slots)
+  BaselineOfSystemFinalization [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 0.0 min: 0 of 0 generated candidates are real Pharo names
+  BaselineOfSystemFinalization [variables llmUnvalidated3B]: done in 0.0 min
+Packages left in this run: 50/50
+Started BaselineOfCommander2 [variables llmUnvalidated3B] (8/8 slots)
+  BaselineOfCommander2 [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 0.0 min: 0 of 0 generated candidates are real Pharo names
+  BaselineOfCommander2 [variables llmUnvalidated3B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Debugging-Utils-Tests [variables llmUnvalidated3B] (8/8 slots)
+  Epicea [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 289.1 min: 14255 of 50243 generated candidates are real Pharo names (28.4%)
+  Epicea [messages llmUnvalidated3B]: done in 289.2 min
+Packages left in this run: 50/50
+Started Calypso-NavigationModel-Tests [variables llmUnvalidated3B] (8/8 slots)
+  Keymapping-Tests [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 208.9 min: 8375 of 40446 generated candidates are real Pharo names (20.7%)
+  Keymapping-Tests [messages llmUnvalidated3B]: done in 208.9 min
+Packages left in this run: 50/50
+Started TaskIt [variables llmUnvalidated3B] (8/8 slots)
+  Debugging-Utils-Tests [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 12.4 min: 452 of 3012 generated candidates are real Pharo names (15.0%)
+  Debugging-Utils-Tests [variables llmUnvalidated3B]: done in 12.4 min
+Packages left in this run: 50/50
+Started BaselineOfBaseLibraries [variables llmUnvalidated3B] (8/8 slots)
+  BaselineOfBaseLibraries [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 0.0 min: 0 of 0 generated candidates are real Pharo names
+  BaselineOfBaseLibraries [variables llmUnvalidated3B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Hiedra [variables llmUnvalidated3B] (8/8 slots)
+  Hiedra [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 7.9 min: 206 of 1654 generated candidates are real Pharo names (12.5%)
+  Hiedra [variables llmUnvalidated3B]: done in 7.9 min
+Packages left in this run: 50/50
+Started Athens-Cairo [variables llmUnvalidated3B] (8/8 slots)
+  TaskIt [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 25.4 min: 805 of 5101 generated candidates are real Pharo names (15.8%)
+  TaskIt [variables llmUnvalidated3B]: done in 25.4 min
+Packages left in this run: 50/50
+Started Collections-Support [variables llmUnvalidated3B] (8/8 slots)
+  Collections-Support [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 0.3 min: 7 of 70 generated candidates are real Pharo names (10.0%)
+  Collections-Support [variables llmUnvalidated3B]: done in 0.3 min
+Packages left in this run: 50/50
+Started Network-Mail [messages llm3B] (8/8 slots)
+  Athens-Cairo [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 26.9 min: 733 of 5023 generated candidates are real Pharo names (14.6%)
+  Athens-Cairo [variables llmUnvalidated3B]: done in 26.9 min
+Packages left in this run: 50/50
+Started System-Settings-Core [messages llm3B] (8/8 slots)
+  NewTools-DependencyAnalyser-Tests [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 75.3 min: 2253 of 13849 generated candidates are real Pharo names (16.3%)
+  NewTools-DependencyAnalyser-Tests [variables llmUnvalidated3B]: done in 75.3 min
+Packages left in this run: 50/50
+Started SystemCommands-MethodCommands-Tests [messages llm3B] (8/8 slots)
+  SystemCommands-MethodCommands-Tests [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 14.7 min
+  SystemCommands-MethodCommands-Tests [messages llm3B]: done in 14.7 min
+Packages left in this run: 50/50
+Started NewTools-RewriterTools-Backend-Tests [messages llm3B] (8/8 slots)
+  NewTools-RewriterTools-Backend-Tests [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 3.4 min
+  NewTools-RewriterTools-Backend-Tests [messages llm3B]: done in 3.4 min
+Packages left in this run: 50/50
+Started Refactoring-Conditions [messages llm3B] (8/8 slots)
+  System-Settings-Core [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 89.9 min
+  System-Settings-Core [messages llm3B]: done in 89.9 min
+Packages left in this run: 50/50
+Started SUnit-Rules-Tests [messages llm3B] (8/8 slots)
+  Network-Mail [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 108.3 min
+  Network-Mail [messages llm3B]: done in 108.3 min
+Packages left in this run: 50/50
+Started FFI-Kernel [messages llm3B] (8/8 slots)
+  SUnit-Rules-Tests [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 8.2 min
+  SUnit-Rules-Tests [messages llm3B]: done in 8.2 min
+Packages left in this run: 50/50
+Started Calypso-SystemTools-QueryBrowser [messages llm3B] (8/8 slots)
+  Calypso-NavigationModel-Tests [variables llmUnvalidated3B]: Classes - 3B-LLM Completion BEFORE Pharo validation done in 152.7 min: 4770 of 24943 generated candidates are real Pharo names (19.1%)
+  Calypso-NavigationModel-Tests [variables llmUnvalidated3B]: done in 152.7 min
+Packages left in this run: 50/50
+Started Morphic-Widgets-Scrolling [messages llm3B] (8/8 slots)
+  Athens-Cairo [messages llmUnvalidated3B]: Methods - 3B-LLM Completion BEFORE Pharo validation done in 350.7 min: 11435 of 61407 generated candidates are real Pharo names (18.6%)
+  Athens-Cairo [messages llmUnvalidated3B]: done in 350.7 min
+Packages left in this run: 50/50
+Started Epicea [messages llm3B] (8/8 slots)
+  Refactoring-Conditions [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 145.5 min
+  Refactoring-Conditions [messages llm3B]: done in 145.5 min
+Packages left in this run: 50/50
+Started Tool-DependencyAnalyser-UI-Tab [messages llm3B] (8/8 slots)
+  Calypso-SystemTools-QueryBrowser [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 73.4 min
+  Calypso-SystemTools-QueryBrowser [messages llm3B]: done in 73.4 min
+Packages left in this run: 50/50
+Started FormCanvas-Tests [messages llm3B] (8/8 slots)
+  FFI-Kernel [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 79.7 min
+  FFI-Kernel [messages llm3B]: done in 79.7 min
+Packages left in this run: 50/50
+Started BaselineOfSystemFinalization [messages llm3B] (8/8 slots)
+  BaselineOfSystemFinalization [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 1.1 min
+  BaselineOfSystemFinalization [messages llm3B]: done in 1.1 min
+Packages left in this run: 50/50
+Started BaselineOfCommander2 [messages llm3B] (8/8 slots)
+  FormCanvas-Tests [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 4.3 min
+  FormCanvas-Tests [messages llm3B]: done in 4.3 min
+Packages left in this run: 50/50
+Started Debugging-Utils-Tests [messages llm3B] (8/8 slots)
+  BaselineOfCommander2 [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 2.6 min
+  BaselineOfCommander2 [messages llm3B]: done in 2.6 min
+Packages left in this run: 50/50
+Started Roassal-Animation [messages llm3B] (8/8 slots)
+  Tool-DependencyAnalyser-UI-Tab [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 19.4 min
+  Tool-DependencyAnalyser-UI-Tab [messages llm3B]: done in 19.4 min
+Packages left in this run: 50/50
+Started Calypso-NavigationModel-Tests [messages llm3B] (8/8 slots)
+  Roassal-Animation [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 37.0 min
+  Roassal-Animation [messages llm3B]: done in 37.0 min
+Packages left in this run: 50/50
+Started BaselineOfBaseLibraries [messages llm3B] (8/8 slots)
+  BaselineOfBaseLibraries [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 3.0 min
+  BaselineOfBaseLibraries [messages llm3B]: done in 3.0 min
+Packages left in this run: 50/50
+Started Hiedra [messages llm3B] (8/8 slots)
+  Debugging-Utils-Tests [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 58.0 min
+  Debugging-Utils-Tests [messages llm3B]: done in 58.0 min
+Packages left in this run: 50/50
+Started BaselineOfEquals [messages llm3B] (8/8 slots)
+  BaselineOfEquals [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 0.7 min
+  BaselineOfEquals [messages llm3B]: done in 0.7 min
+Packages left in this run: 50/50
+Started Hiedra-Tests [messages llm3B] (8/8 slots)
+  Hiedra-Tests [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 29.9 min
+  Hiedra-Tests [messages llm3B]: done in 29.9 min
+Packages left in this run: 50/50
+Started Refactoring-Environment-Tests [messages llm3B] (8/8 slots)
+  Hiedra [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 58.0 min
+  Hiedra [messages llm3B]: done in 58.0 min
+Packages left in this run: 50/50
+Started BaselineOfReflectionMirrors [messages llm3B] (8/8 slots)
+  BaselineOfReflectionMirrors [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 0.3 min
+  BaselineOfReflectionMirrors [messages llm3B]: done in 0.3 min
+Packages left in this run: 50/50
+Started System-Finalization-Tests [messages llm3B] (8/8 slots)
+  System-Finalization-Tests [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 10.9 min
+  System-Finalization-Tests [messages llm3B]: done in 10.9 min
+Packages left in this run: 50/50
+Started BaselineOfGeometry [messages llm3B] (8/8 slots)
+  BaselineOfGeometry [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 1.1 min
+  BaselineOfGeometry [messages llm3B]: done in 1.1 min
+Packages left in this run: 50/50
+Started BaselineOfMonticello [messages llm3B] (8/8 slots)
+  BaselineOfMonticello [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 7.2 min
+  BaselineOfMonticello [messages llm3B]: done in 7.2 min
+Packages left in this run: 50/50
+Started System-OSEnvironments [messages llm3B] (8/8 slots)
+  System-OSEnvironments [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 8.7 min
+  System-OSEnvironments [messages llm3B]: done in 8.7 min
+Packages left in this run: 50/50
+Started Collections-Support [messages llm3B] (8/8 slots)
+  Collections-Support [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 7.1 min
+  Collections-Support [messages llm3B]: done in 7.1 min
+Packages left in this run: 50/50
+Started Spec2-ListView [variables llm3B] (8/8 slots)
+  Epicea [messages llm3B]: Methods - 3B-LLM Completion AFTER Pharo validation done in 173.0 min
+  Epicea [messages llm3B]: done in 173.0 min
+Packages left in this run: 50/50
+Started SystemCommands-MethodCommands-Tests [variables llm3B] (8/8 slots)

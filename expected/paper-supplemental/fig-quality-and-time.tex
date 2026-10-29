@@ -1,0 +1,68 @@
+% Observed neural completion means from the supplied plot source.
+% Integer labels use nearest-integer rounding, with .5 rounded upward.
+% Houssem: Please verify the authoritative 3B method mean and rounding rule;
+% the supplied coordinate is 1698.500 ms, while its old label was 1698 ms.
+\definecolor{cA}{HTML}{2A78D6}\definecolor{cB}{HTML}{EB6834}\definecolor{cY}{HTML}{1BAF7A}\definecolor{cH}{HTML}{6B6A64}
+\ifdefined\mainpaperresults
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.0cm},
+  width=0.46\textwidth, height=4.8cm, ybar=0pt, /pgf/bar width=8pt, enlarge x limits=0.18, ymin=0,
+  symbolic x coords={0.5B,1.5B,3B,7B}, xtick={0.5B,1.5B,3B,7B},
+  xlabel={Model size}, tick label style={font=\scriptsize}, label style={font=\scriptsize}, scaled y ticks=false,
+  title style={font=\footnotesize\bfseries, yshift=-1ex}, ymajorgrids, grid style={gray!20}, axis line style={gray!60},
+  nodes near coords, point meta=explicit symbolic, every node near coord/.append style={font=\scriptsize, rotate=90, anchor=west},
+  legend style={font=\scriptsize, draw=none, fill=none, legend columns=3, column sep=8pt}]
+\nextgroupplot[ymax=6900, ytick={0,1000,2000,3000,4000,5000,6000}, ylabel={Mean completion time (ms)}, title={Method selectors}, legend to name=neuraltimelegend]
+\addplot[fill=cB, draw=none, area legend, bar shift=-8pt] coordinates {(0.5B,3837.400) [3837] (1.5B,2102.700) [2103] (3B,2684.600) [2685] (7B,3947.300) [3947]};
+\addlegendentry{Unconstrained generation}
+\addplot[fill=cA, draw=none, area legend, bar shift=0pt] coordinates {(0.5B,3353.800) [3354] (1.5B,834.600) [835] (3B,1698.500) [1699] (7B,2074.300) [2074]};
+\addlegendentry{Constrained generation}
+\addplot[fill=cY, draw=none, area legend, bar shift=8pt] coordinates {(0.5B,3011.500) [3012] (1.5B,913.300) [913] (3B,1907.300) [1907] (7B,2167.900) [2168]};
+\addlegendentry{CLM reranking}
+\nextgroupplot[ymax=6900, ytick={0,1000,2000,3000,4000,5000,6000}, ylabel={Mean completion time (ms)}, title={Class names}]
+\addplot[fill=cB, draw=none, area legend, bar shift=-8pt] coordinates {(0.5B,5229.600) [5230] (1.5B,758.700) [759] (3B,2984.300) [2984] (7B,3801.900) [3802]};
+\addplot[fill=cA, draw=none, area legend, bar shift=0pt] coordinates {(0.5B,2615.000) [2615] (1.5B,999.200) [999] (3B,1718.000) [1718] (7B,1955.900) [1956]};
+\addplot[fill=cY, draw=none, area legend, bar shift=8pt] coordinates {(0.5B,4103.200) [4103] (1.5B,1028.000) [1028] (3B,2368.000) [2368] (7B,2317.500) [2318]};
+\end{groupplot}
+\node[anchor=north, font=\scriptsize, text=black!65] at ($(group c1r1.north east)!0.5!(group c2r1.north west)+(0,0.7cm)$) {Shared-server benchmark};
+\node[anchor=north] at ($(group c1r1.south east)!0.5!(group c2r1.south west)+(0,-0.85cm)$) {\pgfplotslegendfromname{neuraltimelegend}};
+\end{tikzpicture}
+\else
+% Generated from benchmark checkpoints (matched 47-package population).
+\definecolor{cA}{HTML}{2A78D6}\definecolor{cB}{HTML}{EB6834}\definecolor{cY}{HTML}{1BAF7A}\definecolor{cH}{HTML}{6B6A64}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 2, horizontal sep=1.0cm, vertical sep=0.5cm, x descriptions at=edge bottom},
+  width=0.46\textwidth, height=4.1cm, ybar=0pt, /pgf/bar width=7pt, enlarge x limits=0.09, ymin=0,
+  symbolic x coords={Baseline,Dependency,0.5B,1.5B,3B,7B}, xtick={Baseline,Dependency,0.5B,1.5B,3B,7B},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize}, scaled y ticks=false,
+  title style={font=\footnotesize\bfseries, yshift=-1ex}, ymajorgrids, grid style={gray!20}, axis line style={gray!60},
+  nodes near coords, point meta=explicit symbolic, every node near coord/.append style={font=\tiny, rotate=90, anchor=west},
+  legend style={font=\scriptsize, draw=none, fill=none, legend columns=2, column sep=8pt}]
+\nextgroupplot[ymax=1.25, ytick={0,0.2,...,1}, ylabel={MRR@10}, title={Method selectors}, legend to name=perflegend]
+\addplot[fill=cH, draw=none, area legend, bar shift=0pt] coordinates {(Baseline,0.262) [.262] (Dependency,0.517) [.517]};
+\addlegendentry{Heuristics}
+\addplot[fill=cB, draw=none, area legend, bar shift=-7pt] coordinates {(0.5B,0.593) [.593] (1.5B,0.668) [.668] (3B,0.698) [.698] (7B,0.722) [.722]};
+\addlegendentry{Unconstrained generation}
+\addplot[fill=cA, draw=none, area legend, bar shift=0pt] coordinates {(0.5B,0.675) [.675] (1.5B,0.729) [.729] (3B,0.754) [.754] (7B,0.774) [.774]};
+\addlegendentry{Constrained generation}
+\addplot[fill=cY, draw=none, area legend, bar shift=7pt] coordinates {(0.5B,0.588) [.588] (1.5B,0.630) [.630] (3B,0.641) [.641] (7B,0.656) [.656]};
+\addlegendentry{CLM reranking}
+\nextgroupplot[ymax=1.25, ytick={0,0.2,...,1}, ylabel={MRR@10}, title={Class names}]
+\addplot[fill=cH, draw=none, area legend, bar shift=0pt] coordinates {(Baseline,0.407) [.407] (Dependency,0.592) [.592]};
+\addplot[fill=cB, draw=none, area legend, bar shift=-7pt] coordinates {(0.5B,0.658) [.658] (1.5B,0.746) [.746] (3B,0.764) [.764] (7B,0.791) [.791]};
+\addplot[fill=cA, draw=none, area legend, bar shift=0pt] coordinates {(0.5B,0.786) [.786] (1.5B,0.846) [.846] (3B,0.861) [.861] (7B,0.879) [.879]};
+\addplot[fill=cY, draw=none, area legend, bar shift=7pt] coordinates {(0.5B,0.739) [.739] (1.5B,0.782) [.782] (3B,0.802) [.802] (7B,0.813) [.813]};
+\nextgroupplot[ymax=6900, ytick={0,1000,2000,3000,4000,5000,6000}, yticklabels={0,1000,2000,3000,4000,5000,6000}, ylabel={Mean completion time (ms)}]
+\addplot[fill=cH, draw=none, area legend, bar shift=0pt] coordinates {(Baseline,104.700) [105] (Dependency,159.600) [160]};
+\addplot[fill=cB, draw=none, area legend, bar shift=-7pt] coordinates {(0.5B,3837.400) [3837] (1.5B,2102.700) [2103] (3B,2684.600) [2685] (7B,3947.300) [3947]};
+\addplot[fill=cA, draw=none, area legend, bar shift=0pt] coordinates {(0.5B,3353.800) [3354] (1.5B,834.600) [835] (3B,1698.500) [1699] (7B,2074.300) [2074]};
+\addplot[fill=cY, draw=none, area legend, bar shift=7pt] coordinates {(0.5B,3011.500) [3012] (1.5B,913.300) [913] (3B,1907.300) [1907] (7B,2167.900) [2168]};
+\nextgroupplot[ymax=6900, ytick={0,1000,2000,3000,4000,5000,6000}, yticklabels={0,1000,2000,3000,4000,5000,6000}, ylabel={Mean completion time (ms)}]
+\addplot[fill=cH, draw=none, area legend, bar shift=0pt] coordinates {(Baseline,11.200) [11] (Dependency,25.600) [26]};
+\addplot[fill=cB, draw=none, area legend, bar shift=-7pt] coordinates {(0.5B,5229.600) [5230] (1.5B,758.700) [759] (3B,2984.300) [2984] (7B,3801.900) [3802]};
+\addplot[fill=cA, draw=none, area legend, bar shift=0pt] coordinates {(0.5B,2615.000) [2615] (1.5B,999.200) [999] (3B,1718.000) [1718] (7B,1955.900) [1956]};
+\addplot[fill=cY, draw=none, area legend, bar shift=7pt] coordinates {(0.5B,4103.200) [4103] (1.5B,1028.000) [1028] (3B,2368.000) [2368] (7B,2317.500) [2318]};
+\end{groupplot}
+\node[anchor=north] at ($(group c1r2.south east)!0.5!(group c2r2.south west)+(0,-0.55cm)$) {\pgfplotslegendfromname{perflegend}};
+\end{tikzpicture}
+\fi

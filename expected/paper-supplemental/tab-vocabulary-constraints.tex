@@ -1,0 +1,62 @@
+% Main-paper selection; the complete export is retained in the support branch.
+\ifdefined\mainpaperresults
+\begin{table}[t]
+\centering
+\caption{Vocabulary constraints and list composition.}
+\label{tab:vocabulary-constraints}
+\setlength{\tabcolsep}{4pt}
+\small
+\begin{tabular}{llrrr}
+\toprule
+ & & \textbf{Membership} & \multicolumn{2}{c}{\textbf{Mean list length}} \\
+\cmidrule(lr){4-5}
+\textbf{Task} & \textbf{Size} & U (\%) & U & C \\
+\midrule
+Methods & 0.5B & 23.9 & 9.68 & 4.50 \\
+ & 1.5B & 22.1 & 9.82 & 4.40 \\
+ & 3B & 23.3 & 9.74 & 4.50 \\
+ & 7B & 22.5 & 9.77 & 4.37 \\
+\midrule
+Classes & 0.5B & 14.1 & 9.96 & 2.20 \\
+ & 1.5B & 14.2 & 9.92 & 2.36 \\
+ & 3B & 15.0 & 9.91 & 2.57 \\
+ & 7B & 15.8 & 9.89 & 2.78 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\else
+\begin{table*}[t]
+\centering
+\caption{Complete vocabulary-constraint results.}
+\label{tab:vocabulary-constraints}
+\setlength{\tabcolsep}{3.5pt}
+\small
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llrr@{\hspace{10pt}}rr@{\hspace{10pt}}ll@{\hspace{10pt}}rr}
+\toprule
+ & & \multicolumn{2}{c}{\textbf{Validity (\%)}} & \multicolumn{2}{c}{\textbf{Mean list length}} & \multicolumn{2}{c}{\textbf{MRR@10}} & \multicolumn{2}{c}{\textbf{Mean time (ms)}} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}
+\textbf{Task} & \textbf{Size} & U & Constrained & U & Constrained & U & Constrained & U & Constrained \\
+\midrule
+Methods & 0.5B & 23.9 & 100.0 & 9.68 & 4.50 & .593\textsuperscript{$+$14.8\%} & .675\textsuperscript{$+$30.5\%} & 3{,}837 & 3{,}354 \\
+% Original cross-environment ratio callouts (not controlled speedups): \textsuperscript{$\times$24}; \textsuperscript{$\times$21}
+ & 1.5B & 22.1 & 100.0 & 9.82 & 4.40 & .668\textsuperscript{$+$29.4\%} & .729\textsuperscript{$+$41.2\%} & 2{,}103 & 835 \\
+% Original cross-environment ratio callouts (not controlled speedups): \textsuperscript{$\times$13}; \textsuperscript{$\times$5}
+ & 3B & 23.3 & 100.0 & 9.74 & 4.50 & .698\textsuperscript{$+$35.1\%} & .754\textsuperscript{$+$45.9\%} & 2{,}685 & 1{,}699 \\
+% Original cross-environment ratio callouts (not controlled speedups): \textsuperscript{$\times$17}; \textsuperscript{$\times$11}
+ & 7B & 22.5 & 100.0 & 9.77 & 4.37 & .722\textsuperscript{$+$39.8\%} & .774\textsuperscript{$+$49.7\%} & 3{,}947 & 2{,}074 \\
+% Original cross-environment ratio callouts (not controlled speedups): \textsuperscript{$\times$25}; \textsuperscript{$\times$13}
+\midrule
+Classes & 0.5B & 14.1 & 100.0 & 9.96 & 2.20 & .658\textsuperscript{$+$11.1\%} & .786\textsuperscript{$+$32.8\%} & 5{,}230 & 2{,}615 \\
+% Original cross-environment ratio callouts (not controlled speedups): \textsuperscript{$\times$204}; \textsuperscript{$\times$102}
+ & 1.5B & 14.2 & 100.0 & 9.92 & 2.36 & .746\textsuperscript{$+$25.9\%} & .846\textsuperscript{$+$42.9\%} & 759 & 999 \\
+% Original cross-environment ratio callouts (not controlled speedups): \textsuperscript{$\times$30}; \textsuperscript{$\times$39}
+ & 3B & 15.0 & 100.0 & 9.91 & 2.57 & .764\textsuperscript{$+$29.1\%} & .861\textsuperscript{$+$45.5\%} & 2{,}984 & 1{,}718 \\
+% Original cross-environment ratio callouts (not controlled speedups): \textsuperscript{$\times$117}; \textsuperscript{$\times$67}
+ & 7B & 15.8 & 100.0 & 9.89 & 2.78 & .791\textsuperscript{$+$33.5\%} & .879\textsuperscript{$+$48.4\%} & 3{,}802 & 1{,}956 \\
+% Original cross-environment ratio callouts (not controlled speedups): \textsuperscript{$\times$148}; \textsuperscript{$\times$76}
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}
+\fi

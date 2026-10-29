@@ -1,0 +1,25 @@
+\begin{table}[t]
+\centering
+\caption{Retrospective prefix policies.}
+\label{tab:prefix-policies}
+\setlength{\tabcolsep}{1.6pt}
+\small
+\begin{tabular}{l@{\hspace{3pt}}c rrr rrr}
+\toprule
+ & & \multicolumn{3}{c}{\textbf{Methods}} & \multicolumn{3}{c}{\textbf{Classes}} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}
+\textbf{Policy} & \textbf{Size} & MRR & \shortstack{CLM\\share} & \shortstack{Time\\(ms)} & MRR & \shortstack{CLM\\share} & \shortstack{Time\\(ms)} \\
+\midrule
+D & -- & .517 & 0\% & 160 & .592 & 0\% & 26 \\
+C & 1.5B & .729 & 100\% & 835 & .846 & 100\% & 999 \\
+R & 1.5B & .630 & 100\% & 913 & .782 & 100\% & 1{,}028 \\
+$C_{\leq3}\!\to\!D$ & 1.5B & .628 & 34\% & 542 & .709 & 32\% & 473 \\
+$C_{\leq3}\!\to\!R$ & 1.5B & .698 & 100\% & 944 & .849 & 100\% & 1{,}034 \\
+\midrule
+C & 7B & .774 & 100\% & 2{,}074 & .879 & 100\% & 1{,}956 \\
+R & 7B & .656 & 100\% & 2{,}168 & .813 & 100\% & 2{,}318 \\
+$C_{\leq3}\!\to\!D$ & 7B & .647 & 34\% & 1{,}142 & .722 & 32\% & 924 \\
+$C_{\leq3}\!\to\!R$ & 7B & .733 & 100\% & 2{,}282 & .883 & 100\% & 2{,}155 \\
+\bottomrule
+\end{tabular}
+\end{table}

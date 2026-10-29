@@ -1,0 +1,450 @@
+[2026-10-22 19:00:59] ============================================================
+[2026-10-22 19:00:59] JOB STARTED
+[2026-10-22 19:00:59] ============================================================
+[2026-10-22 19:00:59] Job ID: 336962
+[2026-10-22 19:00:59] Host: larochette-4.luxembourg.grid5000.fr
+[2026-10-22 19:00:59] Root directory:
+[2026-10-22 19:00:59] /home/USER/heuristics-vs-llm
+[2026-10-22 19:00:59] Run directory:
+[2026-10-22 19:00:59] /home/USER/heuristics-vs-llm/oar-runs/336588
+[2026-10-22 19:00:59] Results directory:
+[2026-10-22 19:00:59] /home/USER/heuristics-vs-llm/oar-runs/336588/results
+[2026-10-22 19:00:59] Ollama models directory:
+[2026-10-22 19:00:59] /home/USER/heuristics-vs-llm/.ollama-models
+[2026-10-22 19:00:59] ============================================================
+[2026-10-22 19:00:59] SYSTEM INFORMATION
+[2026-10-22 19:00:59] ============================================================
+Linux larochette-4.luxembourg.grid5000.fr 6.12.111+deb13-amd64 #1+g5k1 SMP PREEMPT_DYNAMIC Wed Sep 30 15:42:48 CEST 2026 x86_64 GNU/Linux
+CPU(s):                                  192
+On-line CPU(s) list:                     0-191
+Model name:                              INTEL(R) XEON(R) PLATINUM 8568Y+
+Thread(s) per core:                      2
+Core(s) per socket:                      48
+Socket(s):                               2
+CPU(s) scaling MHz:                      28%
+NUMA node0 CPU(s):                       0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178,180,182,184,186,188,190
+NUMA node1 CPU(s):                       1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179,181,183,185,187,189,191
+[2026-10-22 19:00:59] NVIDIA GPU detected
+NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.
+
+[2026-10-22 19:00:59] ============================================================
+[2026-10-22 19:00:59] 1. INSTALLING OLLAMA LOCALLY
+[2026-10-22 19:00:59] ============================================================
+[2026-10-22 19:00:59] Architecture: x86_64
+[2026-10-22 19:00:59] Reusing the Ollama installation of this run: /home/USER/heuristics-vs-llm/oar-runs/336588/ollama-bin
+[2026-10-22 19:00:59] Ollama executable:
+[2026-10-22 19:00:59] /home/USER/heuristics-vs-llm/oar-runs/336588/ollama-bin/bin/ollama
+Warning: could not connect to a running Ollama instance
+Warning: client version is 0.40.5
+[2026-10-22 19:00:59] 1-INSTALL OLLAMA OK
+[2026-10-22 19:00:59] ============================================================
+[2026-10-22 19:00:59] 2. CONFIGURING OLLAMA
+[2026-10-22 19:00:59] ============================================================
+[2026-10-22 19:00:59] OLLAMA_MODELS=/home/USER/heuristics-vs-llm/.ollama-models
+[2026-10-22 19:00:59] OLLAMA_HOST=127.0.0.1:11434
+[2026-10-22 19:00:59] OLLAMA_NUM_PARALLEL=8 OLLAMA_MAX_LOADED_MODELS=4
+[2026-10-22 19:00:59] OLLAMA_CONTEXT_LENGTH=4096
+[2026-10-22 19:00:59] 2-CONFIGURE OLLAMA OK
+[2026-10-22 19:00:59] ============================================================
+[2026-10-22 19:00:59] 3. STARTING OLLAMA SERVER
+[2026-10-22 19:00:59] ============================================================
+[2026-10-22 19:00:59] Ollama PID: 7245
+[2026-10-22 19:00:59] Ollama log:
+[2026-10-22 19:00:59] /home/USER/heuristics-vs-llm/oar-runs/336588/ollama.larochette-4.log
+[2026-10-22 19:00:59] Waiting for Ollama API...
+[2026-10-22 19:01:04] Ollama API is ready
+[2026-10-22 19:01:04] Ollama uses these GPUs:
+time=2026-10-22T19:01:04.336+02:00 level=INFO source=types.go:32 msg="inference compute" id=0 filter_id=0 library=ROCm compute=gfx90a name=ROCm0 description="AMD Instinct MI210" libdirs=ollama,rocm_v7_2 driver=0.0 pci_id=0000:41:00.0 type=discrete total="64.0 GiB" available="63.9 GiB"
+time=2026-10-22T19:01:04.336+02:00 level=INFO source=types.go:32 msg="inference compute" id=1 filter_id=1 library=ROCm compute=gfx90a name=ROCm1 description="AMD Instinct MI210" libdirs=ollama,rocm_v7_2 driver=0.0 pci_id=0000:58:00.0 type=discrete total="64.0 GiB" available="63.9 GiB"
+time=2026-10-22T19:01:04.336+02:00 level=INFO source=types.go:32 msg="inference compute" id=2 filter_id=2 library=ROCm compute=gfx90a name=ROCm2 description="AMD Instinct MI210" libdirs=ollama,rocm_v7_2 driver=0.0 pci_id=0000:c5:00.0 type=discrete total="64.0 GiB" available="63.9 GiB"
+time=2026-10-22T19:01:04.336+02:00 level=INFO source=types.go:32 msg="inference compute" id=3 filter_id=3 library=ROCm compute=gfx90a name=ROCm3 description="AMD Instinct MI210" libdirs=ollama,rocm_v7_2 driver=0.0 pci_id=0000:dc:00.0 type=discrete total="64.0 GiB" available="63.9 GiB"
+[2026-10-22 19:01:04] Testing Ollama API
+{"models":[{"name":"pharo-llm/Qwen2.5-Coder-SFT:7b","model":"pharo-llm/Qwen2.5-Coder-SFT:7b","modified_at":"2026-10-16T19:04:30.915755872+02:00","size":15237851979,"digest":"6b73d1f15657fb4b9aee4976275091ae691bd74723c33b09782dc32292496294","details":{"parent_model":"","format":"gguf","family":"qwen2","families":["qwen2"],"parameter_size":"7.6B","quantization_level":"F16","context_length":32768,"embedding_length":3584,"runner":"ggml"},"capabilities":["completion","insert"]},{"name":"pharo-llm/Qwen2.5-Coder-SFT:3b","model":"pharo-llm/Qwen2.5-Coder-SFT:3b","modified_at":"2026-10-16T19:02:32.419646937+02:00","size":6178315563,"digest":"682e1a92e4e11b7db228d14814d98dd21c4bb3997cb7c4296222deab50f970f7","details":{"parent_model":"","format":"gguf","family":"qwen2","families":["qwen2"],"parameter_size":"3.1B","quantization_level":"F16","context_length":32768,"embedding_length":2048,"runner":"ggml"},"capabilities":["completion","insert"]},{"name":"pharo-llm/Qwen2.5-Coder-SFT:1.5B","model":"pharo-llm/Qwen2.5-Coder-SFT:1.5B","modified_at":"2026-10-16T19:01:44.839603139+02:00","size":3093667755,"digest":"4e0f5d526c65727148edfc5ae40e19e5eb60b60d608ecb3ce7b74a595b19c3fa","details":{"parent_model":"","format":"gguf","family":"qwen2","families":["qwen2"],"parameter_size":"1.5B","quantization_level":"F16","context_length":32768,"embedding_length":1536,"runner":"ggml"},"capabilities":["completion","insert"]},{"name":"pharo-llm/Qwen2.5-Coder-SFT:0.5B","model":"pharo-llm/Qwen2.5-Coder-SFT:0.5B","modified_at":"2026-10-16T19:01:18.96757931+02:00","size":994155246,"digest":"57db830e311b33dc554bd410f66c19073596828587142351a59c9860194cb2f9","details":{"parent_model":"","format":"gguf","family":"qwen2","families":["qwen2"],"parameter_size":"494.03M","quantization_level":"F16","context_length":32768,"embedding_length":896,"runner":"ggml"},"capabilities":["completion","insert"]}]}
+[2026-10-22 19:01:04] 3-START OLLAMA OK
+[2026-10-22 19:01:04] ============================================================
+[2026-10-22 19:01:04] 4. PULLING OLLAMA MODELS
+[2026-10-22 19:01:04] ============================================================
+[2026-10-22 19:01:04] ------------------------------------------------------------
+[2026-10-22 19:01:04] Model: pharo-llm/Qwen2.5-Coder-SFT:0.5B
+[2026-10-22 19:01:04] ------------------------------------------------------------
+[2026-10-22 19:01:04] Checking whether model is already available...
+[2026-10-22 19:01:04] Model already downloaded:
+[2026-10-22 19:01:04] pharo-llm/Qwen2.5-Coder-SFT:0.5B
+[2026-10-22 19:01:04] ------------------------------------------------------------
+[2026-10-22 19:01:04] Model: pharo-llm/Qwen2.5-Coder-SFT:1.5B
+[2026-10-22 19:01:04] ------------------------------------------------------------
+[2026-10-22 19:01:04] Checking whether model is already available...
+[2026-10-22 19:01:04] Model already downloaded:
+[2026-10-22 19:01:04] pharo-llm/Qwen2.5-Coder-SFT:1.5B
+[2026-10-22 19:01:04] ------------------------------------------------------------
+[2026-10-22 19:01:04] Model: pharo-llm/Qwen2.5-Coder-SFT:3b
+[2026-10-22 19:01:04] ------------------------------------------------------------
+[2026-10-22 19:01:04] Checking whether model is already available...
+[2026-10-22 19:01:04] Model already downloaded:
+[2026-10-22 19:01:04] pharo-llm/Qwen2.5-Coder-SFT:3b
+[2026-10-22 19:01:04] ------------------------------------------------------------
+[2026-10-22 19:01:04] Model: pharo-llm/Qwen2.5-Coder-SFT:7b
+[2026-10-22 19:01:04] ------------------------------------------------------------
+[2026-10-22 19:01:04] Checking whether model is already available...
+[2026-10-22 19:01:04] Model already downloaded:
+[2026-10-22 19:01:04] pharo-llm/Qwen2.5-Coder-SFT:7b
+[2026-10-22 19:01:04] ============================================================
+[2026-10-22 19:01:04] INSTALLED OLLAMA MODELS
+[2026-10-22 19:01:04] ============================================================
+NAME                                ID              SIZE      MODIFIED   
+pharo-llm/Qwen2.5-Coder-SFT:7b      6b73d1f15657    15 GB     6 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:3b      682e1a92e4e1    6.2 GB    6 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:1.5B    4e0f5d526c65    3.1 GB    6 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:0.5B    57db830e311b    994 MB    6 days ago    
+[2026-10-22 19:01:04] 4-PULL MODELS OK
+[2026-10-22 19:01:04] ============================================================
+[2026-10-22 19:01:04] 7. CHECKING OLLAMA BEFORE BENCHMARK
+[2026-10-22 19:01:04] ============================================================
+[2026-10-22 19:01:04] Ollama is running
+[2026-10-22 19:01:04] Available models:
+NAME                                ID              SIZE      MODIFIED   
+pharo-llm/Qwen2.5-Coder-SFT:7b      6b73d1f15657    15 GB     6 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:3b      682e1a92e4e1    6.2 GB    6 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:1.5B    4e0f5d526c65    3.1 GB    6 days ago    
+pharo-llm/Qwen2.5-Coder-SFT:0.5B    57db830e311b    994 MB    6 days ago    
+[2026-10-22 19:01:04] Loading model into memory: pharo-llm/Qwen2.5-Coder-SFT:0.5B
+[2026-10-22 19:01:13] Loading model into memory: pharo-llm/Qwen2.5-Coder-SFT:1.5B
+[2026-10-22 19:01:36] Loading model into memory: pharo-llm/Qwen2.5-Coder-SFT:3b
+[2026-10-22 19:02:24] Loading model into memory: pharo-llm/Qwen2.5-Coder-SFT:7b
+[2026-10-22 19:04:09] Loaded models:
+NAME                                ID              SIZE      PROCESSOR    CONTEXT    RUNNER      UNTIL   
+pharo-llm/Qwen2.5-Coder-SFT:7b      6b73d1f15657    16 GB     100% GPU     4096       llamacpp    Forever    
+pharo-llm/Qwen2.5-Coder-SFT:3b      682e1a92e4e1    7.6 GB    100% GPU     4096       llamacpp    Forever    
+pharo-llm/Qwen2.5-Coder-SFT:1.5B    4e0f5d526c65    4.2 GB    100% GPU     4096       llamacpp    Forever    
+pharo-llm/Qwen2.5-Coder-SFT:0.5B    57db830e311b    1.5 GB    100% GPU     4096       llamacpp    Forever    
+[2026-10-22 19:04:09] ============================================================
+[2026-10-22 19:04:09] 8. RUNNING BENCHMARKS
+[2026-10-22 19:04:09] ============================================================
+[2026-10-22 19:04:09] Benchmark packages: 50; benchmarks running at the same time: 8
+[2026-10-22 19:04:09] Seed: 42
+[2026-10-22 19:04:09] Experiment: /home/USER/heuristics-vs-llm/oar-runs/336588
+Saved selection: 50 benchmark packages
+/home/USER/heuristics-vs-llm/oar-runs/336588/benchmark-selection.json
+StdioStream: #stdout
+Benchmark packages (saved): /home/USER/heuristics-vs-llm/oar-runs/336588/benchmark-selection.json
+Run directory: /home/USER/heuristics-vs-llm/oar-runs/336588/benchmark-run.zrN2cB
+Benchmarks running at the same time (BENCHMARK_JOBS): 8
+Using the existing Ollama server at 127.0.0.1:11434 (start it with OLLAMA_NUM_PARALLEL and OLLAMA_MAX_LOADED_MODELS for parallel requests)
+Ollama model available: pharo-llm/Qwen2.5-Coder-SFT:0.5B
+Ollama model available: pharo-llm/Qwen2.5-Coder-SFT:1.5B
+Ollama model available: pharo-llm/Qwen2.5-Coder-SFT:3b
+Ollama model available: pharo-llm/Qwen2.5-Coder-SFT:7b
+Running baseline, dependency, LLM completion and hybrid benchmarks on the saved packages
+644 benchmarks left in this run; this host (larochette-4.luxembourg.grid5000.fr) runs up to 8 at a time, sharing them with the other hosts of the run
+Started Morphic-Widgets-Windows [messages llmUnvalidated15B] (1/8 slots)
+Started Reflectivity-Tests [variables llmUnvalidated15B] (2/8 slots)
+Started Morphic-Widgets-Scrolling [messages llm15B] (3/8 slots)
+Started Reflectivity-Tests [messages llm15B] (4/8 slots)
+Started Athens-Cairo [messages llm15B] (5/8 slots)
+Started Morphic-Widgets-Windows [messages llm15B] (6/8 slots)
+Started NewTools-DependencyAnalyser-Tests [variables llm15B] (7/8 slots)
+Started Reflectivity-Tests [variables llm15B] (8/8 slots)
+  NewTools-DependencyAnalyser-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 39.9 min
+  NewTools-DependencyAnalyser-Tests [variables llm15B]: done in 39.9 min
+Packages left in this run: 50/50
+Started Epicea [variables llm15B] (8/8 slots)
+  Epicea [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 13.9 min
+  Epicea [variables llm15B]: done in 13.9 min
+Packages left in this run: 50/50
+Started System-Localization-Tests [variables llm15B] (8/8 slots)
+  System-Localization-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 3.1 min
+  System-Localization-Tests [variables llm15B]: done in 3.1 min
+Packages left in this run: 50/50
+Started Tool-DependencyAnalyser-UI-Tab [variables llm15B] (8/8 slots)
+  Tool-DependencyAnalyser-UI-Tab [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 1.5 min
+  Tool-DependencyAnalyser-UI-Tab [variables llm15B]: done in 1.5 min
+Packages left in this run: 50/50
+Started Commander2 [variables llm15B] (8/8 slots)
+  Commander2 [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 1.1 min
+  Commander2 [variables llm15B]: done in 1.1 min
+Packages left in this run: 50/50
+Started FormCanvas-Tests [variables llm15B] (8/8 slots)
+  FormCanvas-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.2 min
+  FormCanvas-Tests [variables llm15B]: done in 0.2 min
+Packages left in this run: 50/50
+Started BaselineOfSystemFinalization [variables llm15B] (8/8 slots)
+  BaselineOfSystemFinalization [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.0 min
+  BaselineOfSystemFinalization [variables llm15B]: done in 0.0 min
+Packages left in this run: 50/50
+Started BaselineOfCommander2 [variables llm15B] (8/8 slots)
+  BaselineOfCommander2 [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.0 min
+  BaselineOfCommander2 [variables llm15B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Debugging-Utils-Tests [variables llm15B] (8/8 slots)
+  Debugging-Utils-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 3.3 min
+  Debugging-Utils-Tests [variables llm15B]: done in 3.3 min
+Packages left in this run: 50/50
+Started Roassal-Animation [variables llm15B] (8/8 slots)
+  Roassal-Animation [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 1.4 min
+  Roassal-Animation [variables llm15B]: done in 1.4 min
+Packages left in this run: 50/50
+Started NewTools-WindowManager-Tests [variables llm15B] (8/8 slots)
+  NewTools-WindowManager-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 1.8 min
+  NewTools-WindowManager-Tests [variables llm15B]: done in 1.8 min
+Packages left in this run: 50/50
+Started Calypso-NavigationModel-Tests [variables llm15B] (8/8 slots)
+  Athens-Cairo [messages llm15B]: Methods - 1.5B-LLM Completion AFTER Pharo validation done in 108.0 min
+  Athens-Cairo [messages llm15B]: done in 108.0 min
+Packages left in this run: 50/50
+Started TaskIt [variables llm15B] (8/8 slots)
+  TaskIt [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 8.3 min
+  TaskIt [variables llm15B]: done in 8.3 min
+Packages left in this run: 50/50
+Started RottenTestsFinder-FakeTests [variables llm15B] (8/8 slots)
+  RottenTestsFinder-FakeTests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.0 min
+  RottenTestsFinder-FakeTests [variables llm15B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Keymapping-Tests [variables llm15B] (8/8 slots)
+  Keymapping-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 7.7 min
+  Keymapping-Tests [variables llm15B]: done in 7.7 min
+Packages left in this run: 50/50
+Started BaselineOfBaseLibraries [variables llm15B] (8/8 slots)
+  BaselineOfBaseLibraries [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.0 min
+  BaselineOfBaseLibraries [variables llm15B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Hiedra [variables llm15B] (8/8 slots)
+  Hiedra [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 2.6 min
+  Hiedra [variables llm15B]: done in 2.6 min
+Packages left in this run: 50/50
+Started BaselineOfEquals [variables llm15B] (8/8 slots)
+  BaselineOfEquals [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.0 min
+  BaselineOfEquals [variables llm15B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Hiedra-Tests [variables llm15B] (8/8 slots)
+  Hiedra-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 2.2 min
+  Hiedra-Tests [variables llm15B]: done in 2.3 min
+Packages left in this run: 50/50
+Started Refactoring-Environment-Tests [variables llm15B] (8/8 slots)
+  Calypso-NavigationModel-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 65.8 min
+  Calypso-NavigationModel-Tests [variables llm15B]: done in 65.8 min
+Packages left in this run: 50/50
+Started Athens-Cairo [variables llm15B] (8/8 slots)
+  Refactoring-Environment-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 13.8 min
+  Refactoring-Environment-Tests [variables llm15B]: done in 13.8 min
+Packages left in this run: 50/50
+Started BaselineOfReflectionMirrors [variables llm15B] (8/8 slots)
+  BaselineOfReflectionMirrors [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.0 min
+  BaselineOfReflectionMirrors [variables llm15B]: done in 0.0 min
+Packages left in this run: 50/50
+Started System-Finalization-Tests [variables llm15B] (8/8 slots)
+  System-Finalization-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 1.0 min
+  System-Finalization-Tests [variables llm15B]: done in 1.0 min
+Packages left in this run: 50/50
+Started BaselineOfGeometry [variables llm15B] (8/8 slots)
+  BaselineOfGeometry [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.0 min
+  BaselineOfGeometry [variables llm15B]: done in 0.0 min
+Packages left in this run: 50/50
+Started BaselineOfMonticello [variables llm15B] (8/8 slots)
+  BaselineOfMonticello [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.0 min
+  BaselineOfMonticello [variables llm15B]: done in 0.0 min
+Packages left in this run: 50/50
+Started DrTests-TestCoverage-Tests [variables llm15B] (8/8 slots)
+  Athens-Cairo [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 11.6 min
+  Athens-Cairo [variables llm15B]: done in 11.6 min
+Packages left in this run: 50/50
+Started System-OSEnvironments [variables llm15B] (8/8 slots)
+  System-OSEnvironments [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.4 min
+  System-OSEnvironments [variables llm15B]: done in 0.4 min
+Packages left in this run: 50/50
+Started Morphic-Widgets-Windows [variables llm15B] (8/8 slots)
+  DrTests-TestCoverage-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 2.5 min
+  DrTests-TestCoverage-Tests [variables llm15B]: done in 2.5 min
+Packages left in this run: 50/50
+Started Collections-Support [variables llm15B] (8/8 slots)
+  Collections-Support [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 0.1 min
+  Collections-Support [variables llm15B]: done in 0.1 min
+Packages left in this run: 50/50
+Started Network-Mail [messages hybrid15B] (8/8 slots)
+  Morphic-Widgets-Windows [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 19.7 min
+  Morphic-Widgets-Windows [variables llm15B]: done in 19.7 min
+Packages left in this run: 50/50
+Started Spec2-ListView [messages hybrid15B] (8/8 slots)
+  Network-Mail [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 92.4 min
+  Network-Mail [messages hybrid15B]: done in 92.5 min
+Packages left in this run: 50/50
+Started Tool-Profilers-Tests [messages hybrid15B] (8/8 slots)
+  Tool-Profilers-Tests [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 19.6 min
+  Tool-Profilers-Tests [messages hybrid15B]: done in 19.6 min
+Packages left in this run: 50/50
+Started Zinc-Resource-Meta-Tests [messages hybrid15B] (8/8 slots)
+  Morphic-Widgets-Scrolling [messages llm15B]: Methods - 1.5B-LLM Completion AFTER Pharo validation done in 323.8 min
+  Morphic-Widgets-Scrolling [messages llm15B]: done in 323.8 min
+Packages left in this run: 50/50
+Started Calypso-SystemTools-QueryBrowser [messages hybrid15B] (8/8 slots)
+  Spec2-ListView [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 169.8 min
+  Spec2-ListView [messages hybrid15B]: done in 169.8 min
+Packages left in this run: 50/50
+Started NewTools-DependencyAnalyser-Tests [messages hybrid15B] (8/8 slots)
+  Zinc-Resource-Meta-Tests [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 100.6 min
+  Zinc-Resource-Meta-Tests [messages hybrid15B]: done in 100.6 min
+Packages left in this run: 50/50
+Started Reflectivity-Tests [messages hybrid15B] (8/8 slots)
+  Calypso-SystemTools-QueryBrowser [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 73.9 min
+  Calypso-SystemTools-QueryBrowser [messages hybrid15B]: done in 73.9 min
+Packages left in this run: 50/50
+Started System-Localization-Tests [messages hybrid15B] (8/8 slots)
+  System-Localization-Tests [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 9.5 min
+  System-Localization-Tests [messages hybrid15B]: done in 9.5 min
+Packages left in this run: 50/50
+Started Tool-DependencyAnalyser-UI-Tab [messages hybrid15B] (8/8 slots)
+  Tool-DependencyAnalyser-UI-Tab [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 19.1 min
+  Tool-DependencyAnalyser-UI-Tab [messages hybrid15B]: done in 19.1 min
+Packages left in this run: 50/50
+Started Commander2 [messages hybrid15B] (8/8 slots)
+  Morphic-Widgets-Windows [messages llm15B]: Methods - 1.5B-LLM Completion AFTER Pharo validation done in 438.5 min
+  Morphic-Widgets-Windows [messages llm15B]: done in 438.5 min
+Packages left in this run: 50/50
+Started Roassal-Animation [messages hybrid15B] (8/8 slots)
+  Commander2 [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 41.3 min
+  Commander2 [messages hybrid15B]: done in 41.3 min
+Packages left in this run: 50/50
+Started RottenTestsFinder-FakeTests [messages hybrid15B] (8/8 slots)
+  RottenTestsFinder-FakeTests [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 3.4 min
+  RottenTestsFinder-FakeTests [messages hybrid15B]: done in 3.4 min
+Packages left in this run: 50/50
+Started Keymapping-Tests [messages hybrid15B] (8/8 slots)
+  NewTools-DependencyAnalyser-Tests [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 143.2 min
+  NewTools-DependencyAnalyser-Tests [messages hybrid15B]: done in 143.2 min
+Packages left in this run: 50/50
+Started BaselineOfBaseLibraries [messages hybrid15B] (8/8 slots)
+  Roassal-Animation [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 40.6 min
+  Roassal-Animation [messages hybrid15B]: done in 40.6 min
+Packages left in this run: 50/50
+Started Hiedra [messages hybrid15B] (8/8 slots)
+  BaselineOfBaseLibraries [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 2.4 min
+  BaselineOfBaseLibraries [messages hybrid15B]: done in 2.4 min
+Packages left in this run: 50/50
+Started BaselineOfEquals [messages hybrid15B] (8/8 slots)
+  BaselineOfEquals [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 1.0 min
+  BaselineOfEquals [messages hybrid15B]: done in 1.1 min
+Packages left in this run: 50/50
+Started Hiedra-Tests [messages hybrid15B] (8/8 slots)
+  Hiedra-Tests [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 25.5 min
+  Hiedra-Tests [messages hybrid15B]: done in 25.5 min
+Packages left in this run: 50/50
+Started Athens-Cairo [messages hybrid15B] (8/8 slots)
+  Reflectivity-Tests [variables llm15B]: Classes - 1.5B-LLM Completion AFTER Pharo validation done in 524.8 min
+  Reflectivity-Tests [variables llm15B]: done in 524.8 min
+Packages left in this run: 50/50
+Started Collections-Support [messages hybrid15B] (8/8 slots)
+  Collections-Support [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 9.0 min
+  Collections-Support [messages hybrid15B]: done in 9.0 min
+Packages left in this run: 50/50
+Started Network-Mail [variables hybrid15B] (8/8 slots)
+  Hiedra [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 64.6 min
+  Hiedra [messages hybrid15B]: done in 64.6 min
+Packages left in this run: 50/50
+Started NewTools-Core [variables hybrid15B] (8/8 slots)
+  Keymapping-Tests [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 73.8 min
+  Keymapping-Tests [messages hybrid15B]: done in 73.8 min
+Packages left in this run: 50/50
+Started SystemCommands-MethodCommands-Tests [variables hybrid15B] (8/8 slots)
+  Network-Mail [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 11.5 min
+  Network-Mail [variables hybrid15B]: done in 11.5 min
+Packages left in this run: 50/50
+Started Spec2-Code-Commands [variables hybrid15B] (8/8 slots)
+  Spec2-Code-Commands [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 3.1 min
+  Spec2-Code-Commands [variables hybrid15B]: done in 3.1 min
+Packages left in this run: 50/50
+Started Tool-Profilers-Tests [variables hybrid15B] (8/8 slots)
+  Tool-Profilers-Tests [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 4.8 min
+  Tool-Profilers-Tests [variables hybrid15B]: done in 4.8 min
+Packages left in this run: 50/50
+Started Iceberg-Libgit-Filetree [variables hybrid15B] (8/8 slots)
+  NewTools-Core [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 9.9 min
+  NewTools-Core [variables hybrid15B]: done in 9.9 min
+Packages left in this run: 50/50
+Started Slot-Tests [variables hybrid15B] (8/8 slots)
+  SystemCommands-MethodCommands-Tests [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 15.5 min
+  SystemCommands-MethodCommands-Tests [variables hybrid15B]: done in 15.5 min
+Packages left in this run: 50/50
+Started FFI-Kernel [variables hybrid15B] (8/8 slots)
+  Iceberg-Libgit-Filetree [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 8.4 min
+  Iceberg-Libgit-Filetree [variables hybrid15B]: done in 8.4 min
+Packages left in this run: 50/50
+Started Morphic-Widgets-Scrolling [variables hybrid15B] (8/8 slots)
+  FFI-Kernel [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 4.4 min
+  FFI-Kernel [variables hybrid15B]: done in 4.4 min
+Packages left in this run: 50/50
+Started Reflectivity-Tests [variables hybrid15B] (8/8 slots)
+  Morphic-Widgets-Scrolling [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 9.9 min
+  Morphic-Widgets-Scrolling [variables hybrid15B]: done in 9.9 min
+Packages left in this run: 50/50
+Started Epicea [variables hybrid15B] (8/8 slots)
+  Epicea [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 24.8 min
+  Epicea [variables hybrid15B]: done in 24.8 min
+Packages left in this run: 50/50
+Started TaskIt [variables hybrid15B] (8/8 slots)
+  TaskIt [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 14.4 min
+  TaskIt [variables hybrid15B]: done in 14.4 min
+Packages left in this run: 50/50
+Started RottenTestsFinder-FakeTests [variables hybrid15B] (8/8 slots)
+  RottenTestsFinder-FakeTests [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 0.0 min
+  RottenTestsFinder-FakeTests [variables hybrid15B]: done in 0.0 min
+Packages left in this run: 50/50
+Started Keymapping-Tests [variables hybrid15B] (8/8 slots)
+  Keymapping-Tests [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 10.2 min
+  Keymapping-Tests [variables hybrid15B]: done in 10.2 min
+Packages left in this run: 50/50
+Started Athens-Cairo [variables hybrid15B] (8/8 slots)
+  Slot-Tests [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 77.2 min
+  Slot-Tests [variables hybrid15B]: done in 77.2 min
+Packages left in this run: 50/50
+Started Collections-Support [variables hybrid15B] (8/8 slots)
+  Collections-Support [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 0.2 min
+  Collections-Support [variables hybrid15B]: done in 0.2 min
+Packages left in this run: 50/50
+Started Network-Mail [messages llmUnvalidated05B] (8/8 slots)
+  Athens-Cairo [variables hybrid15B]: Classes - Hybrid Rerank + 1.5B done in 15.6 min
+  Athens-Cairo [variables hybrid15B]: done in 15.6 min
+Packages left in this run: 50/50
+Started System-Settings-Core [messages llmUnvalidated05B] (8/8 slots)
+  Network-Mail [messages llmUnvalidated05B]: Methods - 0.5B-LLM Completion BEFORE Pharo validation done in 46.1 min: 9715 of 40081 generated candidates are real Pharo names (24.2%)
+  Network-Mail [messages llmUnvalidated05B]: done in 46.1 min
+Packages left in this run: 50/50
+Started Refactoring-Conditions [messages llmUnvalidated05B] (8/8 slots)
+  Athens-Cairo [messages hybrid15B]: Methods - Hybrid Rerank + 1.5B done in 174.4 min
+  Athens-Cairo [messages hybrid15B]: done in 174.4 min
+Packages left in this run: 50/50
+Started Iceberg-Libgit-Filetree [messages llmUnvalidated05B] (8/8 slots)
+  System-Settings-Core [messages llmUnvalidated05B]: Methods - 0.5B-LLM Completion BEFORE Pharo validation done in 58.1 min: 7771 of 30216 generated candidates are real Pharo names (25.7%)
+  System-Settings-Core [messages llmUnvalidated05B]: done in 58.1 min
+Packages left in this run: 50/50
+Started BaselineOfEnlumineurFormatter [messages llmUnvalidated05B] (8/8 slots)
+  BaselineOfEnlumineurFormatter [messages llmUnvalidated05B]: Methods - 0.5B-LLM Completion BEFORE Pharo validation done in 1.0 min: 139 of 439 generated candidates are real Pharo names (31.7%)
+  BaselineOfEnlumineurFormatter [messages llmUnvalidated05B]: done in 1.0 min
+Packages left in this run: 50/50
+Started Text-Scanning [messages llmUnvalidated05B] (8/8 slots)
+  Iceberg-Libgit-Filetree [messages llmUnvalidated05B]: Methods - 0.5B-LLM Completion BEFORE Pharo validation done in 33.0 min: 3656 of 12164 generated candidates are real Pharo names (30.1%)
+  Iceberg-Libgit-Filetree [messages llmUnvalidated05B]: done in 33.0 min
+Packages left in this run: 50/50
+Started SUnit-Rules-Tests [messages llmUnvalidated05B] (8/8 slots)
+  Reflectivity-Tests [variables llmUnvalidated15B]: Classes - 1.5B-LLM Completion BEFORE Pharo validation done in 717.7 min: 27049 of 153635 generated candidates are real Pharo names (17.6%)
+  Reflectivity-Tests [variables llmUnvalidated15B]: done in 717.7 min
+Packages left in this run: 50/50
+Started BaselineOfSlot [messages llmUnvalidated05B] (8/8 slots)
+  BaselineOfSlot [messages llmUnvalidated05B]: Methods - 0.5B-LLM Completion BEFORE Pharo validation done in 3.1 min: 194 of 577 generated candidates are real Pharo names (33.6%)
+  BaselineOfSlot [messages llmUnvalidated05B]: done in 3.1 min
+Packages left in this run: 50/50
+Started HeuristicCompletion-Benchmarks-Tests [messages llmUnvalidated05B] (8/8 slots)
+  SUnit-Rules-Tests [messages llmUnvalidated05B]: Methods - 0.5B-LLM Completion BEFORE Pharo validation done in 10.9 min: 694 of 2675 generated candidates are real Pharo names (25.9%)
+  SUnit-Rules-Tests [messages llmUnvalidated05B]: done in 10.9 min
+Packages left in this run: 50/50
+Started FFI-Kernel [messages llmUnvalidated05B] (8/8 slots)
+  Text-Scanning [messages llmUnvalidated05B]: Methods - 0.5B-LLM Completion BEFORE Pharo validation done in 67.0 min: 5144 of 23919 generated candidates are real Pharo names (21.5%)
+  Text-Scanning [messages llmUnvalidated05B]: done in 67.0 min
+Packages left in this run: 50/50
+Started Morphic-Widgets-Scrolling [messages llmUnvalidated05B] (8/8 slots)
+  HeuristicCompletion-Benchmarks-Tests [messages llmUnvalidated05B]: Methods - 0.5B-LLM Completion BEFORE Pharo validation done in 42.0 min: 2031 of 11846 generated candidates are real Pharo names (17.1%)
+  HeuristicCompletion-Benchmarks-Tests [messages llmUnvalidated05B]: done in 42.0 min
+Packages left in this run: 50/50
+Started NewTools-DependencyAnalyser-Tests [messages llmUnvalidated05B] (8/8 slots)
+  Morphic-Widgets-Windows [messages llmUnvalidated15B]: Methods - 1.5B-LLM Completion BEFORE Pharo validation done in 820.7 min: 45589 of 205847 generated candidates are real Pharo names (22.1%)
+  Morphic-Widgets-Windows [messages llmUnvalidated15B]: done in 820.7 min
+Packages left in this run: 50/50
+Started System-Localization-Tests [messages llmUnvalidated05B] (8/8 slots)
