@@ -1,0 +1,5 @@
+experiment/
+.ollama-models/
+pipeline/.ollama-models/
+__pycache__/
+.DS_Store
