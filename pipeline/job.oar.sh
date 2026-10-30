@@ -40,7 +40,6 @@ for setting in BENCHMARK_PACKAGE_COUNT BENCHMARK_JOBS; do
 done
 export RANKING_SEED="${RANKING_SEED:-42}"
 export RANKING_EPOCHS="${RANKING_EPOCHS:-10}"
-export BENCHMARK_REF="${BENCHMARK_REF:-main}"
 # BENCHMARK_REPO_DIR and PIPELINE_PYTHON, if set, are inherited by the pipeline.
 
 OLLAMA_INSTALL_DIR="$RUN_DIR/ollama-bin"

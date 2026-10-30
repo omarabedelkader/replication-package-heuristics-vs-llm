@@ -85,9 +85,9 @@ if [[ -z "$BENCHMARK_SHARED" ]]; then
     RESULTS_LOCKED=1
 fi
 
-# The experiment's source is a frozen copy of the local checkout (or, without one, of
-# the GitHub revision BENCHMARK_REF). When the code changes in the checkout, the copy
-# and the experiment image follow it on the next run (scripts/benchmark_source.py).
+# The experiment's source is a frozen copy of the benchmark source shipped in
+# lib/HeuristicCompletion-Benchmarks-Multiples (nothing is downloaded). When the code changes
+# there, the copy and the experiment image follow it on the next run (scripts/benchmark_source.py).
 BENCHMARK_CHECKOUT="${BENCHMARK_REPO_DIR:-$SCRIPT_DIR/../lib/HeuristicCompletion-Benchmarks-Multiples}"
 benchmark_source() {
     local action="$1"
@@ -108,13 +108,8 @@ if [[ -n "$BENCHMARK_SHARED" ]]; then
 elif [[ -d "$BENCHMARK_CHECKOUT/src" || -d "$REPO_DIR" || -n "${BENCHMARK_REPO_DIR:-}" ]]; then
     benchmark_source sync --checkout "$BENCHMARK_CHECKOUT"
 else
-    BENCHMARK_REF="${BENCHMARK_REF:-main}"
-    source_download="$(mktemp -d "$EXPERIMENT_DIR/download.XXXXXX")"
-    curl -fsSL "https://codeload.github.com/omarabedelkader/HeuristicCompletion-Benchmarks-Multiples/tar.gz/$BENCHMARK_REF" \
-        -o "$source_download/repository.tar.gz"
-    tar -xzf "$source_download/repository.tar.gz" --strip-components=1 -C "$source_download"
-    benchmark_source sync --checkout "$source_download" --origin "GitHub ref: $BENCHMARK_REF"
-    rm -rf "$source_download"
+    echo "Benchmark source not found: $BENCHMARK_CHECKOUT/src (it ships in lib/; set BENCHMARK_REPO_DIR to use another copy)." >&2
+    exit 1
 fi
 
 if [[ ! -e "$EXPERIMENT_DIR/image" ]]; then

@@ -1,32 +1,32 @@
 % Main-paper selection; the complete export is retained in the support branch.
 \ifdefined\mainpaperresults
+\providecommand{\best}[1]{\cellcolor{green!14}\textbf{#1}}
 \begin{table*}[t]
 \centering
-\caption{Coverage and ranking by prefix.}
+\caption{Coverage and ranking by prefix length for \dependency, CLM reranking (7B), and constrained generation (7B). Reranking reorders \dependency's list, so both have the same Recall@10. Shaded: best value in each column.}
 \label{tab:reranking-coverage}
-\setlength{\tabcolsep}{7pt}
+\setlength{\tabcolsep}{3.2pt}
 \small
-\begin{tabular}{lrrrrrrr}
-\toprule
-\textbf{Measure / strategy} & \multicolumn{7}{c}{\textbf{Typed-prefix length (characters)}} \\
-\cmidrule(lr){2-8}
- & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+\begin{tabular}{lccccccc<{\hspace{3.6pt}}ccccccc}
+\specialrule{\heavyrulewidth}{\abovetopsep}{0pt}
+\rowcolor{gray!15}
+\rule{0pt}{2.4ex} & \multicolumn{7}{c}{\textbf{Method selectors}} & \multicolumn{7}{c}{\textbf{Class names}} \\
+\rowcolor{gray!15}
+\textbf{Prefix length} & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\[0.4ex]
+\specialrule{\lightrulewidth}{0pt}{\belowrulesep}
+\multicolumn{15}{l}{\textit{Recall@10 (\%)}} \\
+\dependency{} / CLM reranking & 57.9 & 74.6 & 81.5 & \best{86.4} & \best{88.8} & \best{94.7} & \best{96.7} & 53.4 & 74.7 & 93.1 & \best{94.8} & 94.8 & 95.0 & 95.1 \\
+Constrained generation & \best{81.2} & \best{82.1} & \best{83.0} & 82.7 & 82.3 & 82.9 & 89.7 & \best{89.7} & \best{92.6} & \best{95.3} & 94.2 & \best{95.3} & \best{95.2} & \best{95.5} \\
 \midrule
-\multicolumn{8}{l}{\textit{Method selectors}} \\
-Recall@10 (\%, Dependency / reranking) & 57.9 & 74.6 & 81.5 & 86.4 & 88.8 & 94.7 & 96.7 \\
-Recall@10 (\%, constrained 7B) & 81.2 & 82.1 & 83.0 & 82.7 & 82.3 & 82.9 & 89.7 \\
-Top-1 (\%, reranking 7B) & 38.1 & 49.8 & 56.5 & 59.6 & 62.6 & 68.8 & 79.7 \\
-Top-1 (\%, constrained 7B) & 67.7 & 71.2 & 73.1 & 73.5 & 74.1 & 76.2 & 84.4 \\
-MRR@10 (reranking 7B) & .447 & .582 & .650 & .690 & .718 & .776 & .863 \\
-MRR@10 (constrained 7B) & .727 & .754 & .770 & .773 & .775 & .791 & .867 \\
+\multicolumn{15}{l}{\textit{Top-1 (\%)}} \\
+\dependency & 21.6 & 26.4 & 33.5 & 38.8 & 44.4 & 48.9 & 63.5 & 24.9 & 39.8 & 46.8 & 51.1 & 54.1 & 52.3 & 54.6 \\
+CLM reranking & 38.1 & 49.8 & 56.5 & 59.6 & 62.6 & 68.8 & 79.7 & 48.0 & 69.1 & \best{85.4} & \best{87.5} & \best{88.5} & \best{89.1} & \best{89.9} \\
+Constrained generation & \best{67.7} & \best{71.2} & \best{73.1} & \best{73.5} & \best{74.1} & \best{76.2} & \best{84.4} & \best{74.7} & \best{81.0} & 85.2 & 85.2 & 86.5 & 85.6 & 87.3 \\
 \midrule
-\multicolumn{8}{l}{\textit{Class names}} \\
-Recall@10 (\%, Dependency / reranking) & 53.4 & 74.7 & 93.1 & 94.8 & 94.8 & 95.0 & 95.1 \\
-Recall@10 (\%, constrained 7B) & 89.7 & 92.6 & 95.3 & 94.2 & 95.3 & 95.2 & 95.5 \\
-Top-1 (\%, reranking 7B) & 48.0 & 69.1 & 85.4 & 87.5 & 88.5 & 89.1 & 89.9 \\
-Top-1 (\%, constrained 7B) & 74.7 & 81.0 & 85.2 & 85.2 & 86.5 & 85.6 & 87.3 \\
-MRR@10 (reranking 7B) & .502 & .713 & .887 & .907 & .912 & .917 & .923 \\
-MRR@10 (constrained 7B) & .805 & .856 & .898 & .893 & .905 & .901 & .912 \\
+\multicolumn{15}{l}{\textit{MRR@10}} \\
+\dependency & .316 & .401 & .486 & .549 & .602 & .658 & .765 & .342 & .503 & .633 & .666 & .684 & .679 & .705 \\
+CLM reranking & .447 & .582 & .650 & .690 & .718 & .776 & .863 & .502 & .713 & .887 & \best{.907} & \best{.912} & \best{.917} & \best{.923} \\
+Constrained generation & \best{.727} & \best{.754} & \best{.770} & \best{.773} & \best{.775} & \best{.791} & \best{.867} & \best{.805} & \best{.856} & \best{.898} & .893 & .905 & .901 & .912 \\
 \bottomrule
 \end{tabular}
 \end{table*}

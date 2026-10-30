@@ -8,25 +8,38 @@ This package contains everything needed to reproduce the paper:
 
 | Level | Command | Needs | Time |
 |---|---|---|---|
-| 1. Reproduce every number in the paper from the checkpoints | `make` | Python 3.8+ (stdlib) | < 1 min |
+| 1. Regenerate every table and figure of the paper from the checkpoints | `./run.sh` | Python 3.8+ (stdlib) | < 1 min |
 | 2. Rebuild the frozen experiment and re-run the heuristic benchmarks | `make setup smoke` | + curl, network for the Pharo VM | ~5 min |
 | 3. Re-run the benchmarks of the 47 analysed packages (1,316) | `make setup rerun` | + Ollama ≥ 0.12.11, GPU, ~25 GB of models | days |
 
 ## Level 1: reproduce the paper's results
 
 ```bash
-make            # = python3 analysis/reproduce_paper.py && python3 analysis/verify_paper.py
+./run.sh                    # the released checkpoints
+./run.sh experiment/...     # or the checkpoints of your own re-run (Level 3)
 ```
 
-`reproduce_paper.py` validates every checkpoint with the pipeline's own validators. It then writes:
-- `results/paper/*.tex`: drop-in replacements for the paper's `supplemental/` tables and figures;
+`run.sh` is the single entry point (`make` does the same). It runs `analysis/reproduce_paper.py`, which validates every checkpoint with the pipeline's own validators and writes:
+- `results/paper/*.tex`: every results table and figure of the paper, as drop-in replacements for the paper's `supplemental/` files;
 - `results/analysis-stats.json`.
+
+| Paper | File in `results/paper/` |
+|---|---|
+| Table I: MRR by prefix length | `tab-mrr-by-prefix.tex` |
+| Table II: names returned by unconstrained and constrained generation | `tab-vocabulary-constraints.tex` |
+| Table III: coverage and ranking by prefix length | `tab-reranking-coverage.tex` |
+| Figure 3: mean completion time per observation | `fig-quality-and-time.tex` |
+| Supplementary material | `tab-top-k-accuracy.tex`, `tab-name-validity-by-prefix.tex`, `tab-prefix-policies.tex`, `fig-package-mrr.tex` |
+
+Figures 1 and 2 are method diagrams and contain no results.
+
+It then runs `analysis/verify_paper.py`.
 
 `verify_paper.py` exits 0 only if all three checks pass:
 
 1. Each of the 8 generated tables and figures equals the paper's file in `expected/paper-supplemental/`. Comment lines are ignored.
 2. All 546 statistics equal `expected/analysis-stats.reference.json`, the statistics file the paper was written from.
-3. 89 numbers quoted in the paper's text are recomputed (MRR, Top-k, gains, package sign tests, times, corpus and observation counts). See `results/verification-report.md`.
+3. 89 statistics behind the paper's text are recomputed (MRR, Top-k, gains, times, corpus and observation counts, and supporting package-level sign tests). See `results/verification-report.md`.
 
 **Packages.** The study covers 47 packages of the Pharo 14 image (`data/experiment/analysed-packages.txt`), each with all 28 benchmarks (2 kinds × 14 strategies).
 
@@ -60,7 +73,7 @@ An interrupted run resumes with `BENCHMARK_RESUME_DIR=experiment/benchmark-run.X
 
 On clusters, use `pipeline/job.oar.sh` (Grid5000/OAR), `pipeline/submit-shared.sh` (several hosts sharing one run) or `pipeline/job.fir.sh` (Slurm).
 
-**What to expect.** Prompts and decoding are deterministic: temperature 0, seed 42, fixed beam search. The paper's run used AMD Instinct MI210 GPUs, 8 workers per host.
+**What to expect.** Prompts and decoding are deterministic: temperature 0, seed 42, fixed beam search. The paper's run used Grid5000 nodes with AMD Instinct MI210 GPUs (Ollama 0.40.5, 8 workers per host); the two heuristics and most 0.5B benchmarks were completed on an Apple M4 Max (Ollama 0.40.7, 2 workers).
 - **Heuristics (Baseline, Dependency):** identical to the paper.
 - **LLM configurations:** expect differences of about **±0.1%** on other hardware. F16 inference rounds slightly differently across GPUs and batch sizes, so when the model scores two candidates almost equally, their order can swap.
 - **Completion times:** depend on hardware and server load, and are not expected to match.
@@ -72,14 +85,14 @@ On clusters, use `pipeline/job.oar.sh` (Grid5000/OAR), `pipeline/submit-shared.s
 | `data/checkpoints/NNNN/benchmarks/<kind>-<strategy>/part.json` | 1,316 checkpoints (47 packages × 28): per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
 | `data/experiment/` | The 47 packages, image/source pins, model tags |
 | `data/provenance/` | `workers.json` (run ID, input SHA-256s), model digests, per-task timings and hosts, worker invocations, job and Ollama logs (usernames anonymized) |
-| `lib/HeuristicCompletion-Benchmarks-Multiples/` | Frozen Smalltalk benchmark source loaded in the image; the pipeline uses this local copy |
+| `lib/HeuristicCompletion-Benchmarks-Multiples/` | Frozen Smalltalk benchmark source loaded in the image; the pipeline always uses this copy and downloads nothing from GitHub |
 | `frozen-image/` | The exact Pharo 14 image, changes and sources files |
-| `pipeline/` | Benchmark pipeline and its 38 tests, byte-identical to the run; `workers.json` pins three of these files |
+| `pipeline/` | Benchmark pipeline and its 38 tests, as run, except that the benchmark source now comes only from `lib/`; `workers.json` pins three of these files (unchanged) |
 | `analysis/` | `reproduce_paper.py`, `verify_paper.py` |
 | `rerun/` | Setup, smoke test and full re-run wrappers |
 | `expected/` | The paper's supplemental files and reference statistics |
-| `results/` | Output of `make`, as shipped |
-| `docs/METHODOLOGY.md` | Protocol, metrics, execution and limitations in detail |
+| `run.sh` | Regenerates every table and figure of the paper and checks them |
+| `results/` | Output of `./run.sh`, as shipped |
 | `tests/` | Tests of the analysis (`make test`); pipeline tests: `make test-pipeline` |
 | `SHA256SUMS` | Checksums of every shipped file (`make checksums`) |
 

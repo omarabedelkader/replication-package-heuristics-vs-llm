@@ -184,59 +184,64 @@ def bold_best(columns):
     return out
 
 
+BEST = r"\providecommand{\best}[1]{\cellcolor{green!14}\textbf{#1}}"
+TOP_RULE = r"\specialrule{\heavyrulewidth}{\abovetopsep}{0pt}"
+HEAD_RULE = r"\specialrule{\lightrulewidth}{0pt}{\belowrulesep}"
+
+
+def shade_best(columns):
+    """Shade every cell equal to the column's best displayed value (ties included)."""
+    out = []
+    for column in columns:
+        values = [float(t) for t in column if t != "--"]
+        best = max(values, default=None)
+        out.append([r"\best{" + t + "}" if t != "--" and float(t) == best else t for t in column])
+    return out
+
+
+def colored_gain(v, ref):
+    if math.isnan(v) or math.isnan(ref) or not ref:
+        return ""
+    color, sign = ("green!50!black", "$+$") if v >= ref else ("red!75!black", "$-$")
+    return r"\textsuperscript{\textcolor{" + color + "}{" + sign + f"{abs(100 * (v / ref - 1)):.1f}" + r"\%}}"
+
+
 def variant(main, full):
     return "\n".join([MAIN_COMMENT, r"\ifdefined\mainpaperresults", *main, r"\else", *full, r"\fi"]) + "\n"
 
 
 # --------------------------------------------------------------------------- tables
 def tab_mrr_by_prefix(A):
-    # Main paper: pooled MRR / Top-1 / Recall@10.
-    cols = [[] for _ in range(6)]
-    for s in STRATEGIES:
-        for i, kind in enumerate(KINDS):
-            t = A.get(kind, s)
-            cols[3 * i].append(f3(mrr(t)))
-            cols[3 * i + 1].append(f1(pct(t, "top1")))
-            cols[3 * i + 2].append(f1(pct(t, "top10")))
-    cols = bold_best(cols)
-    main = [r"\begin{table*}[t]", r"\centering", r"\caption{Pooled completion quality.}",
-            r"\label{tab:mrr-by-prefix}", r"\setlength{\tabcolsep}{7pt}", r"\small",
-            r"\begin{tabular}{lrrr@{\hspace{16pt}}rrr}", r"\toprule",
-            r" & \multicolumn{3}{c}{\textbf{Method selectors}} & \multicolumn{3}{c}{\textbf{Class names}} \\",
-            r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
-            r"\textbf{Configuration} & MRR@10 & Top-1 (\%) & Recall@10 (\%) & MRR@10 & Top-1 (\%) & Recall@10 (\%) \\",
-            r"\midrule"]
-    main += rows_by_group(cols, 7)
-    main += [r"\end{tabular}", r"\end{table*}"]
-
-    # Complete export: MRR by prefix with the pooled value and its gain over Dependency.
+    # MRR by prefix with the average and its gain over Dependency.
     cols = []
     for kind in KINDS:
         for p in list(PREF) + [None]:
             cols.append([f3(mrr(A.get(kind, s, p))) for s in STRATEGIES])
-    cols = bold_best(cols)
+    cols = shade_best(cols)
     for i, kind in enumerate(KINDS):
         ref = mrr(A.get(kind, DEP))
-        pooled = cols[8 * i + 7]
+        average = cols[8 * i + 7]
         for j, s in enumerate(STRATEGIES):
             if s != DEP:
-                pooled[j] += gain(mrr(A.get(kind, s)), ref)
-    full = [r"\begin{table*}[t]", r"\centering", r"\caption{MRR by prefix length.}",
-            r"\label{tab:mrr-by-prefix}", r"\setlength{\tabcolsep}{3.2pt}", r"\small",
-            r"\begin{tabular}{lccccccc>{\columncolor{gray!6}}l@{\hspace{10pt}}ccccccc>{\columncolor{gray!6}}l}",
-            r"\toprule",
-            r" & \multicolumn{8}{c}{\textbf{Method selectors}} & \multicolumn{8}{c}{\textbf{Class names}} \\",
-            r"\textbf{Configuration} & 2 & 3 & 4 & 5 & 6 & 7 & 8 & \textbf{Pooled} & 2 & 3 & 4 & 5 & 6 & 7 & 8 & \textbf{Pooled} \\",
-            r"\midrule"]
-    full += rows_by_group(cols, 17)
-    full += [r"\end{tabular}", r"\end{table*}"]
-    return variant(main, full)
+                average[j] += colored_gain(mrr(A.get(kind, s)), ref)
+    lines = [BEST, r"\begin{table*}[t]", r"\centering", r"\caption{MRR by prefix length. Shaded: best value in each column.}",
+             r"\label{tab:mrr-by-prefix}", r"\setlength{\tabcolsep}{3.2pt}", r"\small",
+             r"\begin{tabular}{lccccccc>{\columncolor{gray!6}}l<{\hspace{3.6pt}}ccccccc>{\columncolor{gray!6}}l}",
+             TOP_RULE, r"\rowcolor{gray!15}",
+             r"\rule{0pt}{2.4ex} & \multicolumn{8}{c}{\textbf{Method selectors}} & \multicolumn{8}{c}{\textbf{Class names}} \\",
+             r"\rowcolor{gray!15}",
+             r"\textbf{Configuration} & 2 & 3 & 4 & 5 & 6 & 7 & 8 & \textbf{Average} & 2 & 3 & 4 & 5 & 6 & 7 & 8 & \textbf{Average} \\[0.4ex]",
+             HEAD_RULE]
+    lines += rows_by_group(cols, 17, ("Heuristics", r"\lmfree", r"\lmvalidated", r"\hybrid"))
+    lines += [r"\end{tabular}", r"\end{table*}"]
+    return "\n".join(lines) + "\n"
 
 
-def rows_by_group(cols, width):
+def rows_by_group(cols, width, names=None):
     """Strategy rows under group headings; cols[c][j] is the cell of strategy j."""
     lines, j = [], 0
     for g, (name, members) in enumerate(GROUPS):
+        name = names[g] if names else name
         lines.append(rf"\multicolumn{{{width}}}{{l}}{{\textit{{{name}}}}} \\")
         for label, _ in members:
             lines.append(label + " & " + " & ".join(c[j] for c in cols) + r" \\")
@@ -261,11 +266,12 @@ def tab_top_k(A):
 
 
 def tab_vocabulary(A):
-    main = [r"\begin{table}[t]", r"\centering", r"\caption{Vocabulary constraints and list composition.}",
-            r"\label{tab:vocabulary-constraints}", r"\setlength{\tabcolsep}{4pt}", r"\small",
-            r"\begin{tabular}{llrrr}", r"\toprule",
-            r" & & \textbf{Membership} & \multicolumn{2}{c}{\textbf{Mean list length}} \\",
-            r"\cmidrule(lr){4-5}", r"\textbf{Task} & \textbf{Size} & U (\%) & U & C \\", r"\midrule"]
+    main = [r"\begin{table*}[t]", r"\centering", r"\caption{Names returned by unconstrained and constrained generation.}",
+            r"\label{tab:vocabulary-constraints}", r"\setlength{\tabcolsep}{6pt}", r"\small",
+            r"\begin{tabular}{l*{2}{w{c}{4.6em}}w{c}{4.6em}<{\hspace{8pt}}*{3}{w{c}{4.6em}}}", TOP_RULE, r"\rowcolor{gray!15}",
+            r"\rule{0pt}{2.4ex} & \multicolumn{3}{c}{\textbf{Unconstrained}} & \multicolumn{3}{c}{\textbf{Constrained}} \\",
+            r"\rowcolor{gray!15}",
+            r"\textbf{Model} & In \ph\,\% & Names & Top-1\,\% & In \ph\,\% & Names & Top-1\,\% \\[0.4ex]", HEAD_RULE]
     full = [r"\begin{table*}[t]", r"\centering", r"\caption{Complete vocabulary-constraint results.}",
             r"\label{tab:vocabulary-constraints}", r"\setlength{\tabcolsep}{3.5pt}", r"\small",
             r"\begin{adjustbox}{max width=\textwidth}",
@@ -274,12 +280,15 @@ def tab_vocabulary(A):
             r"\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}",
             r"\textbf{Task} & \textbf{Size} & U & Constrained & U & Constrained & U & Constrained & U & Constrained \\",
             r"\midrule"]
-    for kind, task in (("messages", "Methods"), ("variables", "Classes")):
+    for kind, task, title in (("messages", "Methods", "Method selectors"), ("variables", "Classes", "Class names")):
         dep = A.get(kind, DEP)
+        main.append(rf"\multicolumn{{7}}{{l}}{{\textit{{{title}}}}} \\")
         for i, (s, n) in enumerate(SIZES):
             u, c = A.get(kind, f"llmUnvalidated{s}"), A.get(kind, f"llm{s}")
             head = (task if i == 0 else "") + f" & {n} & "
-            main.append(head + f"{f1(validity(u))} & {f2(per_obs(u, 'generated'))} & {f2(per_obs(c, 'generated'))}" + r" \\")
+            main.append(f"CLM {n} & " + " & ".join([
+                f1(validity(u)), f2(per_obs(u, "generated")), f1(pct(u, "top1")),
+                f1(validity(c)), f2(per_obs(c, "generated")), f1(pct(c, "top1"))]) + r" \\")
             full.append(head + " & ".join([
                 f1(validity(u)), f1(validity(c)), f2(per_obs(u, "generated")), f2(per_obs(c, "generated")),
                 f3(mrr(u)) + gain(mrr(u), mrr(dep)), f3(mrr(c)) + gain(mrr(c), mrr(dep)),
@@ -288,7 +297,7 @@ def tab_vocabulary(A):
                         rf"\textsuperscript{{$\times${ms(u) / ms(dep):.0f}}}; \textsuperscript{{$\times${ms(c) / ms(dep):.0f}}}")
         main.append(r"\midrule" if kind == "messages" else r"\bottomrule")
         full.append(r"\midrule" if kind == "messages" else r"\bottomrule")
-    main += [r"\end{tabular}", r"\end{table}"]
+    main += [r"\end{tabular}", r"\end{table*}"]
     full += [r"\end{tabular}", r"\end{adjustbox}", r"\end{table*}"]
     return variant(main, full)
 
@@ -298,6 +307,7 @@ def coverage_rows(A, kind):
     cond = lambda s: [ratio(A.get(kind, s, p)["top1"], A.get(kind, s, p)["top10"], 100) for p in PREF]
     return dict(rec_d=P(DEP, "top10"), rec_c=P("llm7B", "top10"), t1_d=P(DEP, "top1"),
                 t1_r=P("hybrid7B", "top1"), t1_c=P("llm7B", "top1"),
+                mrr_d=[mrr(A.get(kind, DEP, p)) for p in PREF],
                 mrr_r=[mrr(A.get(kind, "hybrid7B", p)) for p in PREF],
                 mrr_c=[mrr(A.get(kind, "llm7B", p)) for p in PREF],
                 cond_d=cond(DEP), cond_r=cond("hybrid7B"))
@@ -305,11 +315,26 @@ def coverage_rows(A, kind):
 
 def tab_reranking_coverage(A):
     row = lambda label, values, fmt=f1: label + " & " + " & ".join(fmt(v) for v in values) + r" \\"
-    main = [r"\begin{table*}[t]", r"\centering", r"\caption{Coverage and ranking by prefix.}",
-            r"\label{tab:reranking-coverage}", r"\setlength{\tabcolsep}{7pt}", r"\small",
-            r"\begin{tabular}{lrrrrrrr}", r"\toprule",
-            r"\textbf{Measure / strategy} & \multicolumn{7}{c}{\textbf{Typed-prefix length (characters)}} \\",
-            r"\cmidrule(lr){2-8}", r" & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\", r"\midrule"]
+    r = {kind: coverage_rows(A, kind) for kind in KINDS}
+    main = [BEST, r"\begin{table*}[t]", r"\centering",
+            r"\caption{Coverage and ranking by prefix length for \dependency, CLM reranking (7B), and constrained generation (7B). "
+            r"Reranking reorders \dependency's list, so both have the same Recall@10. Shaded: best value in each column.}",
+            r"\label{tab:reranking-coverage}", r"\setlength{\tabcolsep}{3.2pt}", r"\small",
+            r"\begin{tabular}{lccccccc<{\hspace{3.6pt}}ccccccc}", TOP_RULE, r"\rowcolor{gray!15}",
+            r"\rule{0pt}{2.4ex} & \multicolumn{7}{c}{\textbf{Method selectors}} & \multicolumn{7}{c}{\textbf{Class names}} \\",
+            r"\rowcolor{gray!15}",
+            r"\textbf{Prefix length} & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\[0.4ex]", HEAD_RULE]
+    blocks = ((r"Recall@10 (\%)", f1, ((r"\dependency{} / CLM reranking", "rec_d"), ("Constrained generation", "rec_c"))),
+              (r"Top-1 (\%)", f1, ((r"\dependency", "t1_d"), ("CLM reranking", "t1_r"), ("Constrained generation", "t1_c"))),
+              ("MRR@10", f3, ((r"\dependency", "mrr_d"), ("CLM reranking", "mrr_r"), ("Constrained generation", "mrr_c"))))
+    for b, (title, fmt, members) in enumerate(blocks):
+        main.append(rf"\multicolumn{{15}}{{l}}{{\textit{{{title}}}}} \\")
+        # One column per kind x prefix; the best value of each column is shaded within the block.
+        cols = shade_best([[fmt(r[kind][key][p]) for _, key in members] for kind in KINDS for p in range(7)])
+        for j, (label, _) in enumerate(members):
+            main.append(label + " & " + " & ".join(c[j] for c in cols) + r" \\")
+        main.append(r"\midrule" if b < len(blocks) - 1 else r"\bottomrule")
+    main += [r"\end{tabular}", r"\end{table*}"]
     full = [r"\begin{table}[t]", r"\centering", r"\caption{Complete coverage and ordering decomposition.}",
             r"\label{tab:reranking-coverage}", r"\setlength{\tabcolsep}{2.0pt}", r"\small",
             r"\begin{adjustbox}{max width=\columnwidth}", r"\begin{tabular}{lrrrrrrr}", r"\toprule",
@@ -317,20 +342,11 @@ def tab_reranking_coverage(A):
     for kind, title in (("messages", "Method selectors"), ("variables", "Class names")):
         r = coverage_rows(A, kind)
         heading = rf"\multicolumn{{8}}{{l}}{{\textit{{{title}}}}} \\"
-        main += [heading,
-                 row(r"Recall@10 (\%, Dependency / reranking)", r["rec_d"]),
-                 row(r"Recall@10 (\%, constrained 7B)", r["rec_c"]),
-                 row(r"Top-1 (\%, reranking 7B)", r["t1_r"]),
-                 row(r"Top-1 (\%, constrained 7B)", r["t1_c"]),
-                 row("MRR@10 (reranking 7B)", r["mrr_r"], f3),
-                 row("MRR@10 (constrained 7B)", r["mrr_c"], f3)]
         full += [heading,
                  row("Recall@10 (D)", r["rec_d"]), row("Recall@10 (C)", r["rec_c"]),
                  row("Top-1 (D)", r["t1_d"]), row("Top-1 (R)", r["t1_r"]), row("Top-1 (C)", r["t1_c"]),
                  row("Conditional Top-1 (D)", r["cond_d"]), row("Conditional Top-1 (R)", r["cond_r"])]
-        main.append(r"\midrule" if kind == "messages" else r"\bottomrule")
         full.append(r"\midrule" if kind == "messages" else r"\bottomrule")
-    main += [r"\end{tabular}", r"\end{table*}"]
     full += [r"\end{tabular}", r"\end{adjustbox}", r"\end{table}"]
     return variant(main, full)
 
@@ -434,25 +450,31 @@ def fig_quality_and_time(A):
     time_axis = r"ymax=6900, ytick={0,1000,2000,3000,4000,5000,6000}"
     titles = (("messages", "Method selectors"), ("variables", "Class names"))
 
-    main = [r"\begin{tikzpicture}",
+    exact_pt = lambda kind, s, x: f"({x},{ms(A.get(kind, s)):.3f}) [{half_up(ms1(kind, s))}]"
+    main = [r"% Log-scale y-axis so the heuristics (tens of ms) and the CLMs (seconds) are both visible.",
+            r"\begin{tikzpicture}",
             r"\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.0cm},",
-            r"  width=0.46\textwidth, height=4.8cm, ybar=0pt, /pgf/bar width=8pt, enlarge x limits=0.18, ymin=0,",
-            r"  symbolic x coords={0.5B,1.5B,3B,7B}, xtick={0.5B,1.5B,3B,7B},",
-            r"  xlabel={Model size}, tick label style={font=\scriptsize}, label style={font=\scriptsize}, scaled y ticks=false,",
+            r"  width=0.46\textwidth, height=5.2cm, ybar=0pt, /pgf/bar width=7pt, enlarge x limits=0.1,",
+            r"  ymode=log, log origin=infty, ymin=5, ymax=60000, ytick={10,100,1000,10000}, yticklabels={10,100,1\,000,10\,000},",
+            r"  symbolic x coords={Baseline,Dependency,0.5B,1.5B,3B,7B}, xtick={Baseline,Dependency,0.5B,1.5B,3B,7B},",
+            r"  tick label style={font=\scriptsize}, label style={font=\scriptsize}, xtick pos=bottom, ytick pos=left, minor y tick num=0,",
             r"  title style={font=\footnotesize\bfseries, yshift=-1ex}, ymajorgrids, grid style={gray!20}, axis line style={gray!60},",
             r"  nodes near coords, point meta=explicit symbolic, every node near coord/.append style={font=\scriptsize, rotate=90, anchor=west},",
-            r"  legend style={font=\scriptsize, draw=none, fill=none, legend columns=3, column sep=8pt}]"]
+            r"  legend style={font=\scriptsize, draw=none, fill=none, legend columns=4, column sep=8pt}]"]
     for kind, title in titles:
-        main.append(r"\nextgroupplot[" + time_axis + r", ylabel={Mean completion time (ms)}, title={" + title + "}"
-                    + (", legend to name=neuraltimelegend" if kind == "messages" else "") + "]")
+        main.append(r"\nextgroupplot[title={" + title + "}"
+                    + (r", ylabel={Mean completion time (ms, log scale)}, legend to name=neuraltimelegend" if kind == "messages" else "") + "]")
+        pts = " ".join(exact_pt(kind, s, n) for n, s in (("Baseline", "heuristicsBaseline"), ("Dependency", DEP)))
+        main.append(rf"\addplot[fill=cH, draw=none, area legend, bar shift=0pt] coordinates {{{pts}}};")
+        if kind == "messages":
+            main.append(r"\addlegendentry{Heuristics}")
         for name, prefix, col, shift in FAM:
-            pts = " ".join(time_pt(kind, prefix + s, n) for s, n in SIZES)
-            main.append(rf"\addplot[fill={col}, draw=none, area legend, bar shift={8 * shift}pt] coordinates {{{pts}}};")
+            pts = " ".join(exact_pt(kind, prefix + s, n) for s, n in SIZES)
+            main.append(rf"\addplot[fill={col}, draw=none, area legend, bar shift={7 * shift}pt] coordinates {{{pts}}};")
             if kind == "messages":
                 main.append(r"\addlegendentry{" + name + "}")
     main += [r"\end{groupplot}",
-             r"\node[anchor=north, font=\scriptsize, text=black!65] at ($(group c1r1.north east)!0.5!(group c2r1.north west)+(0,0.7cm)$) {Shared-server benchmark};",
-             r"\node[anchor=north] at ($(group c1r1.south east)!0.5!(group c2r1.south west)+(0,-0.85cm)$) {\pgfplotslegendfromname{neuraltimelegend}};",
+             r"\node[anchor=north] at ($(group c1r1.south east)!0.5!(group c2r1.south west)+(0,-0.6cm)$) {\pgfplotslegendfromname{neuraltimelegend}};",
              r"\end{tikzpicture}"]
 
     full = [GENERATED, colors, r"\begin{tikzpicture}",

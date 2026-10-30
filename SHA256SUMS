@@ -1,7 +1,7 @@
 88882c8e371ada370bc523ba33e0c34496e8ca765da9c8294e1f19e22090c75e  ./.gitignore
-81cd24da6b6f8ab2ed55e2b322f8bbfeca2a59ea074871fcd8e88d806951afa6  ./Makefile
-7d3f13ff9df41a093d2272e7de7a6b91f90b1a74b3e14ae0d039a8d42344ff0a  ./README.md
-b979c901784a95be4ac858f6ce4e7735dba1a2f84dc752256b4a202bcfef2e5c  ./analysis/reproduce_paper.py
+981f4a628513ad00aa8354f261a504e3a644fdde1e31ca65e066615dd9b370d5  ./Makefile
+1a7866cd8b3822e5f5274259c1dda659ad830f77e285abff5fc2fad7d65d9eb3  ./README.md
+9db2246647d0be824dc8d5ef0e8e2b2140c81d5a6279adffe8dcaa261532e62e  ./analysis/reproduce_paper.py
 64ac5b71e8b19affe38bb4e2512e4143890e4ebe2e4f7e1a5bf118e9e75a8a47  ./analysis/verify_paper.py
 6863702c8c7f9aedbfc3812d7963b207e3ea33cfc158da3148602d567f0b0391  ./data/checkpoints/0001/benchmarks/messages-heuristicsBaseline/part.json
 54adde75e7c72412d35312423d4438c882bf3fd1ef57ff2d310aeed446b7826e  ./data/checkpoints/0001/benchmarks/messages-heuristicsDependency/part.json
@@ -2285,16 +2285,15 @@ f9ed2472087bf343800ace56e57190987daf4bf76f658f1ee1e762dc69a8c5d3  ./data/provena
 32d3a8d06ef530bcb345ec4b6f8bc528bc5102676602dced4375b0e934502cb7  ./data/provenance/worker-invocations.larochette-6.luxembourg.grid5000.fr.jsonl
 c20320fa2cc80647ab0a55d8efa33c8c91c2f9ba314b01e2122c35f40d602e50  ./data/provenance/worker-invocations.larochette-7.luxembourg.grid5000.fr.jsonl
 9b9c23fc70af886e3e33ac7bde3eb0d4ab63622f2951a69206ee6fc7c66bf5cd  ./data/provenance/workers.json
-0b03a1ee47915cc49081819e9c02a432429efd72fd9b9c384974b4dd013c52ad  ./docs/METHODOLOGY.md
 e2081e37cf05e96400f47572da443a6e05a65991c8586011b4e8384db94bd8c9  ./expected/analysis-stats.reference.json
-bdf7312c49df57fe5e7e67684ee2d1968ac4fc99c322385a085d1774717ad439  ./expected/paper-supplemental/fig-package-mrr.tex
-ca2f7dbeac4454b816444cfd5e64ea5ad4822086a88a7dc4c7ddcf929c0bfc42  ./expected/paper-supplemental/fig-quality-and-time.tex
-753553e4f7d22f4ba0685df68ec22ea02e6293a0e7b0a92fa343ab9a694ba731  ./expected/paper-supplemental/tab-mrr-by-prefix.tex
+2d64ab23de626a7ab3d0dfaba5650b39673e4f6001412ab03ebdc3bb54681d39  ./expected/paper-supplemental/fig-package-mrr.tex
+9a9d84762e49232404eb18a0fe7102a6371bf53ecf4edf58435d9baf31d6aaa0  ./expected/paper-supplemental/fig-quality-and-time.tex
+f333bc981c61ffc1ed8da1478bf9a41908cbee3997c245c03690e18dea81075b  ./expected/paper-supplemental/tab-mrr-by-prefix.tex
 5df24b800ebdb56e3ab920885c82c3592e814c420c07b28bfb596d98bb26db29  ./expected/paper-supplemental/tab-name-validity-by-prefix.tex
 fc5a79255bba6b315078ba953300f2309e5856a9ed92268b842f22f19ba079c8  ./expected/paper-supplemental/tab-prefix-policies.tex
-e8e5f3d4ec1f8de4a05f90a439fd079b7cabbba12610e0c11eb7e9ffce572193  ./expected/paper-supplemental/tab-reranking-coverage.tex
+073ad72247cdf7766a4e15e8e821dc3d718897dfe7181d4cbea8e1a99a76eb57  ./expected/paper-supplemental/tab-reranking-coverage.tex
 0db1c159c4ae89c392e2080afb7bd37bc450892d7dca02a2e0e6f4c88864dfc1  ./expected/paper-supplemental/tab-top-k-accuracy.tex
-99fc1fd73b4b3548e70f946da5f55cca9450ee075012737c4768e244e1e2723d  ./expected/paper-supplemental/tab-vocabulary-constraints.tex
+1d94a3e8875860aec192b3bd41a82cd54a0028bd5301f90ac115a9757f1020cd  ./expected/paper-supplemental/tab-vocabulary-constraints.tex
 77679dee33735080e1c3854b56167e7f1991f1def96141e547ebd652a4c835ac  ./frozen-image/pharo14-frozen-image.tar.gz
 8b80542d74b266da718f04bc500ce061a4b333a9c219347292a8308bdbfa6334  ./lib/HeuristicCompletion-Benchmarks-Multiples/origin.txt
 9f806bce629fc222e5b62a76169df939b6b4d9cb05ff56b773ae7a66478dddff  ./lib/HeuristicCompletion-Benchmarks-Multiples/src/.properties
@@ -2351,7 +2350,7 @@ e4b324a8a368ff14455fffcfc30a2b65c153d175909b932d66938de00a35779e  ./lib/Heuristi
 a400a8e80ba022a97a6322563bddc0506c92c86381cee881b2240a90d6542746  ./lib/HeuristicCompletion-Benchmarks-Multiples/src/ExtendedHeuristicCompletion-Benchmarks/CooStaticBenchmarksVariables.class.st
 8563259c1bdb0387092e1f554b07b46941c86315b319d20137ce59128053497d  ./lib/HeuristicCompletion-Benchmarks-Multiples/src/ExtendedHeuristicCompletion-Benchmarks/package.st
 64465a2c9da6d548d44514d06abb86f6bc89ba0ea9878d94250a231663435a35  ./pipeline/job.fir.sh
-f58086eb825e3971da4eafad1220e28e5324ff307463e8d4352aefd036604742  ./pipeline/job.oar.sh
+aa8f4b3739a065d3ff63f795eddbc6b917c96e946974d8c9b43056055d720135  ./pipeline/job.oar.sh
 38f11ddf7cc4e527382c0b51fb9d73ee01c97e6067896fb061b2b27987a7cf7d  ./pipeline/pipeline-benchmarks.sh
 14530ce3e5779334ea4bc0233993774c9e636c9a5730d1067448aecef413713b  ./pipeline/scripts/benchmark-export.st
 7037b715093d06818f0d1986e33c5e27f00021b7fbbfe778cad9862adaba7c60  ./pipeline/scripts/benchmark-package.st
@@ -2359,7 +2358,7 @@ f58086eb825e3971da4eafad1220e28e5324ff307463e8d4352aefd036604742  ./pipeline/job
 318fd32ba707962c253824d3e86dd2b051bc29fc451b783572a8d87a951e8776  ./pipeline/scripts/ollama-log-filter.awk
 0c5c8e9480c0d9d03079bbb4f0a1a3806f10c2befb6dcf64ae2b20e7f6fe9fff  ./pipeline/scripts/ollama_models.py
 7f693286180109af3142aa04a526359f36419021fef5bdec59cc743a8acb8cc6  ./pipeline/scripts/package_benchmarks.py
-5c4f278e61c634ec703955de1529e98ea769ca3a767e40b6110284de2dfdc86b  ./pipeline/scripts/pipeline-common.sh
+69c9acc92be3600297ab5cbc8635fd7df671b5aa65457755bff9f10ca7da84e0  ./pipeline/scripts/pipeline-common.sh
 24e8104488004009a0766efcda0ebf07934d57a857c150bd58e5aeb310d50fdd  ./pipeline/scripts/shared_run.py
 4c503cafbf2088c9ef5746ab60df9610a3d6ab07aceb92906f0c0652ae5796a7  ./pipeline/submit-shared.sh
 da903930e07e23d9afafecc9ca5109dc60a12047eb121ef5dbf0110efc99ba40  ./pipeline/tests/test_oar_job.py
@@ -2370,4 +2369,5 @@ da903930e07e23d9afafecc9ca5109dc60a12047eb121ef5dbf0110efc99ba40  ./pipeline/tes
 b78cfc6b042b715854f45d892719f4e7d6d3a3d315e38c135308e719b3195bca  ./rerun/run-benchmarks.sh
 ae4f26b39d86bd2635409829f4d81e5ab1f117b703bb2e5c03eff01a04dcaa59  ./rerun/setup-frozen-experiment.sh
 4ce32b14e188705fbee2a3e155596197229564c784fe72a011b79b2752938b7b  ./rerun/smoke-test.sh
+03f55c3def2072d19c5690771f1e855888ec077974e276dfbfbc622f20d31805  ./run.sh
 5439823e0e4986885cd46158fb993eaf585a171a15338b49e4e16618f55ec32d  ./tests/test_analysis.py

@@ -4,7 +4,8 @@ EXPERIMENT_DIR ?= experiment
 
 .PHONY: all reproduce verify test test-pipeline setup smoke rerun checksums clean
 
-all: verify
+all:                  ## = ./run.sh: regenerate every table and figure of the paper and check them
+	./run.sh
 
 reproduce:            ## regenerate every table, figure and statistic from the checkpoints
 	$(PYTHON) analysis/reproduce_paper.py
