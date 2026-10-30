@@ -13,7 +13,9 @@ Exit status 0 only if all checks pass.
 import argparse
 import json
 import math
+import re
 import sys
+import tarfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -189,6 +191,38 @@ def claims(st):
     ]
 
 
+def settings():
+    """Settings stated in the paper, read from the shipped benchmark source, image and run provenance."""
+    src = ROOT / "lib" / "HeuristicCompletion-Benchmarks-Multiples" / "src" / "ExtendedHeuristicCompletion-Benchmarks"
+    beam = (src / "CooLLMBeamCompleter.class.st").read_text(encoding="utf-8")
+    client = (src / "CooLLMClient.class.st").read_text(encoding="utf-8")
+    prov = ROOT / "data" / "provenance"
+    logs = "\n".join(f.read_text(encoding="utf-8", errors="replace") for f in sorted((prov / "logs").glob("*")))
+    setting = lambda text, pattern: (lambda m: m.group(1) if m else None)(re.search(pattern, text))
+    jobs = sorted({json.loads(line)["jobs"] for line in (prov / "worker-invocations.jsonl").read_text().splitlines() if line})
+    tags = json.loads((prov / "ollama-tags.json").read_text())["models"]
+    with tarfile.open(ROOT / "frozen-image" / "pharo14-frozen-image.tar.gz") as archive:
+        sources = [n for n in archive.getnames() if n.endswith(".sources")]
+    return [
+        ("IV-A Inference", "temperature / seed", (setting(client, r"payloadFor: snapshot temperature: (\d+) seed"),
+                                                   setting(client, r"payloadFor: snapshot temperature: \d+ seed: (\d+)")), ("0", "42")),
+        ("IV-A Inference", "context window (tokens)", setting(client, r"'num_ctx' -> (\d+)"), "8192"),
+        ("IV-A Inference", "one token per request", setting(client, r"'num_predict' -> (\d+)"), "1"),
+        ("IV-A Inference", "next-token alternatives per request", setting(beam, r"topTokens := (\d+)"), "20"),
+        ("IV-A Inference", "beam width", setting(beam, r"beamWidth := (\d+)"), "10"),
+        ("IV-A Inference", "maximum search steps", setting(beam, r"maxSteps := (\d+)"), "12"),
+        ("IV-A Inference", "suggestions returned", setting(beam, r"candidateCount := (\d+)"), "10"),
+        ("IV-D Environment", "request timeout (s)", setting(client, r"timeout := (\d+)"), "120"),
+        ("IV-D Environment", "Grid5000 GPU", "AMD Instinct MI210" in logs, True),
+        ("IV-D Environment", "Grid5000 Ollama version", setting(logs, r"\(Ollama (0\.40\.5)\)"), "0.40.5"),
+        ("IV-D Environment", "Apple M4 Max machine", "Apple M4 Max" in logs, True),
+        ("IV-D Environment", "Mac Ollama version", setting(logs, r"\(version (0\.40\.7)\)"), "0.40.7"),
+        ("IV-D Environment", "benchmark workers (Mac, Grid5000 node)", jobs, [2, 8]),
+        ("IV-D Environment", "F16 weights for the four models", sorted({m["details"]["quantization_level"] for m in tags}) + [len(tags)], ["F16", 4]),
+        ("IV-D Environment", "Pharo 14.0 64-bit image, sources 74f3a1b", sources, ["Pharo14.0-64bit-74f3a1b.sources"]),
+    ]
+
+
 def normalise(value):
     return list(value) if isinstance(value, tuple) else value
 
@@ -214,6 +248,10 @@ def main(argv=None):
         # A partial run (e.g. a few packages, no class observations) lacks numbers the text uses.
         checked = []
         failures.append(f"the paper's text claims cannot be recomputed from these results ({error!r})")
+    try:
+        checked += settings()
+    except (OSError, KeyError, ValueError) as error:
+        failures.append(f"the paper's settings cannot be checked ({error!r})")
     passed = 0
     for section, claim, computed, paper in checked:
         ok = normalise(computed) == normalise(paper)

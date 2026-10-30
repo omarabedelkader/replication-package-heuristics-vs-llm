@@ -61,8 +61,11 @@ def load(checkpoints, workers):
     run_id, selected = manifest["runId"], manifest["packages"]
     parts = []
     for path in sorted(glob.glob(os.path.join(checkpoints, "*", "benchmarks", "*", "part.json"))):
-        index = int(Path(path).parents[2].name) - 1
-        package = selected[index]
+        # The package is the one recorded in the checkpoint, so directories can be named after
+        # their package (released data) or numbered by the pipeline (a re-run's packages/NNNN).
+        package = json.loads(Path(path).read_text())["package"]
+        if package not in selected:
+            raise ValueError(f"{path}: package {package!r} is not in the run's selection")
         kind, strategy = Path(path).parent.name.split("-", 1)
         parts.append(pipeline.validate_part(Path(path), package, run_id, kind, strategy))
     by_package = collections.defaultdict(list)

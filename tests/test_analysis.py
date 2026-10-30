@@ -37,6 +37,11 @@ class ReleasedCheckpoints(unittest.TestCase):
         self.assertEqual(len(self.stats["extra"]["packages"]), 47)
         self.assertEqual(self.stats["tasks_done"], 47 * 28)
 
+    def test_one_directory_per_paper_package(self):
+        names = [line.split("#", 1)[0].strip()
+                 for line in (ROOT / "data" / "experiment" / "analysed-packages.txt").read_text().splitlines()]
+        self.assertEqual(sorted(p.name for p in CHECKPOINTS.iterdir() if p.is_dir()), sorted(n for n in names if n))
+
     def test_reranking_keeps_recall(self):
         self.assertEqual(self.stats["hybrid_invariant"]["violations"], 0)
 
@@ -65,8 +70,8 @@ class IncompleteRun(unittest.TestCase):
     def test_unfinished_package_is_skipped(self):
         with tempfile.TemporaryDirectory() as tmp:
             copy = Path(tmp) / "packages"
-            shutil.copytree(CHECKPOINTS / "0001", copy / "0001")
-            shutil.copytree(CHECKPOINTS / "0002", copy / "0002")
+            shutil.copytree(CHECKPOINTS / "Network-Mail", copy / "0001")
+            shutil.copytree(CHECKPOINTS / "Spec2-ListView", copy / "0002")
             (copy / "0002" / "benchmarks" / "messages-llm7B" / "part.json").unlink()
             workers = ROOT / "data" / "provenance" / "workers.json"
             manifest, parts, complete, incomplete = reproduce_paper.load(str(copy), workers)
@@ -79,7 +84,7 @@ class IncompleteRun(unittest.TestCase):
         """A small rerun (one package, no class completions) is analysed; empty cells print as --."""
         with tempfile.TemporaryDirectory() as tmp:
             copy, out = Path(tmp) / "packages", Path(tmp) / "out"
-            shutil.copytree(CHECKPOINTS / "0043", copy / "0043")  # BaselineOfReflectionMirrors
+            shutil.copytree(CHECKPOINTS / "BaselineOfReflectionMirrors", copy / "BaselineOfReflectionMirrors")
             workers = ROOT / "data" / "provenance" / "workers.json"
             self.assertEqual(reproduce_paper.main(["--checkpoints", str(copy), "--workers", str(workers),
                                                    "--out", str(out)]), 0)

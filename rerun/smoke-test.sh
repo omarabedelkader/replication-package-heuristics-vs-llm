@@ -19,10 +19,11 @@ PYTHON="${PIPELINE_PYTHON:-python3}"
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/smoke.XXXXXX")"
 trap 'rm -rf "$WORK"' EXIT
 
-index="$("$PYTHON" -c 'import json, sys
-print(json.load(open(sys.argv[1]))["packages"].index(sys.argv[2]) + 1)' \
-    "$PACKAGE_DIR/data/provenance/workers.json" "$PACKAGE")"
-reference="$PACKAGE_DIR/data/checkpoints/$(printf '%04d' "$index")/benchmarks"
+reference="$PACKAGE_DIR/data/checkpoints/$PACKAGE/benchmarks"
+if [[ ! -d "$reference" ]]; then
+    echo "$PACKAGE is not one of the 47 packages of the paper (data/experiment/analysed-packages.txt)." >&2
+    exit 1
+fi
 run_id="$("$PYTHON" -c 'import json, sys; print(json.load(open(sys.argv[1]))["runId"])' "$PACKAGE_DIR/data/provenance/workers.json")"
 
 failed=0

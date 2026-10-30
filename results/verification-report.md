@@ -77,3 +77,18 @@
 | VI Discussion | no 7B reversal for method MRR at any prefix | False | False | ok |
 | VI Discussion | CLM mean time range (ms) | (759, 5230) | (759, 5230) | ok |
 | VII Conclusion | constrained 7B gain over Dependency, methods / classes (%) | (49.7, 48.4) | (49.7, 48.4) | ok |
+| IV-A Inference | temperature / seed | ('0', '42') | ('0', '42') | ok |
+| IV-A Inference | context window (tokens) | 8192 | 8192 | ok |
+| IV-A Inference | one token per request | 1 | 1 | ok |
+| IV-A Inference | next-token alternatives per request | 20 | 20 | ok |
+| IV-A Inference | beam width | 10 | 10 | ok |
+| IV-A Inference | maximum search steps | 12 | 12 | ok |
+| IV-A Inference | suggestions returned | 10 | 10 | ok |
+| IV-D Environment | request timeout (s) | 120 | 120 | ok |
+| IV-D Environment | Grid5000 GPU | True | True | ok |
+| IV-D Environment | Grid5000 Ollama version | 0.40.5 | 0.40.5 | ok |
+| IV-D Environment | Apple M4 Max machine | True | True | ok |
+| IV-D Environment | Mac Ollama version | 0.40.7 | 0.40.7 | ok |
+| IV-D Environment | benchmark workers (Mac, Grid5000 node) | [2, 8] | [2, 8] | ok |
+| IV-D Environment | F16 weights for the four models | ['F16', 4] | ['F16', 4] | ok |
+| IV-D Environment | Pharo 14.0 64-bit image, sources 74f3a1b | ['Pharo14.0-64bit-74f3a1b.sources'] | ['Pharo14.0-64bit-74f3a1b.sources'] | ok |

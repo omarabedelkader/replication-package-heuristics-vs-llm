@@ -39,7 +39,7 @@ It then runs `analysis/verify_paper.py`.
 
 1. Each of the 8 generated tables and figures equals the paper's file in `expected/paper-supplemental/`. Comment lines are ignored.
 2. All 546 statistics equal `expected/analysis-stats.reference.json`, the statistics file the paper was written from.
-3. Every number and comparison stated in the paper's text (75 claims, section by section: MRR, Top-1, Recall@10, gains, validity, list lengths, times, corpus and observation counts) is recomputed from unrounded values. See `results/verification-report.md`.
+3. Every number and comparison stated in the paper's text (75 claims, section by section: MRR, Top-1, Recall@10, gains, validity, list lengths, times, corpus and observation counts) is recomputed from unrounded values, and the 15 settings the paper states (search and request parameters, hardware, Ollama versions, workers, F16 weights, Pharo image) are read from the shipped source, image and provenance logs. See `results/verification-report.md`.
 
 **Packages.** The study covers 47 packages of the Pharo 14 image (`data/experiment/analysed-packages.txt`), each with all 28 benchmarks (2 kinds × 14 strategies).
 
@@ -82,7 +82,7 @@ On clusters, use `pipeline/job.oar.sh` (Grid5000/OAR), `pipeline/submit-shared.s
 
 | Path | What |
 |---|---|
-| `data/checkpoints/NNNN/benchmarks/<kind>-<strategy>/part.json` | 1,316 checkpoints (47 packages × 28): per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
+| `data/checkpoints/<package>/benchmarks/<kind>-<strategy>/part.json` | 1,316 checkpoints, one directory for each of the 47 packages (47 × 28): per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
 | `data/experiment/` | The 47 packages, image/source pins, model tags |
 | `data/provenance/` | `workers.json` (run ID, input SHA-256s), model digests, per-task timings and hosts, worker invocations, job and Ollama logs (usernames anonymized) |
 | `lib/HeuristicCompletion-Benchmarks-Multiples/` | Frozen Smalltalk benchmark source loaded in the image; the pipeline always uses this copy and downloads nothing from GitHub |
