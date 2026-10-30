@@ -40,8 +40,8 @@ DEP = "heuristicsDependency"
 GROUPS = (
     ("Heuristics", (("Baseline", "heuristicsBaseline"), ("Dependency", DEP))),
     ("Unconstrained generation", tuple((f"CLM {n}", f"llmUnvalidated{s}") for s, n in SIZES)),
-    ("Vocabulary-constrained generation", tuple((f"CLM {n}", f"llm{s}") for s, n in SIZES)),
-    ("Dependency + CLM reranking", tuple((f"CLM {n}", f"hybrid{s}") for s, n in SIZES)),
+    ("Constrained generation", tuple((f"CLM {n}", f"llm{s}") for s, n in SIZES)),
+    ("CLM reranking", tuple((f"CLM {n}", f"hybrid{s}") for s, n in SIZES)),
 )
 STRATEGIES = tuple(s for _, g in GROUPS for _, s in g)
 # The 13 package-level comparisons per kind (26 in total) reported in the paper.
@@ -601,6 +601,12 @@ def statistics(A, parts, complete, incomplete, manifest):
             len({A.cell[(p, kind, s, pr)]["count"] for s in pipeline.MEASURED}) == 1
             for p in complete for pr in PREF)
     extra["ms_exact/messages/llm3B"] = ms(A.get("messages", "llm3B"))
+    # Unrounded pooled and per-prefix values, so that the text's claims are checked without double rounding.
+    extra["exact"] = {
+        f"{kind}/{s}/{'avg' if p is None else p}": dict(
+            count=A.get(kind, s, p)["count"], mrr=mrr(A.get(kind, s, p)), top1=pct(A.get(kind, s, p), "top1"),
+            top10=pct(A.get(kind, s, p), "top10"), ms=ms(A.get(kind, s, p)), timeMs=A.get(kind, s, p)["timeMs"])
+        for kind in KINDS for s in STRATEGIES for p in [None, *PREF]}
     json_ready = {k: v for k, v in extra.items()}
     st["extra"] = json_ready
     return st

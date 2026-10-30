@@ -1,8 +1,8 @@
 88882c8e371ada370bc523ba33e0c34496e8ca765da9c8294e1f19e22090c75e  ./.gitignore
 981f4a628513ad00aa8354f261a504e3a644fdde1e31ca65e066615dd9b370d5  ./Makefile
-1a7866cd8b3822e5f5274259c1dda659ad830f77e285abff5fc2fad7d65d9eb3  ./README.md
-9db2246647d0be824dc8d5ef0e8e2b2140c81d5a6279adffe8dcaa261532e62e  ./analysis/reproduce_paper.py
-64ac5b71e8b19affe38bb4e2512e4143890e4ebe2e4f7e1a5bf118e9e75a8a47  ./analysis/verify_paper.py
+3b8d170ce9bdadff4e1651d0c4c3653caef8ecf992857e2d032e6ffb9f1c5375  ./README.md
+ec252f1b67de544632adafe3074e4a5e52d3ee6185e2ff6057853e05550a6d76  ./analysis/reproduce_paper.py
+b1580ac16ac9c3583404d63d8c83d5616ae51a734d62199ff96188698be8afc4  ./analysis/verify_paper.py
 6863702c8c7f9aedbfc3812d7963b207e3ea33cfc158da3148602d567f0b0391  ./data/checkpoints/0001/benchmarks/messages-heuristicsBaseline/part.json
 54adde75e7c72412d35312423d4438c882bf3fd1ef57ff2d310aeed446b7826e  ./data/checkpoints/0001/benchmarks/messages-heuristicsDependency/part.json
 460004f8025b4a56be6e21472b6a2d9cb30b257474d69c1c05daccc5000afcaf  ./data/checkpoints/0001/benchmarks/messages-hybrid05B/part.json
@@ -2292,7 +2292,7 @@ f333bc981c61ffc1ed8da1478bf9a41908cbee3997c245c03690e18dea81075b  ./expected/pap
 5df24b800ebdb56e3ab920885c82c3592e814c420c07b28bfb596d98bb26db29  ./expected/paper-supplemental/tab-name-validity-by-prefix.tex
 fc5a79255bba6b315078ba953300f2309e5856a9ed92268b842f22f19ba079c8  ./expected/paper-supplemental/tab-prefix-policies.tex
 073ad72247cdf7766a4e15e8e821dc3d718897dfe7181d4cbea8e1a99a76eb57  ./expected/paper-supplemental/tab-reranking-coverage.tex
-0db1c159c4ae89c392e2080afb7bd37bc450892d7dca02a2e0e6f4c88864dfc1  ./expected/paper-supplemental/tab-top-k-accuracy.tex
+36aad7397ba6bc847aa5e76fb4cacf40edb61403eda5a64f9224bbbd162f1cce  ./expected/paper-supplemental/tab-top-k-accuracy.tex
 1d94a3e8875860aec192b3bd41a82cd54a0028bd5301f90ac115a9757f1020cd  ./expected/paper-supplemental/tab-vocabulary-constraints.tex
 77679dee33735080e1c3854b56167e7f1991f1def96141e547ebd652a4c835ac  ./frozen-image/pharo14-frozen-image.tar.gz
 8b80542d74b266da718f04bc500ce061a4b333a9c219347292a8308bdbfa6334  ./lib/HeuristicCompletion-Benchmarks-Multiples/origin.txt

@@ -7,11 +7,12 @@ Run after reproduce_paper.py:
 Three checks:
  1. every generated table/figure equals the paper's supplemental file (comment lines ignored);
  2. every statistic equals the reference analysis-stats.json used to write the paper;
- 3. every number quoted in the paper's text is recomputed and compared.
+ 3. every number and comparison stated in the paper's text is recomputed and compared.
 Exit status 0 only if all checks pass.
 """
 import argparse
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -47,151 +48,145 @@ def check_stats(stats):
 
 
 def claims(st):
-    """(section, claim, computed value, value printed in the paper)."""
+    """(section, claim, computed value, value printed in the paper), in the order of the paper's text.
+    Values are recomputed from unrounded aggregates and rounded as printed."""
     x = st["extra"]
-    mrr = lambda k, s, p="avg": st[f"mrr/{k}/{s}/{p}"]
+    E = lambda k, s, p="avg": x["exact"][f"{k}/{s}/{p}"]
+    mrr = lambda k, s, p="avg": E(k, s, p)["mrr"]
+    top1 = lambda k, s, p="avg": E(k, s, p)["top1"]
+    rec = lambda k, s, p="avg": E(k, s, p)["top10"]
+    ms = lambda k, s: E(k, s)["ms"]
     gain = lambda k, s: round(100 * (mrr(k, s) / mrr(k, DEP) - 1), 1)
-    sign = lambda k, a, b: st[f"sign/{k}/{a}>{b}"]
     r3 = lambda v: round(v, 3)
     r1 = lambda v: round(v, 1)
-    ms = lambda k, s: st[f"ms/{k}/{s}"]
-    hyb = lambda k, m: st[f"hyb/{k}/{m}"]
-    PREF = list(range(2, 9))
-    time_pairs = [(k, s) for k in ("messages", "variables") for s in SIZES]
-    lower = [ms(k, f"llm{s}") < ms(k, f"llmUnvalidated{s}") for k, s in time_pairs]
-    reductions = [100 * (1 - ms(k, f"llm{s}") / ms(k, f"llmUnvalidated{s}")) for (k, s), ok in zip(time_pairs, lower) if ok]
-    neural = [ms(k, f"{f}{s}") for k in ("messages", "variables") for f in ("llmUnvalidated", "llm", "hybrid") for s in SIZES]
-    out = [
-        ("Abstract", "packages analysed", st["corpus_matched"]["packages"], 47),
-        ("Abstract", "constrained 7B MRR gain over Dependency, methods (%)", gain("messages", "llm7B"), 49.7),
-        ("Abstract", "constrained 7B MRR gain over Dependency, classes (%)", gain("variables", "llm7B"), 48.4),
-        ("Abstract", "7B reranking MRR gain over Dependency, methods (%)", gain("messages", "hybrid7B"), 26.9),
-        ("Abstract", "7B reranking MRR gain over Dependency, classes (%)", gain("variables", "hybrid7B"), 37.2),
-        ("Abstract", "constraints lower mean time (of 8 comparisons)", sum(lower), 7),
-        ("Abstract", "7B reranker beats constrained class MRR at prefixes 5-8",
-         all(mrr("variables", "hybrid7B", p) > mrr("variables", "llm7B", p) for p in range(5, 9)), True),
-        ("Setup", "classes in the 47 packages", st["corpus_matched"]["classes"], 501),
-        ("Setup", "traversed methods in the 47 packages", st["corpus_matched"]["methods"], 4277),
-        ("Setup", "method observations", st["obs_matched"]["messages"], 103391),
-        ("Setup", "class observations", st["obs_matched"]["variables"], 12678),
-        ("Setup", "observations per configuration", x["observations_total"], 116069),
-        ("Setup", "packages contributing method observations", x["packages_with_observations"]["messages"], 47),
-        ("Setup", "packages contributing class observations", x["packages_with_observations"]["variables"], 37),
-        ("Setup", "observation counts match across configurations",
+    msr = lambda v: int(math.floor(v + 0.5))
+    K = ("messages", "variables")
+    FAM = ("llmUnvalidated", "llm", "hybrid")
+    PREF = range(2, 9)
+    both = lambda f: tuple(f(k) for k in K)
+    neural = [ms(k, f"{f}{s}") for k in K for f in FAM for s in SIZES]
+    strategies = {key.split("/")[2] for key in st if key.startswith("mrr/")}
+    pairs = [(k, s) for k in K for s in SIZES]
+    faster = [(k, s) for k, s in pairs if ms(k, f"llm{s}") < ms(k, f"llmUnvalidated{s}")]
+    return [
+        ("Abstract", "packages", st["corpus_matched"]["packages"], 47),
+        ("Abstract", "more than 100K completions", x["observations_total"] > 100000, True),
+        ("Abstract", "constrained (7B) MRR gain over Dependency, methods / classes (%)",
+         both(lambda k: gain(k, "llm7B")), (49.7, 48.4)),
+        ("Introduction", "experimental configurations (2 + 3 x 4)", len(strategies), 14),
+        ("IV-A Corpus", "packages", st["corpus_matched"]["packages"], 47),
+        ("IV-A Corpus", "classes", st["corpus_matched"]["classes"], 501),
+        ("IV-A Corpus", "methods", st["corpus_matched"]["methods"], 4277),
+        ("IV-A Corpus", "method-selector observations", st["obs_matched"]["messages"], 103391),
+        ("IV-A Corpus", "class-name observations", st["obs_matched"]["variables"], 12678),
+        ("IV-A Corpus", "observations per approach", x["observations_total"], 116069),
+        ("IV-A Corpus", "same observations for every configuration",
          x["counts_match/messages"] and x["counts_match/variables"], True),
-        ("Setup", "package comparisons in the sign-test family", sum(1 for k in st if k.startswith("sign/")), 26),
-        ("RQ1", "Baseline MRR, methods", r3(mrr("messages", "heuristicsBaseline")), 0.262),
-        ("RQ1", "Dependency MRR, methods", r3(mrr("messages", DEP)), 0.517),
-        ("RQ1", "Baseline MRR, classes", r3(mrr("variables", "heuristicsBaseline")), 0.407),
-        ("RQ1", "Dependency MRR, classes", r3(mrr("variables", DEP)), 0.592),
-        ("RQ1", "every CLM configuration beats both heuristics (pooled MRR)",
-         all(mrr(k, f"{f}{s}") > max(mrr(k, DEP), mrr(k, "heuristicsBaseline"))
-             for k in ("messages", "variables") for f in ("llmUnvalidated", "llm", "hybrid") for s in SIZES), True),
-        ("RQ1", "constrained 7B MRR, methods", r3(mrr("messages", "llm7B")), 0.774),
-        ("RQ1", "constrained 7B MRR, classes", r3(mrr("variables", "llm7B")), 0.879),
-        ("RQ1", "constrained 7B Top-1, methods (%)", r1(st["top1/messages/llm7B"]), 73.6),
-        ("RQ1", "constrained 7B Top-1, classes (%)", r1(st["top1/variables/llm7B"]), 83.3),
-        ("RQ1", "Dependency Top-1, methods (%)", r1(x[f"top1_exact/messages/{DEP}"]), 37.4),
-        ("RQ1", "Dependency Top-1, classes (%)", r1(x[f"top1_exact/variables/{DEP}"]), 45.4),
-        ("RQ1", "constrained 7B > Dependency, method packages (win/loss/tie)",
-         tuple(sign("messages", "llm7B", DEP)[f] for f in ("win", "loss", "tie")), (46, 1, 0)),
-        ("RQ1", "  ... p < 1e-12", sign("messages", "llm7B", DEP)["p"] < 1e-12, True),
-        ("RQ1", "constrained 7B > Dependency, class packages (win/loss/tie)",
-         tuple(sign("variables", "llm7B", DEP)[f] for f in ("win", "loss", "tie")), (32, 4, 1)),
-        ("RQ1", "  ... p < 1e-5", sign("variables", "llm7B", DEP)["p"] < 1e-5, True),
-        ("RQ1", "packages in the scatter plot (methods, classes)",
-         (st["per_package_points"]["messages/llm7B"], st["per_package_points"]["variables/llm7B"]), (46, 34)),
-        ("RQ2", "constraints improve MRR at every size and task",
-         all(mrr(k, f"llm{s}") > mrr(k, f"llmUnvalidated{s}") for k in ("messages", "variables") for s in SIZES), True),
-        ("RQ2", "largest within-size constraint gain is at 0.5B (both tasks)",
-         all(max(SIZES, key=lambda s: mrr(k, f"llm{s}") - mrr(k, f"llmUnvalidated{s}")) == "05B"
-             for k in ("messages", "variables")), True),
-        ("RQ2", "unconstrained 7B Top-1, methods (%)", r1(st["top1/messages/llmUnvalidated7B"]), 68.1),
-        ("RQ2", "unconstrained 7B Top-1, classes (%)", r1(st["top1/variables/llmUnvalidated7B"]), 73.4),
-        ("RQ2", "method packages favouring constraints at 0.5B/3B/7B",
-         [sign("messages", f"llm{s}", f"llmUnvalidated{s}")["win"] for s in ("05B", "3B", "7B")], [47, 47, 47]),
-        ("RQ2", "method packages at 1.5B (win, tie)",
-         (sign("messages", "llm15B", "llmUnvalidated15B")["win"], sign("messages", "llm15B", "llmUnvalidated15B")["tie"]), (46, 1)),
-        ("RQ2", "no class package favours unconstrained generation",
-         all(sign("variables", f"llm{s}", f"llmUnvalidated{s}")["loss"] == 0 for s in ("05B", "15B", "3B", "7B")), True),
+        ("IV-B Completion time", "constrained 3B, methods: total ms",
+         int(E("messages", "llm3B")["timeMs"]), 175612087),
+        ("IV-B Completion time", "constrained 3B, methods: observations", int(E("messages", "llm3B")["count"]), 103391),
+        ("IV-B Completion time", "constrained 3B, methods: mean ms", r1(ms("messages", "llm3B")), 1698.5),
+        ("RQ1", "Baseline -> Dependency MRR, methods", (r3(mrr("messages", "heuristicsBaseline")), r3(mrr("messages", DEP))), (0.262, 0.517)),
+        ("RQ1", "Baseline -> Dependency MRR, classes", (r3(mrr("variables", "heuristicsBaseline")), r3(mrr("variables", DEP))), (0.407, 0.592)),
+        ("RQ1", "every CLM configuration has higher MRR than Dependency",
+         all(mrr(k, f"{f}{s}") > mrr(k, DEP) for k in K for f in FAM for s in SIZES), True),
+        ("RQ1", "unconstrained 0.5B MRR, methods / classes", both(lambda k: r3(mrr(k, "llmUnvalidated05B"))), (0.593, 0.658)),
+        ("RQ1", "constrained 7B MRR, methods / classes", both(lambda k: r3(mrr(k, "llm7B"))), (0.774, 0.879)),
+        ("RQ1", "constrained 7B gain over Dependency, methods / classes (%)", both(lambda k: gain(k, "llm7B")), (49.7, 48.4)),
+        ("RQ1", "constrained 7B has the highest MRR of all configurations (both tasks)",
+         all(max(strategies, key=lambda s: mrr(k, s)) == "llm7B" for k in K), True),
+        ("RQ2", "constraints improve MRR at every size, both tasks",
+         all(mrr(k, f"llm{s}") > mrr(k, f"llmUnvalidated{s}") for k, s in pairs), True),
+        ("RQ2", "0.5B unconstrained -> constrained MRR, methods",
+         (r3(mrr("messages", "llmUnvalidated05B")), r3(mrr("messages", "llm05B"))), (0.593, 0.675)),
+        ("RQ2", "0.5B unconstrained -> constrained MRR, classes",
+         (r3(mrr("variables", "llmUnvalidated05B")), r3(mrr("variables", "llm05B"))), (0.658, 0.786)),
+        ("RQ2", "7B unconstrained -> constrained MRR, methods",
+         (r3(mrr("messages", "llmUnvalidated7B")), r3(mrr("messages", "llm7B"))), (0.722, 0.774)),
+        ("RQ2", "7B unconstrained -> constrained MRR, classes",
+         (r3(mrr("variables", "llmUnvalidated7B")), r3(mrr("variables", "llm7B"))), (0.791, 0.879)),
+        ("RQ2", "7B unconstrained -> constrained Top-1, methods (%)",
+         (r1(top1("messages", "llmUnvalidated7B")), r1(top1("messages", "llm7B"))), (68.1, 73.6)),
+        ("RQ2", "7B unconstrained -> constrained Top-1, classes (%)",
+         (r1(top1("variables", "llmUnvalidated7B")), r1(top1("variables", "llm7B"))), (73.4, 83.3)),
+        ("RQ2", "unconstrained 7B names in the runtime, methods / classes (%)",
+         both(lambda k: r1(st[f"val/{k}/7B/valid_before"])), (22.5, 15.8)),
+        ("RQ2", "all constrained names in the runtime (%)",
+         min(st[f"val/{k}/{s}/valid_after"] for k, s in pairs), 100.0),
+        ("RQ2", "unconstrained mean list length, close to ten",
+         round(min(st[f"val/{k}/{s}/cand_before"] for k, s in pairs)), 10),
         ("RQ2", "constrained mean list length range, methods",
          (r1(min(st[f"val/messages/{s}/cand_after"] for s in SIZES)), r1(max(st[f"val/messages/{s}/cand_after"] for s in SIZES))), (4.4, 4.5)),
         ("RQ2", "constrained mean list length range, classes",
          (r1(min(st[f"val/variables/{s}/cand_after"] for s in SIZES)), r1(max(st[f"val/variables/{s}/cand_after"] for s in SIZES))), (2.2, 2.8)),
-        ("RQ2", "unconstrained 7B membership, methods (%)", r1(st["val/messages/7B/valid_before"]), 22.5),
-        ("RQ2", "unconstrained 7B membership, classes (%)", r1(st["val/variables/7B/valid_before"]), 15.8),
-        ("RQ3", "reranking improves Dependency MRR at every size",
-         all(mrr(k, f"hybrid{s}") > mrr(k, DEP) for k in ("messages", "variables") for s in SIZES), True),
-        ("RQ3", "7B reranking MRR, methods", r3(mrr("messages", "hybrid7B")), 0.656),
-        ("RQ3", "7B reranking MRR, classes", r3(mrr("variables", "hybrid7B")), 0.813),
-        ("RQ3", "7B reranking > Dependency, method packages", sign("messages", "hybrid7B", DEP)["win"], 47),
-        ("RQ3", "7B reranking > Dependency, class packages (win, of)",
-         (sign("variables", "hybrid7B", DEP)["win"], 37), (34, 37)),
-        ("RQ3", "  ... class p < 1e-6", sign("variables", "hybrid7B", DEP)["p"] < 1e-6, True),
-        ("RQ3", "Recall@10 of reranking = Dependency, methods (%)", r1(st["top10/messages/hybrid7B"]), 81.1),
-        ("RQ3", "Recall@10 of reranking = Dependency, classes (%)", r1(st["top10/variables/hybrid7B"]), 84.8),
+        ("RQ3", "reranking improves Dependency MRR at every size, both tasks",
+         all(mrr(k, f"hybrid{s}") > mrr(k, DEP) for k, s in pairs), True),
+        ("RQ3", "Dependency -> 7B reranking MRR, methods", (r3(mrr("messages", DEP)), r3(mrr("messages", "hybrid7B"))), (0.517, 0.656)),
+        ("RQ3", "Dependency -> 7B reranking MRR, classes", (r3(mrr("variables", DEP)), r3(mrr("variables", "hybrid7B"))), (0.592, 0.813)),
+        ("RQ3", "Recall@10 of Dependency = of reranking (every size), methods / classes (%)",
+         both(lambda k: r1(rec(k, DEP)) if all(rec(k, f"hybrid{s}") == rec(k, DEP) for s in SIZES) else None), (81.1, 84.8)),
         ("RQ3", "reranking never changes Recall@10 (package x prefix cells violating)", st["hybrid_invariant"]["violations"], 0),
-        ("RQ3", "conditional Top-1, 7B reranker, methods (%)", r1(x["cond_top1_pooled/messages/hybrid7B"]), 70.7),
-        ("RQ3", "conditional Top-1, 7B reranker, classes (%)", r1(x["cond_top1_pooled/variables/hybrid7B"]), 92.6),
-        ("RQ3", "conditional Top-1, Dependency, methods (%)", r1(x[f"cond_top1_pooled/messages/{DEP}"]), 46.1),
-        ("RQ3", "conditional Top-1, Dependency, classes (%)", r1(x[f"cond_top1_pooled/variables/{DEP}"]), 53.6),
-        ("RQ3", "Dependency coverage at prefix 2 (methods, classes)",
-         (hyb("messages", "Cov (Dep)")[0], hyb("variables", "Cov (Dep)")[0]), (57.9, 53.4)),
-        ("RQ3", "constrained 7B Top-1 at prefix 2 (methods, classes)",
-         (hyb("messages", "T1 LM")[0], hyb("variables", "T1 LM")[0]), (67.7, 74.7)),
+        ("RQ3", "conditional Top-1, 7B reranker, methods / classes (%)",
+         both(lambda k: r1(x[f"cond_top1_pooled/{k}/hybrid7B"])), (70.7, 92.6)),
+        ("RQ3", "conditional Top-1, Dependency, methods / classes (%)",
+         both(lambda k: r1(x[f"cond_top1_pooled/{k}/{DEP}"])), (46.1, 53.6)),
+        ("RQ3", "Dependency Recall@10 at prefix 2, methods / classes (%)", both(lambda k: r1(rec(k, DEP, 2))), (57.9, 53.4)),
+        ("RQ3", "constrained 7B Top-1 at prefix 2, methods / classes (%)", both(lambda k: r1(top1(k, "llm7B", 2))), (67.7, 74.7)),
         ("RQ3", "class prefixes where 7B reranker Top-1 > constrained 7B",
-         [p for i, p in enumerate(PREF) if hyb("variables", "T1 Hyb")[i] > hyb("variables", "T1 LM")[i]], [4, 5, 6, 7, 8]),
+         [p for p in PREF if top1("variables", "hybrid7B", p) > top1("variables", "llm7B", p)], [4, 5, 6, 7, 8]),
         ("RQ3", "class prefixes where 7B reranker MRR > constrained 7B",
          [p for p in PREF if mrr("variables", "hybrid7B", p) > mrr("variables", "llm7B", p)], [5, 6, 7, 8]),
-        ("RQ3", "class MRR at prefix 8 (reranking, constrained)",
+        ("RQ3", "class MRR at prefix 8, 7B reranking / constrained 7B",
          (r3(mrr("variables", "hybrid7B", 8)), r3(mrr("variables", "llm7B", 8))), (0.923, 0.912)),
-        ("RQ3", "method prefixes where 7B reranker MRR > constrained 7B",
-         [p for p in PREF if mrr("messages", "hybrid7B", p) > mrr("messages", "llm7B", p)], []),
-        ("RQ3", "method MRR at prefix 8, 3B (reranking, constrained)",
-         (r3(mrr("messages", "hybrid3B", 8)), r3(mrr("messages", "llm3B", 8))), (0.851, 0.846)),
-        ("RQ3", "pooled 3B method MRR favours constrained generation", mrr("messages", "llm3B") > mrr("messages", "hybrid3B"), True),
-        ("RQ3", "method coverage at prefix 8 (Dependency, constrained 7B)",
-         (hyb("messages", "Cov (Dep)")[6], hyb("messages", "Cov (LM)")[6]), (96.7, 89.7)),
-        ("RQ3", "method MRR at prefix 8 (Dependency, constrained 7B)",
-         (r3(mrr("messages", DEP, 8)), r3(mrr("messages", "llm7B", 8))), (0.765, 0.867)),
-        ("RQ3", "constrained > reranking pooled MRR at every size",
-         all(mrr(k, f"llm{s}") > mrr(k, f"hybrid{s}") for k in ("messages", "variables") for s in SIZES), True),
-        ("RQ3", "method packages favouring constrained 7B over 7B reranking", sign("messages", "llm7B", "hybrid7B")["win"], 36),
-        ("RQ3", "class packages: favour constrained 7B, favour 7B reranking",
-         (sign("variables", "llm7B", "hybrid7B")["win"], sign("variables", "llm7B", "hybrid7B")["loss"]), (19, 18)),
-        ("RQ3", "  ... p = 1.0", sign("variables", "llm7B", "hybrid7B")["p"], 1.0),
-        ("RQ4", "pooled MRR increases with size within each CLM strategy",
-         all(mrr(k, f"{f}{a}") < mrr(k, f"{f}{b}") for k in ("messages", "variables")
-             for f in ("llmUnvalidated", "llm", "hybrid") for a, b in zip(SIZES, SIZES[1:])), True),
-        ("RQ4", "largest adjacent-size gain is 0.5B -> 1.5B",
+        ("RQ3", "Dependency Recall@10 at class prefix 8 (%)", r1(rec("variables", DEP, 8)), 95.1),
+        ("RQ3", "method prefixes where constrained 7B MRR > 7B reranker",
+         [p for p in PREF if mrr("messages", "llm7B", p) > mrr("messages", "hybrid7B", p)], list(PREF)),
+        ("RQ3", "Recall@10 at method prefix 8, Dependency / constrained 7B (%)",
+         (r1(rec("messages", DEP, 8)), r1(rec("messages", "llm7B", 8))), (96.7, 89.7)),
+        ("RQ3", "method MRR at prefix 8, 7B reranking / constrained 7B",
+         (r3(mrr("messages", "hybrid7B", 8)), r3(mrr("messages", "llm7B", 8))), (0.863, 0.867)),
+        ("RQ3", "constrained > reranking MRR at every size, both tasks",
+         all(mrr(k, f"llm{s}") > mrr(k, f"hybrid{s}") for k, s in pairs), True),
+        ("RQ4", "MRR increases with size for each CLM approach, both tasks",
+         all(mrr(k, f"{f}{a}") < mrr(k, f"{f}{b}") for k in K for f in FAM for a, b in zip(SIZES, SIZES[1:])), True),
+        ("RQ4", "largest adjacent-size gain is 0.5B -> 1.5B (every approach and task)",
          all(max(zip(SIZES, SIZES[1:]), key=lambda ab: mrr(k, f"{f}{ab[1]}") - mrr(k, f"{f}{ab[0]}"))[0] == "05B"
-             for k in ("messages", "variables") for f in ("llmUnvalidated", "llm", "hybrid")), True),
-        ("RQ4", "constrained 1.5B > 0.5B, method packages", sign("messages", "llm15B", "llm05B")["win"], 42),
-        ("RQ4", "constrained 1.5B MRR (methods, classes)", (r3(mrr("messages", "llm15B")), r3(mrr("variables", "llm15B"))), (0.729, 0.846)),
-        ("RQ4", "constrained 7B vs 1.5B, method packages (win/loss/tie)",
-         tuple(sign("messages", "llm7B", "llm15B")[f] for f in ("win", "loss", "tie")), (39, 2, 6)),
-        ("RQ4", "constrained 0.5B > Dependency (method packages, class packages)",
-         (sign("messages", "llm05B", DEP)["win"], sign("variables", "llm05B", DEP)["win"]), (43, 25)),
-        ("RQ4", "  ... class p (2 decimals)", round(sign("variables", "llm05B", DEP)["p"], 2), 0.03),
-        ("RQ4", "  ... class p above the Bonferroni threshold 0.05/26", sign("variables", "llm05B", DEP)["p"] > 0.05 / 26, True),
-        ("RQ4", "neural mean time range (s)", (round(min(neural) / 1000, 2), round(max(neural) / 1000, 2)), (0.76, 5.23)),
-        ("RQ4", "heuristic mean time, methods (Baseline, Dependency ms)",
-         (round(ms("messages", "heuristicsBaseline")), round(ms("messages", DEP))), (105, 160)),
-        ("RQ4", "heuristic mean time, classes (Baseline, Dependency ms)",
-         (round(ms("variables", "heuristicsBaseline")), round(ms("variables", DEP))), (11, 26)),
-        ("RQ4", "time reductions from constraints (min, max %)", (round(min(reductions)), round(max(reductions))), (13, 60)),
-        ("RQ4", "exception: 1.5B class time (unconstrained, constrained ms)",
-         (round(ms("variables", "llmUnvalidated15B")), round(ms("variables", "llm15B"))), (759, 999)),
-        ("RQ4", "constrained method time (0.5B, 1.5B ms)", (round(ms("messages", "llm05B")), round(ms("messages", "llm15B"))), (3354, 835)),
-        ("RQ4", "7B reranking time (methods, classes ms)", (round(ms("messages", "hybrid7B")), round(ms("variables", "hybrid7B"))), (2168, 2318)),
-        ("RQ4", "constrained 7B time (methods, classes ms)", (round(ms("messages", "llm7B")), round(ms("variables", "llm7B"))), (2074, 1956)),
-        ("RQ4", "exact constrained 3B method mean (ms, label 1,699)", round(x["ms_exact/messages/llm3B"], 2), 1698.52),
-        ("Synthesis", "class 1.5B MRR gain from constraints",
-         round(mrr("variables", "llm15B") - mrr("variables", "llmUnvalidated15B"), 3), 0.100),
-        ("Synthesis", "class MRR gain from scaling constrained 1.5B -> 7B",
-         round(mrr("variables", "llm7B") - mrr("variables", "llm15B"), 3), 0.033),
+             for k in K for f in FAM), True),
+        ("RQ4", "constrained 0.5B -> 1.5B MRR, methods", (r3(mrr("messages", "llm05B")), r3(mrr("messages", "llm15B"))), (0.675, 0.729)),
+        ("RQ4", "constrained 0.5B -> 1.5B MRR, classes", (r3(mrr("variables", "llm05B")), r3(mrr("variables", "llm15B"))), (0.786, 0.846)),
+        ("RQ4", "constrained 7B MRR, methods / classes", both(lambda k: r3(mrr(k, "llm7B"))), (0.774, 0.879)),
+        ("RQ4", "constrained 0.5B MRR > Dependency, both tasks", all(mrr(k, "llm05B") > mrr(k, DEP) for k in K), True),
+        ("RQ4", "CLM mean time range (ms)", (msr(min(neural)), msr(max(neural))), (759, 5230)),
+        ("RQ4", "Baseline / Dependency mean time, methods (ms)",
+         (msr(ms("messages", "heuristicsBaseline")), msr(ms("messages", DEP))), (105, 160)),
+        ("RQ4", "Baseline / Dependency mean time, classes (ms)",
+         (msr(ms("variables", "heuristicsBaseline")), msr(ms("variables", DEP))), (11, 26)),
+        ("RQ4", "constraints faster (of 8 size x task combinations)", len(faster), 7),
+        ("RQ4", "7B unconstrained -> constrained time, methods (ms)",
+         (msr(ms("messages", "llmUnvalidated7B")), msr(ms("messages", "llm7B"))), (3947, 2074)),
+        ("RQ4", "7B unconstrained -> constrained time, classes (ms)",
+         (msr(ms("variables", "llmUnvalidated7B")), msr(ms("variables", "llm7B"))), (3802, 1956)),
+        ("RQ4", "the exception is 1.5B classes", [(k, s) for k, s in pairs if (k, s) not in faster], [("variables", "15B")]),
+        ("RQ4", "1.5B class time, constrained / unconstrained (ms)",
+         (msr(ms("variables", "llm15B")), msr(ms("variables", "llmUnvalidated15B"))), (999, 759)),
+        ("RQ4", "constrained method time, 0.5B / 1.5B (ms)", (msr(ms("messages", "llm05B")), msr(ms("messages", "llm15B"))), (3354, 835)),
+        ("RQ4", "7B reranking time, methods / classes (ms)", both(lambda k: msr(ms(k, "hybrid7B"))), (2168, 2318)),
+        ("RQ4", "constrained 7B time, methods / classes (ms)", both(lambda k: msr(ms(k, "llm7B"))), (2074, 1956)),
+        ("VI Discussion", "constraints improve Top-1 at every size, both tasks",
+         all(top1(k, f"llm{s}") > top1(k, f"llmUnvalidated{s}") for k, s in pairs), True),
+        ("VI Discussion", "constrained 1.5B vs unconstrained 7B MRR, methods",
+         (r3(mrr("messages", "llm15B")), r3(mrr("messages", "llmUnvalidated7B"))), (0.729, 0.722)),
+        ("VI Discussion", "constrained 1.5B vs unconstrained 7B MRR, classes",
+         (r3(mrr("variables", "llm15B")), r3(mrr("variables", "llmUnvalidated7B"))), (0.846, 0.791)),
+        ("VI Discussion", "Dependency Recall@10 at prefix 2, methods / classes (%)", both(lambda k: r1(rec(k, DEP, 2))), (57.9, 53.4)),
+        ("VI Discussion", "class MRR at prefix 8, 7B reranking / constrained 7B",
+         (r3(mrr("variables", "hybrid7B", 8)), r3(mrr("variables", "llm7B", 8))), (0.923, 0.912)),
+        ("VI Discussion", "no 7B reversal for method MRR at any prefix",
+         any(mrr("messages", "hybrid7B", p) > mrr("messages", "llm7B", p) for p in PREF), False),
+        ("VI Discussion", "CLM mean time range (ms)", (msr(min(neural)), msr(max(neural))), (759, 5230)),
+        ("VII Conclusion", "constrained 7B gain over Dependency, methods / classes (%)",
+         both(lambda k: gain(k, "llm7B")), (49.7, 48.4)),
     ]
-    return out
 
 
 def normalise(value):

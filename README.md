@@ -39,7 +39,7 @@ It then runs `analysis/verify_paper.py`.
 
 1. Each of the 8 generated tables and figures equals the paper's file in `expected/paper-supplemental/`. Comment lines are ignored.
 2. All 546 statistics equal `expected/analysis-stats.reference.json`, the statistics file the paper was written from.
-3. 89 statistics behind the paper's text are recomputed (MRR, Top-k, gains, times, corpus and observation counts, and supporting package-level sign tests). See `results/verification-report.md`.
+3. Every number and comparison stated in the paper's text (75 claims, section by section: MRR, Top-1, Recall@10, gains, validity, list lengths, times, corpus and observation counts) is recomputed from unrounded values. See `results/verification-report.md`.
 
 **Packages.** The study covers 47 packages of the Pharo 14 image (`data/experiment/analysed-packages.txt`), each with all 28 benchmarks (2 kinds × 14 strategies).
 
@@ -65,7 +65,7 @@ make setup rerun EXPERIMENT_DIR=experiment BENCHMARK_JOBS=8
 
 The re-run benchmarks the 47 packages of the paper (`data/experiment/analysed-packages.txt`): 47 × 28 = 1,316 benchmarks.
 
-`rerun/run-benchmarks.sh` runs `pipeline/pipeline-benchmarks.sh` unchanged (its `BENCHMARK_PACKAGES_FILE` option gives the package list), with the Ollama server settings of the paper's run: `OLLAMA_NUM_PARALLEL=8`, `OLLAMA_MAX_LOADED_MODELS=4`, `OLLAMA_KEEP_ALIVE=-1` and `OLLAMA_CONTEXT_LENGTH=4096`. On Linux, the pipeline downloads Ollama itself; elsewhere, install it or set `OLLAMA_BIN`. The pipeline pulls the four models `pharo-llm/Qwen2.5-Coder-SFT:{0.5B,1.5B,3b,7b}` (F16); the expected digests are in `data/provenance/ollama-tags.json`.
+`rerun/run-benchmarks.sh` runs `pipeline/pipeline-benchmarks.sh` unchanged (its `BENCHMARK_PACKAGES_FILE` option gives the package list), with the Ollama server settings of the paper's run: `OLLAMA_NUM_PARALLEL=8`, `OLLAMA_MAX_LOADED_MODELS=4`, `OLLAMA_KEEP_ALIVE=-1` and `OLLAMA_CONTEXT_LENGTH=4096` (a server default only: every request sets `num_ctx` to 8,192 tokens, the context window reported in the paper). On Linux, the pipeline downloads Ollama itself; elsewhere, install it or set `OLLAMA_BIN`. The pipeline pulls the four models `pharo-llm/Qwen2.5-Coder-SFT:{0.5B,1.5B,3b,7b}` (F16); the expected digests are in `data/provenance/ollama-tags.json`.
 
 **GPU memory.** The defaults keep all four F16 models loaded (about 25 GB) and serve 8 benchmarks at once, as on the paper's 64 GB GPUs. With less memory, Ollama keeps evicting and reloading models, and benchmarks fail with `ConnectionTimedOut: Data receive timed out` in their `worker.log`. Lower the load instead, e.g. on a 36 GB Apple-silicon Mac: `BENCHMARK_JOBS=2 OLLAMA_MAX_LOADED_MODELS=1`. Quality metrics do not depend on these settings, only times do.
 
@@ -105,7 +105,7 @@ The checkpoints use internal names; the paper uses these labels:
 | `heuristicsBaseline` | Baseline |
 | `heuristicsDependency` | Dependency |
 | `llmUnvalidated{05B,15B,3B,7B}` | Unconstrained generation |
-| `llm{05B,15B,3B,7B}` | Vocabulary-constrained generation |
-| `hybrid{05B,15B,3B,7B}` | Dependency + CLM reranking |
+| `llm{05B,15B,3B,7B}` | Constrained generation |
+| `hybrid{05B,15B,3B,7B}` | CLM reranking (of Dependency's candidates) |
 
 `messages` = method selectors; `variables` = class names.
