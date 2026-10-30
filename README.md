@@ -10,6 +10,27 @@ Everything is run with one command:
 
 `results/paper/` holds every results table and figure of the paper, as drop-in replacements for the paper's `supplemental/` files:
 
+| Paper | File |
+|---|---|
+| Table I: MRR by prefix length | `tab-mrr-by-prefix.tex` |
+| Table II: names returned by (un)constrained generation | `tab-vocabulary-constraints.tex` |
+| Table III: coverage and ranking by prefix length | `tab-reranking-coverage.tex` |
+| Figure 3: mean completion time per observation | `fig-quality-and-time.tex` |
+| Supplementary | `tab-top-k-accuracy.tex`, `tab-name-validity-by-prefix.tex`, `tab-prefix-policies.tex`, `fig-package-mrr.tex` |
+
+Figures 1 and 2 are method diagrams and contain no results.
+
+`./run.sh` then checks the regenerated results against the paper (`analysis/verify_paper.py`), with three checks:
+
+1. every generated file is identical to the paper's supplemental file (`expected/paper-supplemental/`, comment lines ignored);
+2. all 546 statistics are identical to `expected/analysis-stats.reference.json`;
+3. every number and comparison in the paper's text (abstract to conclusion), and every stated setting (inference, search, timeout, hardware, Ollama versions, workers, image), is recomputed from the checkpoints, the benchmark source and the provenance. Each one is listed in `results/verification-report.md`.
+
+It exits with status 0 only if all checks pass.
+
+## The 47 packages
+
+`data/experiment/analysed-packages.txt` lists the 47 analysed packages, with one checkpoint directory each in `data/checkpoints/`.
 
 ## Re-running the benchmarks
 

@@ -203,7 +203,27 @@ def settings():
     tags = json.loads((prov / "ollama-tags.json").read_text())["models"]
     with tarfile.open(ROOT / "frozen-image" / "pharo14-frozen-image.tar.gz") as archive:
         sources = [n for n in archive.getnames() if n.endswith(".sources")]
+    models = json.loads((ROOT / "data" / "experiment" / "llm-models.json").read_text())
+    analysed = [line.split("#", 1)[0].strip() for line in
+                (ROOT / "data" / "experiment" / "analysed-packages.txt").read_text().splitlines()]
+    analysed = {name for name in analysed if name}
+    timings = [json.loads(line) for f in sorted(prov.glob("task-timings*.jsonl"))
+               for line in f.read_text().splitlines() if line]
+    hours = sum(t["seconds"] for t in timings if t["package"] in analysed) / 3600
+    # Benchmarks started on Grid5000 (job logs); the others ran on the Mac.
+    started = {m.groups() for f in sorted((prov / "logs").glob("heuristic-completion.*.out"))
+               for m in re.finditer(r"Started (\S+) \[(\w+) (\w+)\]", f.read_text(encoding="utf-8", errors="replace"))
+               if m.group(1) in analysed}
+    grid_heuristics = sum(1 for _, _, s in started if s.startswith("heuristics"))
+    grid_05b = sum(1 for _, _, s in started if s.endswith("05B"))
     return [
+        ("III-A Observations", "OrderedCollection gives prefixes Or ... OrderedC (seven observations)",
+         ["OrderedCollection"[:k] for k in range(2, min(len("OrderedCollection"), 8) + 1)][::6] + [min(len("OrderedCollection"), 8) - 1],
+         ["Or", "OrderedC", 7]),
+        ("IV-A Corpus", "application code, tools, tests and baseline packages",
+         (any(p.startswith("BaselineOf") for p in analysed), any(p.endswith("-Tests") for p in analysed)), (True, True)),
+        ("IV-A Models", "four Pharo-specialized Qwen2.5-Coder models, 0.5B / 1.5B / 3B / 7B",
+         [m.split(":")[1].upper() for m in models if "Qwen2.5-Coder" in m], ["0.5B", "1.5B", "3B", "7B"]),
         ("IV-A Inference", "temperature / seed", (setting(client, r"payloadFor: snapshot temperature: (\d+) seed"),
                                                    setting(client, r"payloadFor: snapshot temperature: \d+ seed: (\d+)")), ("0", "42")),
         ("IV-A Inference", "context window (tokens)", setting(client, r"'num_ctx' -> (\d+)"), "8192"),
@@ -220,6 +240,9 @@ def settings():
         ("IV-D Environment", "benchmark workers (Mac, Grid5000 node)", jobs, [2, 8]),
         ("IV-D Environment", "F16 weights for the four models", sorted({m["details"]["quantization_level"] for m in tags}) + [len(tags)], ["F16", 4]),
         ("IV-D Environment", "Pharo 14.0 64-bit image, sources 74f3a1b", sources, ["Pharo14.0-64bit-74f3a1b.sources"]),
+        ("IV-D Environment", "more than 100 hours of computation (recorded benchmark time)", hours > 100, True),
+        ("IV-D Environment", "heuristics not run on Grid5000 (benchmarks started there)", grid_heuristics, 0),
+        ("IV-D Environment", "most 0.5B benchmarks not run on Grid5000 (of 6 x 47)", grid_05b < 6 * len(analysed) / 2, True),
     ]
 
 

@@ -77,6 +77,9 @@
 | VI Discussion | no 7B reversal for method MRR at any prefix | False | False | ok |
 | VI Discussion | CLM mean time range (ms) | (759, 5230) | (759, 5230) | ok |
 | VII Conclusion | constrained 7B gain over Dependency, methods / classes (%) | (49.7, 48.4) | (49.7, 48.4) | ok |
+| III-A Observations | OrderedCollection gives prefixes Or ... OrderedC (seven observations) | ['Or', 'OrderedC', 7] | ['Or', 'OrderedC', 7] | ok |
+| IV-A Corpus | application code, tools, tests and baseline packages | (True, True) | (True, True) | ok |
+| IV-A Models | four Pharo-specialized Qwen2.5-Coder models, 0.5B / 1.5B / 3B / 7B | ['0.5B', '1.5B', '3B', '7B'] | ['0.5B', '1.5B', '3B', '7B'] | ok |
 | IV-A Inference | temperature / seed | ('0', '42') | ('0', '42') | ok |
 | IV-A Inference | context window (tokens) | 8192 | 8192 | ok |
 | IV-A Inference | one token per request | 1 | 1 | ok |
@@ -92,3 +95,6 @@
 | IV-D Environment | benchmark workers (Mac, Grid5000 node) | [2, 8] | [2, 8] | ok |
 | IV-D Environment | F16 weights for the four models | ['F16', 4] | ['F16', 4] | ok |
 | IV-D Environment | Pharo 14.0 64-bit image, sources 74f3a1b | ['Pharo14.0-64bit-74f3a1b.sources'] | ['Pharo14.0-64bit-74f3a1b.sources'] | ok |
+| IV-D Environment | more than 100 hours of computation (recorded benchmark time) | True | True | ok |
+| IV-D Environment | heuristics not run on Grid5000 (benchmarks started there) | 0 | 0 | ok |
+| IV-D Environment | most 0.5B benchmarks not run on Grid5000 (of 6 x 47) | True | True | ok |
