@@ -30,12 +30,12 @@ class ReleasedCheckpoints(unittest.TestCase):
     def test_verification_passes(self):
         self.assertEqual(verify_paper.main(["--results", str(self.out)]), 0)
 
-    def test_matched_population(self):
-        extra = self.stats["extra"]
-        self.assertEqual(len(extra["complete_packages"]), 47)
-        self.assertEqual(set(extra["incomplete_packages"]),
-                         {"Slot-Tests", "Reflectivity-Tests", "Morphic-Widgets-Windows"})
-        self.assertEqual(self.stats["tasks_done"], 1367)
+    def test_packages(self):
+        names = [line.split("#", 1)[0].strip()
+                 for line in (ROOT / "data" / "experiment" / "analysed-packages.txt").read_text().splitlines()]
+        self.assertEqual(self.stats["extra"]["packages"], [name for name in names if name])
+        self.assertEqual(len(self.stats["extra"]["packages"]), 47)
+        self.assertEqual(self.stats["tasks_done"], 47 * 28)
 
     def test_reranking_keeps_recall(self):
         self.assertEqual(self.stats["hybrid_invariant"]["violations"], 0)
@@ -60,9 +60,9 @@ class Helpers(unittest.TestCase):
 
 
 class IncompleteRun(unittest.TestCase):
-    """A package missing a benchmark is excluded, never filled with zeros."""
+    """In an unfinished re-run, a package missing a benchmark is skipped, never filled with zeros."""
 
-    def test_incomplete_package_is_excluded(self):
+    def test_unfinished_package_is_skipped(self):
         with tempfile.TemporaryDirectory() as tmp:
             copy = Path(tmp) / "packages"
             shutil.copytree(CHECKPOINTS / "0001", copy / "0001")

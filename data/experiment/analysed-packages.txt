@@ -1,4 +1,4 @@
-# The 47 packages analysed in the paper: those of the 50 selected (seed 42) whose 28 benchmarks all
+# The 47 packages of the paper (Pharo 14 image), each benchmarked for 2 kinds x 14 strategies.
 Network-Mail
 Spec2-ListView
 System-Settings-Core

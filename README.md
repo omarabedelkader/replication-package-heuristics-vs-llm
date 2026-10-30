@@ -26,9 +26,9 @@ make            # = python3 analysis/reproduce_paper.py && python3 analysis/veri
 
 1. Each of the 8 generated tables and figures equals the paper's file in `expected/paper-supplemental/`. Comment lines are ignored.
 2. All 546 statistics equal `expected/analysis-stats.reference.json`, the statistics file the paper was written from.
-3. 90 numbers quoted in the paper's text are recomputed (MRR, Top-k, gains, package sign tests, times, corpus and observation counts). See `results/verification-report.md`.
+3. 89 numbers quoted in the paper's text are recomputed (MRR, Top-k, gains, package sign tests, times, corpus and observation counts). See `results/verification-report.md`.
 
-**Matched population.** Only packages whose 28 benchmarks (2 kinds × 14 strategies) all completed are analysed. That is 47 of the 50 packages selected with seed 42 from 733 eligible packages. Three packages were excluded because their runs did not finish: Slot-Tests (18 of 28 benchmarks), Reflectivity-Tests (15) and Morphic-Widgets-Windows (18). Missing benchmarks are never filled with zeros.
+**Packages.** The study covers 47 packages of the Pharo 14 image (`data/experiment/analysed-packages.txt`), each with all 28 benchmarks (2 kinds × 14 strategies).
 
 ## Level 2: frozen experiment and smoke test
 
@@ -40,7 +40,7 @@ make setup smoke EXPERIMENT_DIR=experiment
 - extracts the exact image (SHA-256 `5af77f5f…5859`);
 - installs a Pharo 14 VM for your platform;
 - checks the image and source against the pinned hashes;
-- checks that the image sees the same 733 eligible packages as the saved selection.
+- checks that the image holds the 47 packages of the paper.
 
 `rerun/smoke-test.sh` re-runs the deterministic heuristic benchmarks of one package with the original worker. It checks that counts, Top-k hits and reciprocal-rank sums equal the released checkpoints (Network-Mail by default; `rerun/smoke-test.sh DIR PACKAGE` for another).
 
@@ -50,7 +50,7 @@ make setup smoke EXPERIMENT_DIR=experiment
 make setup rerun EXPERIMENT_DIR=experiment BENCHMARK_JOBS=8
 ```
 
-The re-run benchmarks the 47 packages the paper analyses (`data/experiment/analysed-packages.txt`): 47 × 28 = 1,316 benchmarks. The three packages whose runs did not finish are not in the paper, so they are not re-run. To run all 50 selected packages instead, set `BENCHMARK_PACKAGES_FILE=data/experiment/benchmark-selection.json`. The package list does not change any result: each benchmark measures its own package, and the packages left out of the list are not used by any benchmark.
+The re-run benchmarks the 47 packages of the paper (`data/experiment/analysed-packages.txt`): 47 × 28 = 1,316 benchmarks.
 
 `rerun/run-benchmarks.sh` runs `pipeline/pipeline-benchmarks.sh` unchanged (its `BENCHMARK_PACKAGES_FILE` option gives the package list), with the Ollama server settings of the paper's run: `OLLAMA_NUM_PARALLEL=8`, `OLLAMA_MAX_LOADED_MODELS=4`, `OLLAMA_KEEP_ALIVE=-1` and `OLLAMA_CONTEXT_LENGTH=4096`. On Linux, the pipeline downloads Ollama itself; elsewhere, install it or set `OLLAMA_BIN`. The pipeline pulls the four models `pharo-llm/Qwen2.5-Coder-SFT:{0.5B,1.5B,3b,7b}` (F16); the expected digests are in `data/provenance/ollama-tags.json`.
 
@@ -69,8 +69,8 @@ On clusters, use `pipeline/job.oar.sh` (Grid5000/OAR), `pipeline/submit-shared.s
 
 | Path | What |
 |---|---|
-| `data/checkpoints/NNNN/benchmarks/<kind>-<strategy>/part.json` | 1,367 checkpoints: per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
-| `data/experiment/` | Saved package selection (50, seed 42), the 47 analysed packages, image/source pins, model tags |
+| `data/checkpoints/NNNN/benchmarks/<kind>-<strategy>/part.json` | 1,316 checkpoints (47 packages × 28): per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
+| `data/experiment/` | The 47 packages, image/source pins, model tags |
 | `data/provenance/` | `workers.json` (run ID, input SHA-256s), model digests, per-task timings and hosts, worker invocations, job and Ollama logs (usernames anonymized) |
 | `lib/HeuristicCompletion-Benchmarks-Multiples/` | Frozen Smalltalk benchmark source loaded in the image; the pipeline uses this local copy |
 | `frozen-image/` | The exact Pharo 14 image, changes and sources files |

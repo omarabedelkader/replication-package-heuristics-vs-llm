@@ -35,7 +35,7 @@ fi
 
 cp -R "$PACKAGE_DIR/lib/HeuristicCompletion-Benchmarks-Multiples" "$EXPERIMENT_DIR/repository"
 # No benchmark-selection.json: the pipeline saves the experiment's selection from the package
-# list of the run (rerun/run-benchmarks.sh: the 47 analysed packages by default).
+# list of the run (rerun/run-benchmarks.sh: the 47 packages of the paper).
 cp "$PACKAGE_DIR"/data/experiment/{image-source.json,llm-models.json} "$EXPERIMENT_DIR/"
 
 # Exit 0: the image is the pinned one and it holds the frozen source.
@@ -44,13 +44,14 @@ cp "$PACKAGE_DIR"/data/experiment/{image-source.json,llm-models.json} "$EXPERIME
     --image "$EXPERIMENT_DIR/image/Pharo.image" --pin "$EXPERIMENT_DIR/image-source.json"
 echo "Image and source match the pinned SHA-256 of the paper's run."
 
-# The image must see the same 733 eligible packages as the saved selection.
-(cd "$EXPERIMENT_DIR/image" && BENCHMARK_SELECTION_FILE="$PACKAGE_DIR/data/experiment/benchmark-selection.json" \
+# The image must hold the 47 packages of the paper.
+(cd "$EXPERIMENT_DIR/image" && BENCHMARK_PACKAGES_FILE="$PACKAGE_DIR/data/experiment/analysed-packages.txt" \
     ./pharo --headless Pharo.image eval "
-| split |
-split := CooBenchmarkSplit readFrom: (OSEnvironment current at: 'BENCHMARK_SELECTION_FILE') asFileReference.
-split validateAgainst: CooBenchRunner eligiblePackageNames.
-'Selection valid: ', split benchmarkPackageNames size printString, ' benchmark packages of ',
-    CooBenchRunner eligiblePackageNames size printString, ' eligible'")
+| names missing |
+names := ((OSEnvironment current at: 'BENCHMARK_PACKAGES_FILE') asFileReference contents lines
+    collect: [ :each | (each copyUpTo: $#) trim ]) reject: [ :each | each isEmpty ].
+missing := names reject: [ :each | CooBenchRunner eligiblePackageNames includes: each ].
+missing ifNotEmpty: [ Error signal: 'Packages missing from the image: ', (', ' join: missing) ].
+names size printString, ' packages found in the image'")
 echo "Experiment ready: $EXPERIMENT_DIR"
 echo "Next: rerun/run-benchmarks.sh $EXPERIMENT_DIR"

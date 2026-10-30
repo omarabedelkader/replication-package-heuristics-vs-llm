@@ -23,7 +23,7 @@ Three different units must be distinguished:
 
 | Unit | Meaning |
 | --- | --- |
-| Package | A selected package from the frozen Pharo image |
+| Package | One of the 47 packages of the frozen Pharo image |
 | Benchmark task | One package × one completion kind × one strategy |
 | Observation | One eligible AST occurrence × one tested prefix length, evaluated by a strategy |
 
@@ -46,11 +46,11 @@ For each kind, the worker measures 14 strategy configurations:
 | Dependency candidates reranked by an LLM | 0.5B; 1.5B; 3B; 7B | 4 |
 | **Total per kind** | | **14** |
 
-Consequently, each package requires `2 × 14 = 28` tasks. With 50 packages, the complete experiment requires **1,400 tasks**. Each finished task retains seven rows, corresponding to prefix lengths 2–8, so a complete run contains 9,800 task/prefix rows. These rows are aggregates, not individual observations; some rows can have zero observations.
+Consequently, each package requires `2 × 14 = 28` tasks. With 47 packages, the complete experiment requires **1,316 tasks**. Each finished task retains seven rows, corresponding to prefix lengths 2–8, so a complete run contains 9,212 task/prefix rows. These rows are aggregates, not individual observations; some rows can have zero observations.
 
 The final before-validation and after-validation reports each show 10 strategies: two heuristics, four LLMs, and four hybrids. The two reports reuse the same heuristic and hybrid measurements. Only the four standalone LLM configurations change between them.
 
-## 3. Corpus construction and package selection
+## 3. Corpus construction
 
 ### 3.1 Source of the corpus
 
@@ -58,42 +58,23 @@ The corpus comes from packages already loaded in the experiment's Pharo image. T
 
 The authoritative traversal is `CoBenchmarkPackage>>methodsDo:`. The frozen benchmark source calls this image-provided implementation rather than defining an independent traversal. Corpus reporting follows the same traversal, so its method count is not a claim about every method present in the repository or every extension method registered in the image.
 
-The corpus summary counts selected packages, their defined non-trait classes, and the unique methods visited by the benchmark traversal. The saved per-package corpus summaries for this experiment give:
+The corpus summary counts the packages, their defined non-trait classes, and the unique methods visited by the benchmark traversal. The saved per-package corpus summaries for this experiment give:
 
 | Entity | Count |
 | --- | ---: |
-| Selected packages | 50 |
-| Defined non-trait classes | 585 |
-| Traversed methods | 5,538 |
+| Packages | 47 |
+| Defined non-trait classes | 501 |
+| Traversed methods | 4,277 |
 
 These are corpus entities, not completion-observation counts. A method can contain multiple target occurrences, and each target can produce several prefix observations.
 
-### 3.2 Eligible pool and sampling
+### 3.2 Packages
 
-`CooBenchRunner>>eligiblePackageNames` selects loaded packages for which `CoBenchmarkPackage>>methodsDo:` visits at least one method. Package names are deduplicated and sorted before sampling.
+The corpus is 47 packages of the Pharo 14 image, listed in the appendix and in `data/experiment/analysed-packages.txt`. They include application code, development tools, tests and baseline packages. Every package is benchmarked for both kinds and all 14 strategies.
 
-The selection algorithm repeatedly chooses a random index from the remaining sorted names and removes that name. This samples packages without replacement. The random-number generator is Pharo's `Random`, initialized with the saved seed.
+The packages are not excluded from the language models' pretraining or supervised fine-tuning data. Establishing that would require separate model-training provenance, which this pipeline does not provide.
 
-For this experiment, `benchmark-selection.json` records:
-
-| Setting | Value |
-| --- | ---: |
-| Eligible packages | 733 |
-| Selected benchmark packages | 50 |
-| Remaining packages in the `train` partition | 683 |
-| Selection seed | 42 |
-
-Sampling is at package level, not stratified by package size, application domain, test status, or number of completion sites. Tests and baseline packages can therefore appear in the selected corpus.
-
-### 3.3 Meaning of the saved `train` partition
-
-The selection file partitions eligible packages into `benchmark` and `train`, with no overlap. It verifies that their union is the eligible pool. However, **the active 1,400-task pipeline does not train a model on the 683 remaining packages**. It uses already available Ollama models.
-
-The partition name does not establish that these benchmark packages were excluded from the language models' pretraining or supervised fine-tuning data. That requires separate model-training provenance, which this pipeline does not provide.
-
-### 3.4 Reuse of the selection
-
-The selection is saved once and reused on resume. Workers check that the saved eligible set matches the image and that their assigned package belongs to the benchmark set. Changing the package pool or selection is not treated as a continuation of the same experiment.
+The package list is saved once and reused on resume. Workers check that their assigned package belongs to the saved list.
 
 ## 4. Creating completion observations
 
@@ -345,9 +326,9 @@ The standard pipeline does not export confidence intervals, significance tests, 
 
 ### 10.1 Frozen experiment inputs
 
-The experiment directory contains a frozen source repository, a prepared Pharo image, an image/source hash file, a package selection, and the benchmark-run directory.
+The experiment directory contains a frozen source repository, a prepared Pharo image, an image/source hash file, the package list, and the benchmark-run directory.
 
-`image-source.json` associates the image hash with the frozen source hash. `workers.json` pins the selection, `Pharo.image`, and three worker/export scripts using SHA-256. Resume rejects changes in these pinned inputs or the selected packages.
+`image-source.json` associates the image hash with the frozen source hash. `workers.json` pins the package list, `Pharo.image`, and three worker/export scripts using SHA-256. Resume rejects changes in these pinned inputs or the selected packages.
 
 The copied source's recorded origin is `GitHub ref: main`; that label alone is not an immutable Git revision. The saved files and content hashes provide the stronger identity for this run.
 
@@ -367,7 +348,7 @@ Each task writes `part.pending.json`. After the child exits successfully, Python
 
 Resume checks completed checkpoints and skips them. If interrupted midway through a task, observations inside that task are not independently checkpointed: that unfinished task is rerun. The pipeline does not need to rerun the completed tasks for the same package.
 
-The message `Packages left in this run: 50/50` means no package has completed all 28 tasks yet. It does not imply that no checkpoints have completed.
+The message `Packages left in this run: 47/47` means no package has completed all 28 tasks yet. It does not imply that no checkpoints have completed.
 
 ### 10.4 Shared Grid5000 execution
 
@@ -383,7 +364,7 @@ The default local launcher detaches the pipeline from the terminal and writes to
 
 ## 11. Aggregation and final artifacts
 
-Once all 28 parts for a package exist, they are merged into `result.json`. Package merging verifies consistent corpus counts. Full aggregation requires valid complete results for every selected package.
+Once all 28 parts for a package exist, they are merged into `result.json`. Package merging verifies consistent corpus counts. Full aggregation requires valid complete results for every package.
 
 The pipeline creates `aggregate-before.json`, `aggregate-after.json`, and `aggregate.json` in the benchmark-run directory. In the before view, unvalidated LLM strategies are renamed to the corresponding publication labels; in the after view, the validated LLM strategies are selected. Heuristic and hybrid rows are shared.
 
@@ -432,9 +413,9 @@ Consequently, a combined timing or memory chart must not be presented as a contr
 
 ### 12.3 Dataset and target limitations
 
-The corpus is one image's selected packages, including tests and infrastructure. It is not a random sample of all Pharo projects or interactive editing sessions. Repeated call sites and multiple prefixes from the same occurrence are correlated. A large raw observation count should not be interpreted as that many independent experimental subjects.
+The corpus is 47 packages of one image, including tests and infrastructure. It is not a random sample of all Pharo projects or interactive editing sessions. Repeated call sites and multiple prefixes from the same occurrence are correlated. A large raw observation count should not be interpreted as that many independent experimental subjects.
 
-Exact-match scoring credits the original name only. Alternative useful suggestions receive no credit. Fully typed-name cases are included, and one-character names are excluded by the minimum prefix length. Both choices affect the population being measured.
+Exact-match scoring credits the original name only. Alternative useful suggestions receive no credit. Fully typed-name cases are included, and one-character names are excluded by the minimum prefix length. Both choices affect which observations are measured.
 
 ### 12.4 Vocabulary and context limitations
 
@@ -469,7 +450,7 @@ The stable experiment identifiers inspected for this document are:
 | Frozen image SHA-256 | `5af77f5f30b5cb5079177708868e3b046c8d6543b16765ca26cece3d77a95859` |
 | Frozen source SHA-256 | `881597d7d9a2be16e6d238685ce5464b7cabb719b4656dd87eb1b28c15db41f0` |
 
-A reproducibility archive should retain the selection, frozen source, image and source files, manifests, model tags and digests, Ollama and VM versions, environment settings, hardware information, logs, timings, and completed parts. The current source hashes protect important inputs but do not replace this broader environment record.
+A reproducibility archive should retain the package list, frozen source, image and source files, manifests, model tags and digests, Ollama and VM versions, environment settings, hardware information, logs, timings, and completed parts. The current source hashes protect important inputs but do not replace this broader environment record.
 
 ## 14. Source map
 
@@ -477,7 +458,7 @@ The following local files establish the implementation details above. These refe
 
 | Topic | Source |
 | --- | --- |
-| Selection, model mapping, corpus | [CooBenchRunner](oar-runs/336588/repository/src/ExtendedHeuristicCompletion-Benchmarks/CooBenchRunner.class.st), [CooBenchmarkSplit](oar-runs/336588/repository/src/ExtendedHeuristicCompletion-Benchmarks/CooBenchmarkSplit.class.st) |
+| Package list, model mapping, corpus | [CooBenchRunner](oar-runs/336588/repository/src/ExtendedHeuristicCompletion-Benchmarks/CooBenchRunner.class.st), [CooBenchmarkSplit](oar-runs/336588/repository/src/ExtendedHeuristicCompletion-Benchmarks/CooBenchmarkSplit.class.st) |
 | Message heuristic configurations | [CooBenchRunnerMessage](oar-runs/336588/repository/src/ExtendedHeuristicCompletion-Benchmarks/CooBenchRunnerMessage.class.st) |
 | Class-name heuristic configurations | [CooBenchRunnerVariables](oar-runs/336588/repository/src/ExtendedHeuristicCompletion-Benchmarks/CooBenchRunnerVariables.class.st) |
 | Observation construction | [CooStaticBenchmarksMessage](oar-runs/336588/repository/src/ExtendedHeuristicCompletion-Benchmarks/CooStaticBenchmarksMessage.class.st), [CooStaticBenchmarksVariables](oar-runs/336588/repository/src/ExtendedHeuristicCompletion-Benchmarks/CooStaticBenchmarksVariables.class.st) |
@@ -492,9 +473,9 @@ The following local files establish the implementation details above. These refe
 | Local setup, Ollama, publication | [pipeline-benchmarks.sh](pipeline-benchmarks.sh), [pipeline-common.sh](scripts/pipeline-common.sh), [ollama_models.py](scripts/ollama_models.py) |
 | Export tables and charts | [benchmark-export.st](scripts/benchmark-export.st), [CooBenchmarkChart](oar-runs/336588/repository/src/ExtendedHeuristicCompletion-Benchmarks/CooBenchmarkChart.class.st) |
 
-## Appendix: selected packages
+## Appendix: packages
 
-The saved selection order is:
+The 47 packages, in run order:
 
 ```text
 Network-Mail
@@ -508,7 +489,6 @@ Refactoring-Conditions
 Tool-Profilers-Tests
 Zinc-Resource-Meta-Tests
 Iceberg-Libgit-Filetree
-Slot-Tests
 BaselineOfEnlumineurFormatter
 Text-Scanning
 SUnit-Rules-Tests
@@ -518,7 +498,6 @@ FFI-Kernel
 Calypso-SystemTools-QueryBrowser
 Morphic-Widgets-Scrolling
 NewTools-DependencyAnalyser-Tests
-Reflectivity-Tests
 Epicea
 System-Localization-Tests
 Tool-DependencyAnalyser-UI-Tab
@@ -545,6 +524,5 @@ BaselineOfGeometry
 BaselineOfMonticello
 DrTests-TestCoverage-Tests
 System-OSEnvironments
-Morphic-Widgets-Windows
 Collections-Support
 ```

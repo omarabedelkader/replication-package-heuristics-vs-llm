@@ -5,8 +5,7 @@
 # run, then regenerate the paper's tables from the new checkpoints.
 #
 # Usage: rerun/run-benchmarks.sh EXPERIMENT_DIR
-#   BENCHMARK_PACKAGES_FILE  packages to run (default data/experiment/analysed-packages.txt;
-#                            data/experiment/benchmark-selection.json for all 50 selected)
+#   BENCHMARK_PACKAGES_FILE  packages to run (default data/experiment/analysed-packages.txt)
 #   BENCHMARK_JOBS         simultaneous benchmarks (default 8, as in the paper's run)
 #   BENCHMARK_RESUME_DIR   continue an interrupted EXPERIMENT_DIR/benchmark-run.* directory
 #   OLLAMA_BIN, OLLAMA_MODELS_DIR, BENCHMARK_OLLAMA_HOST  see pipeline/pipeline-benchmarks.sh --help
@@ -37,12 +36,12 @@ export OLLAMA_CONTEXT_LENGTH="${OLLAMA_CONTEXT_LENGTH:-4096}"
 status=0
 bash "$PACKAGE_DIR/pipeline/pipeline-benchmarks.sh" --foreground || status=$?
 
-# Analyse what is complete, even after an interruption (incomplete packages are excluded).
+# Analyse what is complete, even after an interruption (unfinished packages are skipped).
 runs=("$EXPERIMENT_DIR"/benchmark-run.*/)
 run="${BENCHMARK_RESUME_DIR:-${runs[${#runs[@]}-1]%/}}"
 "${PIPELINE_PYTHON:-python3}" "$PACKAGE_DIR/analysis/reproduce_paper.py" \
     --checkpoints "$run/packages" --workers "$run/workers.json" \
-    --selection "$EXPERIMENT_DIR/benchmark-selection.json" --out "$EXPERIMENT_DIR/paper-results" || true
+    --out "$EXPERIMENT_DIR/paper-results" || true
 echo "Paper tables from this run: $EXPERIMENT_DIR/paper-results"
 echo "Compare with the paper: python3 $PACKAGE_DIR/analysis/verify_paper.py --results $EXPERIMENT_DIR/paper-results"
 exit "$status"

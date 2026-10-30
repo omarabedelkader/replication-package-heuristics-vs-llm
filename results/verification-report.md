@@ -9,9 +9,8 @@
 | Abstract | 7B reranking MRR gain over Dependency, classes (%) | 37.2 | 37.2 | ok |
 | Abstract | constraints lower mean time (of 8 comparisons) | 7 | 7 | ok |
 | Abstract | 7B reranker beats constrained class MRR at prefixes 5-8 | True | True | ok |
-| Setup | eligible packages | 733 | 733 | ok |
-| Setup | classes in matched packages | 501 | 501 | ok |
-| Setup | traversed methods in matched packages | 4277 | 4277 | ok |
+| Setup | classes in the 47 packages | 501 | 501 | ok |
+| Setup | traversed methods in the 47 packages | 4277 | 4277 | ok |
 | Setup | method observations | 103391 | 103391 | ok |
 | Setup | class observations | 12678 | 12678 | ok |
 | Setup | observations per configuration | 116069 | 116069 | ok |
