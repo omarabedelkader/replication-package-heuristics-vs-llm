@@ -234,14 +234,16 @@ esac
 
 
 OLLAMA_ARCHIVE="ollama-linux-${OLLAMA_ARCH}.tar.zst"
+# The Ollama release of the paper's Grid5000 run; the ROCm libraries below follow it.
+OLLAMA_DOWNLOAD_VERSION="${OLLAMA_DOWNLOAD_VERSION:-0.40.5}"
 
 log "Architecture: $ARCH"
 if [[ -n "$OLLAMA_REUSE" ]]; then
     log "Reusing the Ollama installation of this run: $OLLAMA_INSTALL_DIR"
 else
-    log "Downloading Ollama: $OLLAMA_ARCHIVE"
+    log "Downloading Ollama ${OLLAMA_DOWNLOAD_VERSION:-latest}: $OLLAMA_ARCHIVE"
     curl -fL \
-        "https://ollama.com/download/$OLLAMA_ARCHIVE" \
+        "https://ollama.com/download/$OLLAMA_ARCHIVE${OLLAMA_DOWNLOAD_VERSION:+?version=$OLLAMA_DOWNLOAD_VERSION}" \
         -o "$OLLAMA_ARCHIVE"
 fi
 

@@ -73,7 +73,10 @@ class IncompleteRun(unittest.TestCase):
             shutil.copytree(CHECKPOINTS / "Network-Mail", copy / "0001")
             shutil.copytree(CHECKPOINTS / "Spec2-ListView", copy / "0002")
             (copy / "0002" / "benchmarks" / "messages-llm7B" / "part.json").unlink()
-            workers = ROOT / "data" / "provenance" / "workers.json"
+            # A re-run's workers.json: its run ID and packages.
+            run_id = json.loads((copy / "0001" / "benchmarks" / "messages-llm7B" / "part.json").read_text())["runId"]
+            workers = Path(tmp) / "workers.json"
+            workers.write_text(json.dumps(dict(runId=run_id, packages=["Network-Mail", "Spec2-ListView"])))
             manifest, parts, complete, incomplete = reproduce_paper.load(str(copy), workers)
             self.assertEqual(complete, ["Network-Mail"])
             self.assertEqual(incomplete["Spec2-ListView"], 27)
@@ -85,9 +88,7 @@ class IncompleteRun(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             copy, out = Path(tmp) / "packages", Path(tmp) / "out"
             shutil.copytree(CHECKPOINTS / "BaselineOfReflectionMirrors", copy / "BaselineOfReflectionMirrors")
-            workers = ROOT / "data" / "provenance" / "workers.json"
-            self.assertEqual(reproduce_paper.main(["--checkpoints", str(copy), "--workers", str(workers),
-                                                   "--out", str(out)]), 0)
+            self.assertEqual(reproduce_paper.main(["--checkpoints", str(copy), "--out", str(out)]), 0)
             stats = json.loads((out / "analysis-stats.json").read_text())
             self.assertEqual(stats["obs_matched"], {"messages": 13, "variables": 0})
             self.assertIsNone(stats["mrr/variables/llm7B/avg"])

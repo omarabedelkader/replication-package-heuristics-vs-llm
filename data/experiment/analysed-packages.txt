@@ -1,4 +1,6 @@
 # The 47 packages of the paper (Pharo 14 image), each benchmarked for 2 kinds x 14 strategies.
+# 50 packages were selected at random (seed 42); 3 were excluded because not all of their 28
+# benchmarks completed: Slot-Tests (18 of 28), Reflectivity-Tests (15) and Morphic-Widgets-Windows (18).
 Network-Mail
 Spec2-ListView
 System-Settings-Core

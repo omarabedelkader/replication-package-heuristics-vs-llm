@@ -1,1 +1,3 @@
-GitHub ref: main
+Frozen copy of the benchmark source used for the paper's run (taken from GitHub ref main).
+The SHA-256 of every file under src/ is pinned as sourceSHA256 in data/experiment/image-source.json
+and checked by ./run.sh --rerun before any benchmark runs.

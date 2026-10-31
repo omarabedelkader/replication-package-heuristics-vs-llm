@@ -66,6 +66,8 @@ prepare_run_directory
 # starts one with the same settings), or starts one there if nothing answers.
 # Either way the server must be recent enough to return log-probabilities.
 OLLAMA_MIN_VERSION="${OLLAMA_MIN_VERSION:-0.12.11}"
+# Release downloaded on Linux when no recent enough Ollama is installed: the paper's (Grid5000) one.
+OLLAMA_DOWNLOAD_VERSION="${OLLAMA_DOWNLOAD_VERSION:-0.40.5}"
 version_at_least() {
     [[ -n "$1" && "$(printf '%s\n%s\n' "$OLLAMA_MIN_VERSION" "$1" | sort -V | head -n1)" == "$OLLAMA_MIN_VERSION" ]]
 }
@@ -130,7 +132,7 @@ if ! curl -fsS --connect-timeout 2 --max-time 5 \
         if [[ ! -x "$OLLAMA_BIN" ]] || ! version_at_least "$(binary_version "$OLLAMA_BIN")"; then
             rm -rf "$ollama_install_dir"
             mkdir -p "$ollama_install_dir"
-            curl -fsSL "https://ollama.com/download/ollama-linux-$ollama_arch.tar.zst" \
+            curl -fsSL "https://ollama.com/download/ollama-linux-$ollama_arch.tar.zst${OLLAMA_DOWNLOAD_VERSION:+?version=$OLLAMA_DOWNLOAD_VERSION}" \
                 -o "$ollama_install_dir/ollama.tar.zst"
             if command -v zstd >/dev/null 2>&1; then
                 zstd -dc "$ollama_install_dir/ollama.tar.zst" | tar -xf - -C "$ollama_install_dir"

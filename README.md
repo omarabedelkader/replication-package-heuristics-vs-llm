@@ -24,13 +24,15 @@ Figures 1 and 2 are method diagrams and contain no results.
 
 1. every generated file is identical to the paper's supplemental file (`expected/paper-supplemental/`, comment lines ignored);
 2. all 546 statistics are identical to `expected/analysis-stats.reference.json`;
-3. every number and comparison in the paper's text (abstract to conclusion), and every stated setting (inference, search, timeout, hardware, Ollama versions, workers, image), is recomputed from the checkpoints, the benchmark source and the provenance. Each one is listed in `results/verification-report.md`.
+3. every number and comparison in the paper's text (abstract to conclusion) is recomputed from the checkpoints, and every stated setting (prefixes, models, inference, search, timeout, image) is read from the benchmark source, the model list and the frozen image. Each one is listed in `results/verification-report.md`.
+
+The execution environment of Section IV-D (GPUs, Ollama versions, workers per machine) is described in the paper but not recomputed: it is not recorded in the checkpoints.
 
 It exits with status 0 only if all checks pass.
 
 ## The 47 packages
 
-`data/experiment/analysed-packages.txt` lists the 47 analysed packages, with one checkpoint directory each in `data/checkpoints/`.
+`data/experiment/analysed-packages.txt` lists the 47 analysed packages, with one checkpoint directory each in `data/checkpoints/`. 50 packages were selected at random (seed 42); 3 were excluded because not all of their 28 benchmarks completed: Slot-Tests (18 of 28), Reflectivity-Tests (15) and Morphic-Widgets-Windows (18). Missing benchmarks are never filled with zeros.
 
 ## Re-running the benchmarks
 
@@ -46,13 +48,12 @@ BENCHMARK_JOBS=2 OLLAMA_MAX_LOADED_MODELS=1 ./run.sh --rerun   # with less GPU m
 | `run.sh` | The single entry point |
 | `data/checkpoints/<package>/benchmarks/<kind>-<strategy>/part.json` | 1,316 checkpoints, one directory for each of the 47 packages (47 × 28): per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
 | `data/experiment/` | The 47 packages, image/source pins, model tags |
-| `data/provenance/` | `workers.json` (run ID, input SHA-256s), model digests, per-task timings and hosts, worker invocations, job and Ollama logs (usernames anonymized) |
-| `lib/HeuristicCompletion-Benchmarks-Multiples/` | Frozen Smalltalk benchmark source loaded in the image; the pipeline always uses this copy and downloads nothing from GitHub |
+| `lib/HeuristicCompletion-Benchmarks-Multiples/` | Frozen Smalltalk benchmark source loaded in the image (SHA-256 pinned in `data/experiment/image-source.json`); the pipeline always uses this copy and downloads nothing from GitHub |
 | `frozen-image/` | The exact Pharo 14 image, changes and sources files |
-| `pipeline/` | Benchmark pipeline used by `./run.sh --rerun`, with its tests; `workers.json` pins three of these files (unchanged) |
+| `pipeline/` | Benchmark pipeline used by `./run.sh --rerun`, with its tests; on Linux it downloads Ollama 0.40.5, the release of the paper's run (`OLLAMA_DOWNLOAD_VERSION` to change it) |
 | `analysis/` | `reproduce_paper.py` (tables, figures, statistics) and `verify_paper.py` (checks against the paper), called by `./run.sh` |
 | `expected/` | The paper's supplemental files and reference statistics |
-| `results/` | Output of `./run.sh`, as shipped |
+| `results/` | Output of `./run.sh`, as shipped, including `verification-report.md` |
 | `tests/` | Tests of the analysis |
 | `SHA256SUMS` | Checksums of every shipped file (`shasum -a 256 -c SHA256SUMS`) |
 

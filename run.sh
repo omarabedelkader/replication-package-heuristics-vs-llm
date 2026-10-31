@@ -8,7 +8,7 @@
 #   ./run.sh --rerun   Re-run all 1,316 benchmarks of the 47 packages from scratch (frozen
 #                      Pharo image, benchmark source in lib/, the four models through Ollama),
 #                      then regenerate the tables from the new checkpoints and check them.
-#                      Needs curl, Ollama >= 0.12.11 (downloaded on Linux), a GPU and ~25 GB
+#                      Needs curl, Ollama >= 0.12.11 (0.40.5, as in the paper, is downloaded on Linux), a GPU and ~25 GB
 #                      for the models; takes days. Optional settings:
 #                        EXPERIMENT_DIR        working directory (default: experiment)
 #                        BENCHMARK_JOBS        simultaneous benchmarks (default 8, as in the paper)
@@ -22,9 +22,10 @@ cd "$PACKAGE_DIR"
 PYTHON="${PIPELINE_PYTHON:-python3}"
 
 tables() {
-    # $1: checkpoints directory, $2: the run's workers.json, $3: output directory
+    # $1: checkpoints directory, $2: a re-run's workers.json (empty for the released
+    # checkpoints, whose packages are data/experiment/analysed-packages.txt), $3: output directory
     echo "== Regenerating the paper's tables and figures from the checkpoints"
-    "$PYTHON" analysis/reproduce_paper.py --checkpoints "$1" --workers "$2" --out "$3"
+    "$PYTHON" analysis/reproduce_paper.py --checkpoints "$1" ${2:+--workers "$2"} --out "$3"
     echo
     echo "== Checking them against the paper"
     local status=0
@@ -102,7 +103,7 @@ rerun() {
 
 case "${1:-}" in
     "")
-        tables data/checkpoints data/provenance/workers.json results ;;
+        tables data/checkpoints "" results ;;
     --rerun)
         rerun ;;
     -h|--help)
