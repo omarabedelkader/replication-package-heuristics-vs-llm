@@ -13,7 +13,7 @@
 | IV-A Corpus | class-name observations | 12678 | 12678 | ok |
 | IV-A Corpus | observations per approach | 116069 | 116069 | ok |
 | IV-A Corpus | same observations for every configuration | True | True | ok |
-| IV-C Environment | more than 200 hours of computation (summed completion time, all benchmarks) | True | True | ok |
+| IV-C Environment | more than 100 hours of computation (summed completion time, all benchmarks) | True | True | ok |
 | IV-B Completion time | constrained 3B, methods: total ms | 175612087 | 175612087 | ok |
 | IV-B Completion time | constrained 3B, methods: observations | 103391 | 103391 | ok |
 | IV-B Completion time | constrained 3B, methods: mean ms | 1698.5 | 1698.5 | ok |
