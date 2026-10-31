@@ -1,0 +1,10 @@
+{
+  "note": "Manifest digests (sha256 of the manifest) and weight types of the four Ollama tags of llm-models.json, as served by registry.ollama.ai on 2026-10-31. The pipeline pulls by tag; tags can be republished, so compare these digests with `ollama show --modelfile` or the manifest of a re-run's models.",
+  "retrieved": "2026-10-31",
+  "models": {
+    "pharo-llm/Qwen2.5-Coder-SFT:0.5B": {"manifest": "sha256:57db830e311b33dc554bd410f66c19073596828587142351a59c9860194cb2f9", "config": "sha256:0c2d6df753ddc7fe473a07cae517cadef5015b1888ee00d20acb8a0bdb690d9a", "file_type": "F16"},
+    "pharo-llm/Qwen2.5-Coder-SFT:1.5B": {"manifest": "sha256:4e0f5d526c65727148edfc5ae40e19e5eb60b60d608ecb3ce7b74a595b19c3fa", "config": "sha256:bd3bdf7189786dc913a1ce76c3a52b7f3881f858d12a4665d0374e5681aa1841", "file_type": "F16"},
+    "pharo-llm/Qwen2.5-Coder-SFT:3b": {"manifest": "sha256:682e1a92e4e11b7db228d14814d98dd21c4bb3997cb7c4296222deab50f970f7", "config": "sha256:12a1cf145f405183fb7034c29670d8a6b532ab9580c9244ced99971f2940c312", "file_type": "F16"},
+    "pharo-llm/Qwen2.5-Coder-SFT:7b": {"manifest": "sha256:6b73d1f15657fb4b9aee4976275091ae691bd74723c33b09782dc32292496294", "config": "sha256:f90600422c54ccfaebeaa2ddebd99acf3c776cc7c6e36085dc18b9889c62e07d", "file_type": "F16"}
+  }
+}

@@ -82,10 +82,12 @@ def claims(st):
         ("IV-A Corpus", "method-selector observations", st["obs_matched"]["messages"], 103391),
         ("IV-A Corpus", "class-name observations", st["obs_matched"]["variables"], 12678),
         ("IV-A Corpus", "observations per approach", x["observations_total"], 116069),
+        ("IV-A Corpus", "packages with method / class observations",
+         both(lambda k: x["packages_with_observations"][k]), (47, 37)),
         ("IV-A Corpus", "same observations for every configuration",
          x["counts_match/messages"] and x["counts_match/variables"], True),
-        ("IV-D Environment", "more than 100 hours of computation (measured completion time, all 1,316 benchmarks)",
-         sum(E(k, s)["timeMs"] for k in K for s in strategies) / 3.6e6 > 100, True),
+        ("IV-C Environment", "more than 500 hours of computation (summed completion time, all 1,316 benchmarks)",
+         sum(E(k, s)["timeMs"] for k in K for s in strategies) / 3.6e6 > 500, True),
         ("IV-B Completion time", "constrained 3B, methods: total ms",
          int(E("messages", "llm3B")["timeMs"]), 175612087),
         ("IV-B Completion time", "constrained 3B, methods: observations", int(E("messages", "llm3B")["count"]), 103391),
@@ -197,6 +199,7 @@ def settings():
     """Settings stated in the paper, read from the shipped benchmark source, image and model list."""
     src = ROOT / "lib" / "HeuristicCompletion-Benchmarks-Multiples" / "src" / "ExtendedHeuristicCompletion-Benchmarks"
     beam = (src / "CooLLMBeamCompleter.class.st").read_text(encoding="utf-8")
+    message = (src / "CooStaticBenchmarksMessage.class.st").read_text(encoding="utf-8")
     client = (src / "CooLLMClient.class.st").read_text(encoding="utf-8")
     setting = lambda text, pattern: (lambda m: m.group(1) if m else None)(re.search(pattern, text))
     with tarfile.open(ROOT / "frozen-image" / "pharo14-frozen-image.tar.gz") as archive:
@@ -206,6 +209,9 @@ def settings():
                 (ROOT / "data" / "experiment" / "analysed-packages.txt").read_text().splitlines()]
     analysed = {name for name in analysed if name}
     return [
+        ("III-A Observations", "typed prefixes k = 2 .. min(L, 8)",
+         (setting(message, r"(\d+) to: \(self maxPrefixSizeFor: originalSelector\)"),
+          setting(message, r"\^ selector size min: (\d+)")), ("2", "8")),
         ("III-A Observations", "OrderedCollection gives prefixes Or ... OrderedC (seven observations)",
          ["OrderedCollection"[:k] for k in range(2, min(len("OrderedCollection"), 8) + 1)][::6] + [min(len("OrderedCollection"), 8) - 1],
          ["Or", "OrderedC", 7]),
@@ -221,8 +227,8 @@ def settings():
         ("IV-A Inference", "beam width", setting(beam, r"beamWidth := (\d+)"), "10"),
         ("IV-A Inference", "maximum search steps", setting(beam, r"maxSteps := (\d+)"), "12"),
         ("IV-A Inference", "suggestions returned", setting(beam, r"candidateCount := (\d+)"), "10"),
-        ("IV-D Environment", "request timeout (s)", setting(client, r"timeout := (\d+)"), "120"),
-        ("IV-D Environment", "Pharo 14.0 64-bit image, sources 74f3a1b", sources, ["Pharo14.0-64bit-74f3a1b.sources"]),
+        ("IV-C Environment", "request timeout (s)", setting(client, r"timeout := (\d+)"), "120"),
+        ("IV-C Environment", "Pharo 14.0 64-bit image, sources 74f3a1b", sources, ["Pharo14.0-64bit-74f3a1b.sources"]),
     ]
 
 

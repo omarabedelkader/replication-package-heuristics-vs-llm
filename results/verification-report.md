@@ -12,8 +12,9 @@
 | IV-A Corpus | method-selector observations | 103391 | 103391 | ok |
 | IV-A Corpus | class-name observations | 12678 | 12678 | ok |
 | IV-A Corpus | observations per approach | 116069 | 116069 | ok |
+| IV-A Corpus | packages with method / class observations | (47, 37) | (47, 37) | ok |
 | IV-A Corpus | same observations for every configuration | True | True | ok |
-| IV-D Environment | more than 100 hours of computation (measured completion time, all 1,316 benchmarks) | True | True | ok |
+| IV-C Environment | more than 500 hours of computation (summed completion time, all 1,316 benchmarks) | True | True | ok |
 | IV-B Completion time | constrained 3B, methods: total ms | 175612087 | 175612087 | ok |
 | IV-B Completion time | constrained 3B, methods: observations | 103391 | 103391 | ok |
 | IV-B Completion time | constrained 3B, methods: mean ms | 1698.5 | 1698.5 | ok |
@@ -78,6 +79,7 @@
 | VI Discussion | no 7B reversal for method MRR at any prefix | False | False | ok |
 | VI Discussion | CLM mean time range (ms) | (759, 5230) | (759, 5230) | ok |
 | VII Conclusion | constrained 7B gain over Dependency, methods / classes (%) | (49.7, 48.4) | (49.7, 48.4) | ok |
+| III-A Observations | typed prefixes k = 2 .. min(L, 8) | ('2', '8') | ('2', '8') | ok |
 | III-A Observations | OrderedCollection gives prefixes Or ... OrderedC (seven observations) | ['Or', 'OrderedC', 7] | ['Or', 'OrderedC', 7] | ok |
 | IV-A Corpus | application code, tools, tests and baseline packages | (True, True) | (True, True) | ok |
 | IV-A Models | four Pharo-specialized Qwen2.5-Coder models, 0.5B / 1.5B / 3B / 7B | ['0.5B', '1.5B', '3B', '7B'] | ['0.5B', '1.5B', '3B', '7B'] | ok |
@@ -88,5 +90,5 @@
 | IV-A Inference | beam width | 10 | 10 | ok |
 | IV-A Inference | maximum search steps | 12 | 12 | ok |
 | IV-A Inference | suggestions returned | 10 | 10 | ok |
-| IV-D Environment | request timeout (s) | 120 | 120 | ok |
-| IV-D Environment | Pharo 14.0 64-bit image, sources 74f3a1b | ['Pharo14.0-64bit-74f3a1b.sources'] | ['Pharo14.0-64bit-74f3a1b.sources'] | ok |
+| IV-C Environment | request timeout (s) | 120 | 120 | ok |
+| IV-C Environment | Pharo 14.0 64-bit image, sources 74f3a1b | ['Pharo14.0-64bit-74f3a1b.sources'] | ['Pharo14.0-64bit-74f3a1b.sources'] | ok |

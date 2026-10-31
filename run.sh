@@ -84,7 +84,9 @@ rerun() {
     export BENCHMARK_PACKAGES_FILE="$PACKAGE_DIR/data/experiment/analysed-packages.txt"
     export RESULTS_DIR="${RESULTS_DIR:-$EXPERIMENT_DIR/results}"
     export BENCHMARK_JOBS="${BENCHMARK_JOBS:-8}"
-    # Ollama server settings of the paper's run; every request sets num_ctx = 8,192 itself.
+    # Ollama server settings of the paper's run. Every request sets num_ctx = 8,192 and
+    # keep_alive = 5m itself (CooLLMClient), which override OLLAMA_CONTEXT_LENGTH and
+    # OLLAMA_KEEP_ALIVE for the benchmark requests.
     export OLLAMA_NUM_PARALLEL="${OLLAMA_NUM_PARALLEL:-$BENCHMARK_JOBS}"
     export OLLAMA_MAX_LOADED_MODELS="${OLLAMA_MAX_LOADED_MODELS:-4}"
     export OLLAMA_KEEP_ALIVE="${OLLAMA_KEEP_ALIVE:--1}"
