@@ -286,7 +286,7 @@ def tab_top_k(A):
 def tab_vocabulary(A):
     main = [r"\begin{table*}[t]", r"\centering", r"\caption{Names returned by unconstrained and constrained generation.}",
             r"\label{tab:vocabulary-constraints}", r"\setlength{\tabcolsep}{6pt}", r"\small",
-            r"\begin{tabular}{l*{2}{w{c}{4.6em}}w{c}{4.6em}<{\hspace{8pt}}*{3}{w{c}{4.6em}}}", TOP_RULE, r"\rowcolor{gray!15}",
+            r"\begin{tabular}{l*{2}{w{c}{4.6em}}w{c}{4.6em}<{\hspace{8pt}}*{2}{w{c}{4.6em}}>{\columncolor{green!12}}w{c}{4.6em}}", TOP_RULE, r"\rowcolor{gray!15}",
             r"\rule{0pt}{2.4ex} & \multicolumn{3}{c}{\textbf{Unconstrained}} & \multicolumn{3}{c}{\textbf{Constrained}} \\",
             r"\rowcolor{gray!15}",
             r"\textbf{Model} & In \ph\,\% & Names & Top-1\,\% & In \ph\,\% & Names & Top-1\,\% \\[0.4ex]", HEAD_RULE]
@@ -301,12 +301,14 @@ def tab_vocabulary(A):
     for kind, task, title in (("messages", "Methods", "Method selectors"), ("variables", "Classes", "Class names")):
         dep = A.get(kind, DEP)
         main.append(rf"\multicolumn{{7}}{{l}}{{\textit{{{title}}}}} \\")
+        best_top1 = max(pct(A.get(kind, f"llm{s}"), "top1") for s, _ in SIZES)
         for i, (s, n) in enumerate(SIZES):
             u, c = A.get(kind, f"llmUnvalidated{s}"), A.get(kind, f"llm{s}")
             head = (task if i == 0 else "") + f" & {n} & "
             main.append(f"CLM {n} & " + " & ".join([
                 f1(validity(u)), f2(per_obs(u, "generated")), f1(pct(u, "top1")),
-                f1(validity(c)), f2(per_obs(c, "generated")), f1(pct(c, "top1"))]) + r" \\")
+                f1(validity(c)), f2(per_obs(c, "generated")),
+                (rf"\textbf{{{f1(pct(c, 'top1'))}}}" if pct(c, "top1") == best_top1 else f1(pct(c, "top1")))]) + r" \\")
             full.append(head + " & ".join([
                 f1(validity(u)), f1(validity(c)), f2(per_obs(u, "generated")), f2(per_obs(c, "generated")),
                 f3(mrr(u)) + gain(mrr(u), mrr(dep)), f3(mrr(c)) + gain(mrr(c), mrr(dep)),
