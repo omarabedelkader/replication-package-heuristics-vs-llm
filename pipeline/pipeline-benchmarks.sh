@@ -13,7 +13,7 @@ for option in "$@"; do
             echo "Usage: BENCHMARK_JOBS=N [BENCHMARK_PACKAGE_COUNT=N] $0"
             echo "Runs baseline, dependency, LLM completion and hybrid benchmarks on the saved benchmark packages."
             echo "BENCHMARK_JOBS=N: benchmarks run at the same time. Every package is split into its 22 benchmarks"
-            echo "  (2 kinds x 14 strategies), each in its own Pharo process, so N slots stay busy even for one package."
+            echo "  (2 kinds x 11 strategies), each in its own Pharo process, so N slots stay busy even for one package."
             echo "Ollama: the pipeline starts its own server on a free port with OLLAMA_NUM_PARALLEL=N"
             echo "  (default BENCHMARK_JOBS) and OLLAMA_MAX_LOADED_MODELS (default 3)."
             echo "  BENCHMARK_OLLAMA_HOST=host:port uses an existing server instead (start it with those settings)."

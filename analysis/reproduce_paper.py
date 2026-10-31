@@ -8,7 +8,7 @@ Usage:
     python3 analysis/reproduce_paper.py [--checkpoints DIR] [--workers FILE] [--out DIR]
 
 The released checkpoints hold the 47 packages of the paper, each with all 22
-benchmarks (2 kinds x 14 strategies). When analysing a re-run that is still in
+benchmarks (2 kinds x 11 strategies). When analysing a re-run that is still in
 progress, packages that do not have all 22 benchmarks yet are skipped.
 
 Outputs (in --out, default results/):
