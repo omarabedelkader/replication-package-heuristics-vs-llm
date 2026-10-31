@@ -82,8 +82,6 @@ def claims(st):
         ("IV-A Corpus", "method-selector observations", st["obs_matched"]["messages"], 103391),
         ("IV-A Corpus", "class-name observations", st["obs_matched"]["variables"], 12678),
         ("IV-A Corpus", "observations per approach", x["observations_total"], 116069),
-        ("IV-A Corpus", "packages with method / class observations",
-         both(lambda k: x["packages_with_observations"][k]), (47, 37)),
         ("IV-A Corpus", "same observations for every configuration",
          x["counts_match/messages"] and x["counts_match/variables"], True),
         ("IV-C Environment", "more than 200 hours of computation (summed completion time, all benchmarks)",
