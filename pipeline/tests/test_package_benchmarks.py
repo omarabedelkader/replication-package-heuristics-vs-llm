@@ -93,15 +93,15 @@ class PackageWorkerTests(unittest.TestCase):
         self.assertEqual(other(before), other(after))
         table = (self.run / "pharo-validation.tex").read_text()
         # Seven prefix sizes: 70 completions, 280 candidates, 70 real names, per model and kind.
-        self.assertEqual(table.count("& 70 & 280 & 70 & 25.0 \\\\"), 8)
-        for label in ("Methods", "Classes", "& 0.5B &", "& 1.5B &", "& 3B &", "& 7B &"):
+        self.assertEqual(table.count("& 70 & 280 & 70 & 25.0 \\\\"), 6)
+        for label in ("Methods", "Classes", "& 1.5B &", "& 3B &", "& 7B &"):
             self.assertIn(label, table)
 
     def test_candidate_counts_are_checked(self):
         self.checkpoints()
         path = workers.package_directory(self.run, 1) / "result.json"
-        for strategy, counts in (("llmUnvalidated05B", dict(generated=1, valid=2)),
-                                 ("llmUnvalidated05B", dict(generated=91, valid=0)),
+        for strategy, counts in (("llmUnvalidated15B", dict(generated=1, valid=2)),
+                                 ("llmUnvalidated15B", dict(generated=91, valid=0)),
                                  ("llm7B", dict(generated=5, valid=4)),
                                  ("llm7B", dict(generated=None, valid=None))):
             with self.subTest(strategy=strategy, counts=counts):

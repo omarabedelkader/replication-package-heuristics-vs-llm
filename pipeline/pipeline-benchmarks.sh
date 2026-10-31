@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Baseline, dependency, LLM completion (0.5B/1.5B/3B/7B) and hybrid benchmarks on the
+# Baseline, dependency, LLM completion (1.5B/3B/7B) and hybrid benchmarks on the
 # saved benchmark packages of one experiment. It builds a Pharo image from your
 # benchmark checkout and benchmarks the image's own packages: no dataset is mined or
 # downloaded. The neural re-ranker and its mined training data live in reranker/.
@@ -12,10 +12,10 @@ for option in "$@"; do
         --help|-h)
             echo "Usage: BENCHMARK_JOBS=N [BENCHMARK_PACKAGE_COUNT=N] $0"
             echo "Runs baseline, dependency, LLM completion and hybrid benchmarks on the saved benchmark packages."
-            echo "BENCHMARK_JOBS=N: benchmarks run at the same time. Every package is split into its 28 benchmarks"
+            echo "BENCHMARK_JOBS=N: benchmarks run at the same time. Every package is split into its 22 benchmarks"
             echo "  (2 kinds x 14 strategies), each in its own Pharo process, so N slots stay busy even for one package."
             echo "Ollama: the pipeline starts its own server on a free port with OLLAMA_NUM_PARALLEL=N"
-            echo "  (default BENCHMARK_JOBS) and OLLAMA_MAX_LOADED_MODELS (default 4)."
+            echo "  (default BENCHMARK_JOBS) and OLLAMA_MAX_LOADED_MODELS (default 3)."
             echo "  BENCHMARK_OLLAMA_HOST=host:port uses an existing server instead (start it with those settings)."
             echo "BENCHMARK_PACKAGE_COUNT=N: benchmark N seeded-random packages of the image (default 50; RANKING_SEED, default 42)."
             echo "BENCHMARK_PACKAGES_FILE=path: benchmark exactly these packages (one name per line, a JSON array, or a saved selection)."
@@ -89,7 +89,7 @@ print(s.getsockname()[1])')"
 fi
 export BENCHMARK_OLLAMA_URL="http://$OLLAMA_HOST"
 export OLLAMA_NUM_PARALLEL="${OLLAMA_NUM_PARALLEL:-$BENCHMARK_JOBS}"
-export OLLAMA_MAX_LOADED_MODELS="${OLLAMA_MAX_LOADED_MODELS:-4}"
+export OLLAMA_MAX_LOADED_MODELS="${OLLAMA_MAX_LOADED_MODELS:-3}"
 export OLLAMA_KEEP_ALIVE="${OLLAMA_KEEP_ALIVE:--1}"
 OLLAMA_LOG="$RUN_DIR/ollama.log"
 # Hosts sharing a run (BENCHMARK_SHARED) each query their own server.

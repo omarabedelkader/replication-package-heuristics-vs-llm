@@ -62,11 +62,9 @@ CooBenchmarkChart class >> labelFor: strategy [
 		#heuristicsBaseline -> 'Baseline'.
 		#heuristicsDependency -> 'Dependency'.
 		#llmCompletion -> 'LLM (beam search)'.
-		#llm05B -> '0.5B-LLM Completion'.
 		#llm15B -> '1.5B-LLM Completion'.
 		#llm3B -> '3B-LLM Completion'.
 		#llm7B -> '7B-LLM Completion'.
-		#hybrid05B -> 'Hybrid Rerank + 0.5B'.
 		#hybrid15B -> 'Hybrid Rerank + 1.5B'.
 		#hybrid3B -> 'Hybrid Rerank + 3B'.
 		#hybrid7B -> 'Hybrid Rerank + 7B'.
@@ -74,7 +72,7 @@ CooBenchmarkChart class >> labelFor: strategy [
 		#neuralRank20 -> 'NeuralRank-20'.
 		#neuralRank30 -> 'NeuralRank-30'.
 		#neuralRank50 -> 'NeuralRank-50'.
-		#adaptiveRank05B -> 'AdaptiveRank + 0.5B' })
+		#adaptiveRank15B -> 'AdaptiveRank + 1.5B' })
 		at: strategy ifAbsent: [ strategy asString ]
 ]
 
@@ -174,8 +172,8 @@ CooBenchmarkChart class >> text: text at: centerTop on: canvas font: font [
 
 { #category : 'data' }
 CooBenchmarkChart class >> publicationStrategies [
-	^ #(heuristicsBaseline heuristicsDependency llm05B llm15B llm3B llm7B
-		hybrid05B hybrid15B hybrid3B hybrid7B)
+	^ #(heuristicsBaseline heuristicsDependency llm15B llm3B llm7B
+		hybrid15B hybrid3B hybrid7B)
 ]
 
 { #category : 'data' }
@@ -421,7 +419,7 @@ CooBenchmarkChart class >> rerankerStrategies [
 
 { #category : 'data' }
 CooBenchmarkChart class >> rankingStrategies [
-	^ #(neuralRank10 neuralRank20 neuralRank30 neuralRank50 adaptiveRank05B)
+	^ #(neuralRank10 neuralRank20 neuralRank30 neuralRank50 adaptiveRank15B)
 ]
 
 { #category : 'data' }

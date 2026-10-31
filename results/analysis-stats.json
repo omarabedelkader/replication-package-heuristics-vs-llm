@@ -23,18 +23,6 @@
  "top2/messages/heuristicsDependency": 53.24,
  "top3/messages/heuristicsDependency": 60.44,
  "top10/messages/heuristicsDependency": 81.14,
- "mrr/messages/llmUnvalidated05B/2": 0.545,
- "mrr/messages/llmUnvalidated05B/3": 0.5867,
- "mrr/messages/llmUnvalidated05B/4": 0.5972,
- "mrr/messages/llmUnvalidated05B/5": 0.5994,
- "mrr/messages/llmUnvalidated05B/6": 0.5972,
- "mrr/messages/llmUnvalidated05B/7": 0.6287,
- "mrr/messages/llmUnvalidated05B/8": 0.6241,
- "mrr/messages/llmUnvalidated05B/avg": 0.5934,
- "top1/messages/llmUnvalidated05B": 53.17,
- "top2/messages/llmUnvalidated05B": 61.37,
- "top3/messages/llmUnvalidated05B": 64.4,
- "top10/messages/llmUnvalidated05B": 70.17,
  "mrr/messages/llmUnvalidated15B/2": 0.6321,
  "mrr/messages/llmUnvalidated15B/3": 0.6592,
  "mrr/messages/llmUnvalidated15B/4": 0.6723,
@@ -71,18 +59,6 @@
  "top2/messages/llmUnvalidated7B": 73.82,
  "top3/messages/llmUnvalidated7B": 75.72,
  "top10/messages/llmUnvalidated7B": 79.21,
- "mrr/messages/llm05B/2": 0.5896,
- "mrr/messages/llm05B/3": 0.6437,
- "mrr/messages/llm05B/4": 0.6684,
- "mrr/messages/llm05B/5": 0.6813,
- "mrr/messages/llm05B/6": 0.6922,
- "mrr/messages/llm05B/7": 0.7209,
- "mrr/messages/llm05B/8": 0.7885,
- "mrr/messages/llm05B/avg": 0.6745,
- "top1/messages/llm05B": 62.04,
- "top2/messages/llm05B": 69.65,
- "top3/messages/llm05B": 72.27,
- "top10/messages/llm05B": 76.09,
  "mrr/messages/llm15B/2": 0.6663,
  "mrr/messages/llm15B/3": 0.7026,
  "mrr/messages/llm15B/4": 0.7257,
@@ -119,18 +95,6 @@
  "top2/messages/llm7B": 79.11,
  "top3/messages/llm7B": 80.87,
  "top10/messages/llm7B": 83.09,
- "mrr/messages/hybrid05B/2": 0.3766,
- "mrr/messages/hybrid05B/3": 0.5023,
- "mrr/messages/hybrid05B/4": 0.5696,
- "mrr/messages/hybrid05B/5": 0.6152,
- "mrr/messages/hybrid05B/6": 0.6558,
- "mrr/messages/hybrid05B/7": 0.7264,
- "mrr/messages/hybrid05B/8": 0.8197,
- "mrr/messages/hybrid05B/avg": 0.588,
- "top1/messages/hybrid05B": 48.28,
- "top2/messages/hybrid05B": 58.91,
- "top3/messages/hybrid05B": 66.44,
- "top10/messages/hybrid05B": 81.14,
  "mrr/messages/hybrid15B/2": 0.4191,
  "mrr/messages/hybrid15B/3": 0.5499,
  "mrr/messages/hybrid15B/4": 0.6223,
@@ -167,16 +131,6 @@
  "top2/messages/hybrid7B": 66.19,
  "top3/messages/hybrid7B": 72.81,
  "top10/messages/hybrid7B": 81.14,
- "val/messages/05B/valid_before": 23.8683,
- "val/messages/05B/valid_after": 100.0,
- "val/messages/05B/cand_before": 9.6823,
- "val/messages/05B/cand_after": 4.4966,
- "val/messages/05B/mrr_before": 0.5934,
- "val/messages/05B/mrr_after": 0.6745,
- "val/messages/05B/ms_before": 3837.4164,
- "val/messages/05B/ms_after": 3353.8459,
- "val/messages/05B/gen_before": 1001059,
- "val/messages/05B/valid_n_before": 238936,
  "val/messages/15B/valid_before": 22.0777,
  "val/messages/15B/valid_after": 100.0,
  "val/messages/15B/cand_before": 9.8249,
@@ -207,15 +161,6 @@
  "val/messages/7B/ms_after": 2074.3111,
  "val/messages/7B/gen_before": 1009635,
  "val/messages/7B/valid_n_before": 227465,
- "validprefix/messages/05B": [
-  35.4,
-  28.2,
-  23.5,
-  21.6,
-  19.2,
-  17.2,
-  14.1
- ],
  "validprefix/messages/15B": [
   31.8,
   25.7,
@@ -247,24 +192,18 @@
  "memMB/messages/heuristicsBaseline": 0.0,
  "ms/messages/heuristicsDependency": 159.6,
  "memMB/messages/heuristicsDependency": 0.0,
- "ms/messages/llmUnvalidated05B": 3837.4,
- "memMB/messages/llmUnvalidated05B": 0.00308,
  "ms/messages/llmUnvalidated15B": 2102.7,
  "memMB/messages/llmUnvalidated15B": 0.00308,
  "ms/messages/llmUnvalidated3B": 2684.6,
  "memMB/messages/llmUnvalidated3B": 0.00308,
  "ms/messages/llmUnvalidated7B": 3947.3,
  "memMB/messages/llmUnvalidated7B": 0.00308,
- "ms/messages/llm05B": 3353.8,
- "memMB/messages/llm05B": 0.00276,
  "ms/messages/llm15B": 834.6,
  "memMB/messages/llm15B": 0.00243,
  "ms/messages/llm3B": 1698.5,
  "memMB/messages/llm3B": 0.00243,
  "ms/messages/llm7B": 2074.3,
  "memMB/messages/llm7B": 0.00243,
- "ms/messages/hybrid05B": 3011.5,
- "memMB/messages/hybrid05B": 0.00211,
  "ms/messages/hybrid15B": 913.3,
  "memMB/messages/hybrid15B": 0.00146,
  "ms/messages/hybrid3B": 1907.3,
@@ -295,18 +234,6 @@
  "top2/variables/heuristicsDependency": 63.6,
  "top3/variables/heuristicsDependency": 69.44,
  "top10/variables/heuristicsDependency": 84.85,
- "mrr/variables/llmUnvalidated05B/2": 0.5817,
- "mrr/variables/llmUnvalidated05B/3": 0.6284,
- "mrr/variables/llmUnvalidated05B/4": 0.6538,
- "mrr/variables/llmUnvalidated05B/5": 0.6496,
- "mrr/variables/llmUnvalidated05B/6": 0.6989,
- "mrr/variables/llmUnvalidated05B/7": 0.6993,
- "mrr/variables/llmUnvalidated05B/8": 0.7265,
- "mrr/variables/llmUnvalidated05B/avg": 0.6581,
- "top1/variables/llmUnvalidated05B": 59.46,
- "top2/variables/llmUnvalidated05B": 67.47,
- "top3/variables/llmUnvalidated05B": 70.68,
- "top10/variables/llmUnvalidated05B": 77.49,
  "mrr/variables/llmUnvalidated15B/2": 0.6757,
  "mrr/variables/llmUnvalidated15B/3": 0.7261,
  "mrr/variables/llmUnvalidated15B/4": 0.7454,
@@ -343,18 +270,6 @@
  "top2/variables/llmUnvalidated7B": 81.18,
  "top3/variables/llmUnvalidated7B": 83.98,
  "top10/variables/llmUnvalidated7B": 88.58,
- "mrr/variables/llm05B/2": 0.6781,
- "mrr/variables/llm05B/3": 0.7439,
- "mrr/variables/llm05B/4": 0.8026,
- "mrr/variables/llm05B/5": 0.802,
- "mrr/variables/llm05B/6": 0.8333,
- "mrr/variables/llm05B/7": 0.8281,
- "mrr/variables/llm05B/8": 0.8481,
- "mrr/variables/llm05B/avg": 0.7862,
- "top1/variables/llm05B": 73.21,
- "top2/variables/llm05B": 81.95,
- "top3/variables/llm05B": 83.96,
- "top10/variables/llm05B": 85.72,
  "mrr/variables/llm15B/2": 0.767,
  "mrr/variables/llm15B/3": 0.8139,
  "mrr/variables/llm15B/4": 0.8608,
@@ -391,18 +306,6 @@
  "top2/variables/llm7B": 90.87,
  "top3/variables/llm7B": 92.17,
  "top10/variables/llm7B": 93.84,
- "mrr/variables/hybrid05B/2": 0.4428,
- "mrr/variables/hybrid05B/3": 0.6286,
- "mrr/variables/hybrid05B/4": 0.7899,
- "mrr/variables/hybrid05B/5": 0.8177,
- "mrr/variables/hybrid05B/6": 0.8388,
- "mrr/variables/hybrid05B/7": 0.8607,
- "mrr/variables/hybrid05B/8": 0.8803,
- "mrr/variables/hybrid05B/avg": 0.7395,
- "top1/variables/hybrid05B": 66.69,
- "top2/variables/hybrid05B": 77.17,
- "top3/variables/hybrid05B": 80.91,
- "top10/variables/hybrid05B": 84.85,
  "mrr/variables/hybrid15B/2": 0.4711,
  "mrr/variables/hybrid15B/3": 0.6843,
  "mrr/variables/hybrid15B/4": 0.8505,
@@ -439,16 +342,6 @@
  "top2/variables/hybrid7B": 82.72,
  "top3/variables/hybrid7B": 83.89,
  "top10/variables/hybrid7B": 84.85,
- "val/variables/05B/valid_before": 14.0858,
- "val/variables/05B/valid_after": 100.0,
- "val/variables/05B/cand_before": 9.9619,
- "val/variables/05B/cand_after": 2.2,
- "val/variables/05B/mrr_before": 0.6581,
- "val/variables/05B/mrr_after": 0.7862,
- "val/variables/05B/ms_before": 5229.6196,
- "val/variables/05B/ms_after": 2614.9743,
- "val/variables/05B/gen_before": 126297,
- "val/variables/05B/valid_n_before": 17790,
  "val/variables/15B/valid_before": 14.2047,
  "val/variables/15B/valid_after": 100.0,
  "val/variables/15B/cand_before": 9.9152,
@@ -479,15 +372,6 @@
  "val/variables/7B/ms_after": 1955.9203,
  "val/variables/7B/gen_before": 125400,
  "val/variables/7B/valid_n_before": 19767,
- "validprefix/variables/05B": [
-  18.4,
-  17.0,
-  12.0,
-  12.2,
-  12.9,
-  12.8,
-  12.2
- ],
  "validprefix/variables/15B": [
   18.2,
   16.1,
@@ -519,24 +403,18 @@
  "memMB/variables/heuristicsBaseline": 0.0,
  "ms/variables/heuristicsDependency": 25.6,
  "memMB/variables/heuristicsDependency": 0.0,
- "ms/variables/llmUnvalidated05B": 5229.6,
- "memMB/variables/llmUnvalidated05B": 0.0,
  "ms/variables/llmUnvalidated15B": 758.7,
  "memMB/variables/llmUnvalidated15B": 0.0,
  "ms/variables/llmUnvalidated3B": 2984.3,
  "memMB/variables/llmUnvalidated3B": 0.0,
  "ms/variables/llmUnvalidated7B": 3801.9,
  "memMB/variables/llmUnvalidated7B": 0.0,
- "ms/variables/llm05B": 2615.0,
- "memMB/variables/llm05B": 0.0,
  "ms/variables/llm15B": 999.2,
  "memMB/variables/llm15B": 0.0,
  "ms/variables/llm3B": 1718.0,
  "memMB/variables/llm3B": 0.0,
  "ms/variables/llm7B": 1955.9,
  "memMB/variables/llm7B": 0.0,
- "ms/variables/hybrid05B": 4103.2,
- "memMB/variables/hybrid05B": 0.0,
  "ms/variables/hybrid15B": 1028.0,
  "memMB/variables/hybrid15B": 0.0,
  "ms/variables/hybrid3B": 2368.0,
@@ -597,30 +475,6 @@
   "tie": 6,
   "p": 7.839844329282641e-10
  },
- "sign/messages/llm05B>heuristicsDependency": {
-  "win": 43,
-  "loss": 4,
-  "tie": 0,
-  "p": 2.781192165457469e-09
- },
- "sign/messages/hybrid05B>heuristicsDependency": {
-  "win": 41,
-  "loss": 6,
-  "tie": 0,
-  "p": 1.7716986633331544e-07
- },
- "sign/messages/llm05B>llmUnvalidated05B": {
-  "win": 47,
-  "loss": 0,
-  "tie": 0,
-  "p": 1.4210854715202004e-14
- },
- "sign/messages/llm15B>llm05B": {
-  "win": 42,
-  "loss": 1,
-  "tie": 4,
-  "p": 1.000444171950221e-11
- },
  "sign/variables/llm7B>heuristicsDependency": {
   "win": 32,
   "loss": 4,
@@ -675,32 +529,8 @@
   "tie": 3,
   "p": 0.0008213953115046024
  },
- "sign/variables/llm05B>heuristicsDependency": {
-  "win": 25,
-  "loss": 11,
-  "tie": 1,
-  "p": 0.028816719655878842
- },
- "sign/variables/hybrid05B>heuristicsDependency": {
-  "win": 34,
-  "loss": 2,
-  "tie": 1,
-  "p": 1.941225491464138e-08
- },
- "sign/variables/llm05B>llmUnvalidated05B": {
-  "win": 36,
-  "loss": 0,
-  "tie": 1,
-  "p": 2.9103830456733704e-11
- },
- "sign/variables/llm15B>llm05B": {
-  "win": 26,
-  "loss": 7,
-  "tie": 4,
-  "p": 0.0013187271542847157
- },
  "hybrid_invariant": {
-  "cells": 2632,
+  "cells": 1974,
   "violations": 0
  },
  "corpus_all": {
@@ -713,33 +543,27 @@
   "classes": 501,
   "methods": 4277
  },
- "tasks_done": 1316,
+ "tasks_done": 1034,
  "coverage": {
   "messages/heuristicsBaseline": 47,
   "messages/heuristicsDependency": 47,
-  "messages/hybrid05B": 47,
   "messages/hybrid15B": 47,
   "messages/hybrid3B": 47,
   "messages/hybrid7B": 47,
-  "messages/llm05B": 47,
   "messages/llm15B": 47,
   "messages/llm3B": 47,
   "messages/llm7B": 47,
-  "messages/llmUnvalidated05B": 47,
   "messages/llmUnvalidated15B": 47,
   "messages/llmUnvalidated3B": 47,
   "messages/llmUnvalidated7B": 47,
   "variables/heuristicsBaseline": 47,
   "variables/heuristicsDependency": 47,
-  "variables/hybrid05B": 47,
   "variables/hybrid15B": 47,
   "variables/hybrid3B": 47,
   "variables/hybrid7B": 47,
-  "variables/llm05B": 47,
   "variables/llm15B": 47,
   "variables/llm3B": 47,
   "variables/llm7B": 47,
-  "variables/llmUnvalidated05B": 47,
   "variables/llmUnvalidated15B": 47,
   "variables/llmUnvalidated3B": 47,
   "variables/llmUnvalidated7B": 47
@@ -1185,70 +1009,6 @@
     "ms": 253.23482652202375,
     "timeMs": 2707840.0
    },
-   "messages/llmUnvalidated05B/avg": {
-    "count": 103391,
-    "mrr": 0.5933543269938599,
-    "top1": 53.17193953052006,
-    "top10": 70.16955054114962,
-    "ms": 3837.4164482401757,
-    "timeMs": 396754324.0
-   },
-   "messages/llmUnvalidated05B/2": {
-    "count": 17838,
-    "mrr": 0.5449825101397587,
-    "top1": 48.19486489516762,
-    "top10": 65.80894719138917,
-    "ms": 4108.948985312255,
-    "timeMs": 73295432.0
-   },
-   "messages/llmUnvalidated05B/3": {
-    "count": 17329,
-    "mrr": 0.5866645919721688,
-    "top1": 52.46119222113221,
-    "top10": 69.50199088233597,
-    "ms": 3973.8522130532633,
-    "timeMs": 68862885.0
-   },
-   "messages/llmUnvalidated05B/4": {
-    "count": 16259,
-    "mrr": 0.5971552019540826,
-    "top1": 53.48422412202473,
-    "top10": 70.51479180761424,
-    "ms": 3931.1035734054985,
-    "timeMs": 63915813.0
-   },
-   "messages/llmUnvalidated05B/5": {
-    "count": 15039,
-    "mrr": 0.5993547728287406,
-    "top1": 53.6272358534477,
-    "top10": 70.90897001130395,
-    "ms": 3839.0984107985905,
-    "timeMs": 57736201.0
-   },
-   "messages/llmUnvalidated05B/6": {
-    "count": 13610,
-    "mrr": 0.597172130669559,
-    "top1": 53.541513592946366,
-    "top10": 70.29390154298311,
-    "ms": 3673.821160911095,
-    "timeMs": 50000706.0
-   },
-   "messages/llmUnvalidated05B/7": {
-    "count": 12623,
-    "mrr": 0.6286801680982939,
-    "top1": 57.292244315931235,
-    "top10": 72.48673057117959,
-    "ms": 3419.6138002059733,
-    "timeMs": 43165785.0
-   },
-   "messages/llmUnvalidated05B/8": {
-    "count": 10693,
-    "mrr": 0.6241095272237142,
-    "top1": 56.176938183858596,
-    "top10": 74.0671467315066,
-    "ms": 3719.957168240905,
-    "timeMs": 39777502.0
-   },
    "messages/llmUnvalidated15B/avg": {
     "count": 103391,
     "mrr": 0.6684454704463698,
@@ -1441,70 +1201,6 @@
     "ms": 3752.336294772281,
     "timeMs": 40123732.0
    },
-   "messages/llm05B/avg": {
-    "count": 103391,
-    "mrr": 0.6745026162818814,
-    "top1": 62.03828186205762,
-    "top10": 76.09172945420781,
-    "ms": 3353.8458860055516,
-    "timeMs": 346757480.0
-   },
-   "messages/llm05B/2": {
-    "count": 17838,
-    "mrr": 0.5896096838032594,
-    "top1": 52.07422356766454,
-    "top10": 71.30283664087902,
-    "ms": 5712.37947079269,
-    "timeMs": 101897425.0
-   },
-   "messages/llm05B/3": {
-    "count": 17329,
-    "mrr": 0.6437068058223349,
-    "top1": 58.11068151653298,
-    "top10": 74.94373593398349,
-    "ms": 4094.139188643315,
-    "timeMs": 70947338.0
-   },
-   "messages/llm05B/4": {
-    "count": 16259,
-    "mrr": 0.6684074607763026,
-    "top1": 60.93855710683314,
-    "top10": 76.21009902208007,
-    "ms": 3477.632142198167,
-    "timeMs": 56542821.0
-   },
-   "messages/llm05B/5": {
-    "count": 15039,
-    "mrr": 0.681322582449652,
-    "top1": 62.683689075071484,
-    "top10": 76.51439590398297,
-    "ms": 2884.9107653434403,
-    "timeMs": 43386173.0
-   },
-   "messages/llm05B/6": {
-    "count": 13610,
-    "mrr": 0.6921533244696357,
-    "top1": 64.43791329904482,
-    "top10": 76.34827332843497,
-    "ms": 2414.68376193975,
-    "timeMs": 32863846.0
-   },
-   "messages/llm05B/7": {
-    "count": 12623,
-    "mrr": 0.7208838363833213,
-    "top1": 68.06622831339618,
-    "top10": 77.50138635823497,
-    "ms": 1844.6443000871425,
-    "timeMs": 23284945.0
-   },
-   "messages/llm05B/8": {
-    "count": 10693,
-    "mrr": 0.7884856062191702,
-    "top1": 75.61956420087908,
-    "top10": 83.17590947348732,
-    "ms": 1667.9072290283364,
-    "timeMs": 17834932.0
-   },
    "messages/llm15B/avg": {
     "count": 103391,
     "mrr": 0.7294359499529679,
@@ -1696,70 +1392,6 @@
     "top10": 89.72224819975685,
     "ms": 1080.886093706163,
     "timeMs": 11557915.0
-   },
-   "messages/hybrid05B/avg": {
-    "count": 103391,
-    "mrr": 0.5880160426600636,
-    "top1": 48.282732539582746,
-    "top10": 81.14439361259684,
-    "ms": 3011.520528866149,
-    "timeMs": 311364119.0
-   },
-   "messages/hybrid05B/2": {
-    "count": 17838,
-    "mrr": 0.37662042598554535,
-    "top1": 29.414732593340062,
-    "top10": 57.932503643906266,
-    "ms": 4263.147381993497,
-    "timeMs": 76046023.0
-   },
-   "messages/hybrid05B/3": {
-    "count": 17329,
-    "mrr": 0.5023025216010965,
-    "top1": 39.45986496624156,
-    "top10": 74.58018350741531,
-    "ms": 3476.386865947256,
-    "timeMs": 60242308.0
-   },
-   "messages/hybrid05B/4": {
-    "count": 16259,
-    "mrr": 0.5695772402488685,
-    "top1": 45.937634540869674,
-    "top10": 81.53022941140291,
-    "ms": 3233.9433544498434,
-    "timeMs": 52580685.0
-   },
-   "messages/hybrid05B/5": {
-    "count": 15039,
-    "mrr": 0.6151662555662157,
-    "top1": 49.47802380477425,
-    "top10": 86.36212514129929,
-    "ms": 2888.528226610812,
-    "timeMs": 43440576.0
-   },
-   "messages/hybrid05B/6": {
-    "count": 13610,
-    "mrr": 0.6558230701048482,
-    "top1": 53.923585598824396,
-    "top10": 88.83908890521676,
-    "ms": 2408.3272593681118,
-    "timeMs": 32777334.0
-   },
-   "messages/hybrid05B/7": {
-    "count": 12623,
-    "mrr": 0.7264267858243142,
-    "top1": 61.5463835855185,
-    "top10": 94.74768280123584,
-    "ms": 2087.5662679236316,
-    "timeMs": 26351349.0
-   },
-   "messages/hybrid05B/8": {
-    "count": 10693,
-    "mrr": 0.8197261893628672,
-    "top1": 73.10389974749836,
-    "top10": 96.72683063686524,
-    "ms": 1863.4474890115027,
-    "timeMs": 19925844.0
    },
    "messages/hybrid15B/avg": {
     "count": 103391,
@@ -2081,70 +1713,6 @@
     "ms": 33.18688524590164,
     "timeMs": 50610.0
    },
-   "variables/llmUnvalidated05B/avg": {
-    "count": 12678,
-    "mrr": 0.6580587982682161,
-    "top1": 59.457327654204136,
-    "top10": 77.48856286480517,
-    "ms": 5229.619577220382,
-    "timeMs": 66301117.0
-   },
-   "variables/llmUnvalidated05B/2": {
-    "count": 2012,
-    "mrr": 0.5817241392912368,
-    "top1": 52.087475149105366,
-    "top10": 69.4831013916501,
-    "ms": 5591.719184890656,
-    "timeMs": 11250539.0
-   },
-   "variables/llmUnvalidated05B/3": {
-    "count": 2012,
-    "mrr": 0.6283509261888985,
-    "top1": 56.90854870775348,
-    "top10": 73.45924453280318,
-    "ms": 5283.246520874752,
-    "timeMs": 10629892.0
-   },
-   "variables/llmUnvalidated05B/4": {
-    "count": 1985,
-    "mrr": 0.6537681420175123,
-    "top1": 59.34508816120907,
-    "top10": 76.77581863979849,
-    "ms": 5311.930982367759,
-    "timeMs": 10544183.0
-   },
-   "variables/llmUnvalidated05B/5": {
-    "count": 1891,
-    "mrr": 0.6495597357575148,
-    "top1": 58.276044420941304,
-    "top10": 78.00105764145954,
-    "ms": 5072.766261237441,
-    "timeMs": 9592601.0
-   },
-   "variables/llmUnvalidated05B/6": {
-    "count": 1706,
-    "mrr": 0.6989176854798191,
-    "top1": 63.305978898007034,
-    "top10": 81.65298944900351,
-    "ms": 5142.859320046893,
-    "timeMs": 8773718.0
-   },
-   "variables/llmUnvalidated05B/7": {
-    "count": 1547,
-    "mrr": 0.6993097238895558,
-    "top1": 63.219133807369104,
-    "top10": 82.02973497091145,
-    "ms": 5039.6793794440855,
-    "timeMs": 7796384.0
-   },
-   "variables/llmUnvalidated05B/8": {
-    "count": 1525,
-    "mrr": 0.7265347384855582,
-    "top1": 66.0327868852459,
-    "top10": 84.39344262295081,
-    "ms": 5058.229508196721,
-    "timeMs": 7713800.0
-   },
    "variables/llmUnvalidated15B/avg": {
     "count": 12678,
     "mrr": 0.7457330158229356,
@@ -2337,70 +1905,6 @@
     "ms": 3543.246557377049,
     "timeMs": 5403451.0
    },
-   "variables/llm05B/avg": {
-    "count": 12678,
-    "mrr": 0.7861630383341222,
-    "top1": 73.20555292632908,
-    "top10": 85.71541252563496,
-    "ms": 2614.97428616501,
-    "timeMs": 33152644.0
-   },
-   "variables/llm05B/2": {
-    "count": 2012,
-    "mrr": 0.67813456562214,
-    "top1": 61.18290258449304,
-    "top10": 79.17495029821073,
-    "ms": 4284.711729622267,
-    "timeMs": 8620840.0
-   },
-   "variables/llm05B/3": {
-    "count": 2012,
-    "mrr": 0.7438709015746788,
-    "top1": 68.78727634194831,
-    "top10": 82.7037773359841,
-    "ms": 3147.1893638170973,
-    "timeMs": 6332145.0
-   },
-   "variables/llm05B/4": {
-    "count": 1985,
-    "mrr": 0.8026238455079766,
-    "top1": 75.46599496221663,
-    "top10": 85.84382871536523,
-    "ms": 2633.7994962216626,
-    "timeMs": 5228092.0
-   },
-   "variables/llm05B/5": {
-    "count": 1891,
-    "mrr": 0.8020007050943063,
-    "top1": 74.88101533580117,
-    "top10": 86.409307244844,
-    "ms": 2102.409836065574,
-    "timeMs": 3975657.0
-   },
-   "variables/llm05B/6": {
-    "count": 1706,
-    "mrr": 0.8333284486127392,
-    "top1": 78.31184056271981,
-    "top10": 89.15592028135991,
-    "ms": 1987.0679953106683,
-    "timeMs": 3389938.0
-   },
-   "variables/llm05B/7": {
-    "count": 1547,
-    "mrr": 0.8280758457229045,
-    "top1": 77.3109243697479,
-    "top10": 89.01098901098901,
-    "ms": 1933.7840982546866,
-    "timeMs": 2991564.0
-   },
-   "variables/llm05B/8": {
-    "count": 1525,
-    "mrr": 0.8481420765027323,
-    "top1": 80.0,
-    "top10": 90.09836065573771,
-    "ms": 1714.3659016393442,
-    "timeMs": 2614408.0
-   },
    "variables/llm15B/avg": {
     "count": 12678,
     "mrr": 0.8460763176806717,
@@ -2592,70 +2096,6 @@
     "top10": 95.54098360655738,
     "ms": 1184.8124590163934,
     "timeMs": 1806839.0
-   },
-   "variables/hybrid05B/avg": {
-    "count": 12678,
-    "mrr": 0.7394723580655903,
-    "top1": 66.69032970500079,
-    "top10": 84.84776778671714,
-    "ms": 4103.190724088973,
-    "timeMs": 52020252.0
-   },
-   "variables/hybrid05B/2": {
-    "count": 2012,
-    "mrr": 0.4428153302407775,
-    "top1": 39.612326043737575,
-    "top10": 53.42942345924453,
-    "ms": 6669.339960238569,
-    "timeMs": 13418712.0
-   },
-   "variables/hybrid05B/3": {
-    "count": 2012,
-    "mrr": 0.6285952933194483,
-    "top1": 54.97017892644135,
-    "top10": 74.70178926441352,
-    "ms": 5063.741550695825,
-    "timeMs": 10188248.0
-   },
-   "variables/hybrid05B/4": {
-    "count": 1985,
-    "mrr": 0.7899492223421692,
-    "top1": 69.37027707808564,
-    "top10": 93.1486146095718,
-    "ms": 4640.231234256927,
-    "timeMs": 9210859.0
-   },
-   "variables/hybrid05B/5": {
-    "count": 1891,
-    "mrr": 0.8177366892464727,
-    "top1": 72.92437863564251,
-    "top10": 94.81755684822845,
-    "ms": 4067.6800634584874,
-    "timeMs": 7691983.0
-   },
-   "variables/hybrid05B/6": {
-    "count": 1706,
-    "mrr": 0.8387544427696829,
-    "top1": 76.02579132473622,
-    "top10": 94.78311840562719,
-    "ms": 2854.685228604924,
-    "timeMs": 4870093.0
-   },
-   "variables/hybrid05B/7": {
-    "count": 1547,
-    "mrr": 0.8607391674618566,
-    "top1": 79.70265029088559,
-    "top10": 95.02262443438914,
-    "ms": 2331.1060116354233,
-    "timeMs": 3606221.0
-   },
-   "variables/hybrid05B/8": {
-    "count": 1525,
-    "mrr": 0.8803177205308352,
-    "top1": 83.01639344262296,
-    "top10": 95.08196721311475,
-    "ms": 1989.5973770491803,
-    "timeMs": 3034136.0
    },
    "variables/hybrid15B/avg": {
     "count": 12678,

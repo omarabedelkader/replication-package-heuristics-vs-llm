@@ -11,7 +11,7 @@ CooFusionTrainingBenchmarks >> initialize [
 	super initialize.
 	name := 'Fusion training collector (not an evaluation strategy)'.
 	candidateLimit := 50.
-	client model: (CooBenchRunner llmModels at: #llm05B)
+	client model: (CooBenchRunner llmModels at: #llm15B)
 ]
 
 { #category : 'ranking' }

@@ -5,8 +5,8 @@
 #                      checkpoints (results/paper/) and check them against the paper.
 #                      Needs Python 3.8+ only; takes seconds.
 #
-#   ./run.sh --rerun   Re-run all 1,316 benchmarks of the 47 packages from scratch (frozen
-#                      Pharo image, benchmark source in lib/, the four models through Ollama),
+#   ./run.sh --rerun   Re-run all 1,034 benchmarks of the 47 packages from scratch (frozen
+#                      Pharo image, benchmark source in lib/, the three models through Ollama),
 #                      then regenerate the tables from the new checkpoints and check them.
 #                      Needs curl, Ollama >= 0.12.11 (0.40.5, as in the paper, is downloaded on Linux), a GPU and ~25 GB
 #                      for the models; takes days. Optional settings:
@@ -92,7 +92,7 @@ rerun() {
     export OLLAMA_KEEP_ALIVE="${OLLAMA_KEEP_ALIVE:--1}"
     export OLLAMA_CONTEXT_LENGTH="${OLLAMA_CONTEXT_LENGTH:-4096}"
 
-    echo "== Running the 1,316 benchmarks (resumable: completed benchmarks are kept)"
+    echo "== Running the 1,034 benchmarks (resumable: completed benchmarks are kept)"
     local status=0
     bash pipeline/pipeline-benchmarks.sh --foreground || status=$?
 

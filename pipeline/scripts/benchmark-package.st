@@ -1,5 +1,5 @@
 "Run ONE benchmark (BENCHMARK_KIND x BENCHMARK_STRATEGY) of one package and retain
-sufficient statistics, without rounding. The pipeline runs the 28 benchmarks of every
+sufficient statistics, without rounding. The pipeline runs the 22 benchmarks of every
 package as separate, concurrent workers and merges their parts.
 LLM completion runs twice: before Pharo validation (the candidates are what the model
 generates, real names or not) and after it (only real names of the image)."
@@ -12,11 +12,11 @@ packageName := OSEnvironment current at: 'BENCHMARK_PACKAGE'.
 ((selection at: 'benchmark') includes: packageName) ifFalse: [
     Error signal: 'Worker package is not in the saved benchmark selection' ].
 unvalidated := Dictionary newFrom: {
-    #llmUnvalidated05B -> #llm05B. #llmUnvalidated15B -> #llm15B.
+    #llmUnvalidated15B -> #llm15B.
     #llmUnvalidated3B -> #llm3B. #llmUnvalidated7B -> #llm7B }.
 strategies := #(heuristicsBaseline heuristicsDependency
-    llmUnvalidated05B llmUnvalidated15B llmUnvalidated3B llmUnvalidated7B
-    llm05B llm15B llm3B llm7B hybrid05B hybrid15B hybrid3B hybrid7B).
+    llmUnvalidated15B llmUnvalidated3B llmUnvalidated7B
+    llm15B llm3B llm7B hybrid15B hybrid3B hybrid7B).
 (strategies reject: [ :each | unvalidated includesKey: each ]) = CooBenchmarkChart publicationStrategies ifFalse: [
     Error signal: 'The published strategies differ from the ones this script measures' ].
 labelFor := [ :strategy |

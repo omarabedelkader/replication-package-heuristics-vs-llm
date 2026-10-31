@@ -45,7 +45,7 @@ CooPublicationTest >> testFourModelsUseSameOneTokenRequestsAndPopulations [
 		| run reference |
 		run := (comparison at: kind) first first.
 		self assert: run results keys asSet equals: CooBenchmarkChart publicationStrategies asSet.
-		reference := (run results at: #llm05B) records collect: [ :record | record at: #request ].
+		reference := (run results at: #llm15B) records collect: [ :record | record at: #request ].
 		CooBenchRunner llmModels keysAndValuesDo: [ :strategy :model |
 			| benchmark |
 			benchmark := run results at: strategy.
@@ -66,7 +66,7 @@ CooPublicationTest >> testFourModelsUseSameOneTokenRequestsAndPopulations [
 CooPublicationTest >> testClassesExcludeNonClassGlobals [
 	| run benchmark |
 	run := (CooBenchRunnerVariables runComparisonForPackages: { fixture package }) first.
-	benchmark := run results at: #llm05B.
+	benchmark := run results at: #llm15B.
 	self assert: benchmark records isNotEmpty.
 	self assert: (benchmark records allSatisfy: [ :record | (record at: #expected) = 'OrderedCollection' ]).
 	self assert: (benchmark totalEntriesPerPrefixSize: 2) equals: 1
@@ -244,7 +244,7 @@ CooPublicationTest >> testHybridsRerankDependencyCandidatesOnTheSamePopulation [
 		| run dependency |
 		run := (comparison at: kind) first first.
 		dependency := run results at: #heuristicsDependency.
-		#(hybrid05B hybrid15B hybrid3B hybrid7B) do: [ :hybridKey |
+		#(hybrid15B hybrid3B hybrid7B) do: [ :hybridKey |
 			| hybrid |
 			hybrid := run results at: hybridKey.
 			hybrid records do: [ :record |
@@ -320,7 +320,7 @@ CooPublicationTest >> testSixOriginalRowsPlusFiveRankingRows [
 	| comparison strategies latex rows requests folder |
 	self timeLimit: 1 minute.
 	comparison := self comparison.
-	strategies := #(heuristicsBaseline heuristicsDependency llm05B llm15B llm3B llm7B), CooBenchmarkChart rankingStrategies.
+	strategies := #(heuristicsBaseline heuristicsDependency llm15B llm3B llm7B), CooBenchmarkChart rankingStrategies.
 	comparison at: #publicationStrategies put: strategies.
 	requests := transport requests size.
 	folder := FileLocator temp / ('coo-expanded-table-', UUID new asString).
@@ -351,7 +351,7 @@ CooPublicationTest >> testExplicitComparisonRunsOnlyRequestedStrategies [
 
 { #category : 'tests' }
 CooPublicationTest >> testInvalidPublicationStrategyListFailsBeforeInference [
-	{ #(). #(llm05B llm05B). #(candidateRecall). #(unknownStrategy) } do: [ :strategies |
+	{ #(). #(llm15B llm15B). #(candidateRecall). #(unknownStrategy) } do: [ :strategies |
 		self should: [ CooBenchRunner compareMessagesAndVariablesFor: #('CooPublication-Fixture')
 			strategies: strategies ] raise: Error ].
 	self assert: transport requests isEmpty

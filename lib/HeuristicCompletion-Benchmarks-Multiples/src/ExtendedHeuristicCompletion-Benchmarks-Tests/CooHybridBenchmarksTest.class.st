@@ -226,8 +226,8 @@ CooHybridBenchmarksTest >> testSummaryAggregatesPopulationsAndExcludesFailures [
 		builder: (CooHybridTestBuilder new names: #('size'); yourself); yourself.
 	self should: [ failed benchCallsite: (self messageIn: 'example ^ self size') atPosition: 0 ] raise: Error.
 	runs := { benchmark. second. failed } collect: [ :each |
-		CooBenchRunnerTestBenchStub new results: (Dictionary newFrom: { #hybrid05B -> each }); yourself ].
-	summary := CooBenchmarkChart hybridSummaryFor: #hybrid05B runs: runs.
+		CooBenchRunnerTestBenchStub new results: (Dictionary newFrom: { #hybrid15B -> each }); yourself ].
+	summary := CooBenchmarkChart hybridSummaryFor: #hybrid15B runs: runs.
 	"si: 3 -> 1 by probability. siz and size: no listed token continues them,
 	so the names continuing the prefix share the lowest-token bound and keep
 	their order, ahead of sign, which does not continue it (3 -> 2). su to

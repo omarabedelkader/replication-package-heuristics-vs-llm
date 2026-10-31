@@ -1,6 +1,6 @@
 """Saved package list, bounded benchmark workers, resumable checkpoints and aggregation.
 
-Each package is split into its 28 independent benchmarks (2 kinds x 14 strategies).
+Each package is split into its 22 independent benchmarks (2 kinds x 11 strategies).
 Every benchmark runs in its own Pharo process, so all --jobs slots stay busy even with
 one package, and the Ollama server batches the concurrent requests of the workers."""
 import argparse
@@ -19,11 +19,11 @@ from benchmark_source import read_json, sha256, write_json
 
 
 SCRIPTS = Path(__file__).resolve().parent
-STRATEGIES = ("heuristicsBaseline", "heuristicsDependency", "llm05B", "llm15B",
-              "llm3B", "llm7B", "hybrid05B", "hybrid15B", "hybrid3B", "hybrid7B")
+STRATEGIES = ("heuristicsBaseline", "heuristicsDependency", "llm15B",
+              "llm3B", "llm7B", "hybrid15B", "hybrid3B", "hybrid7B")
 # LLM completion is measured twice: answering whatever the model generates (before
 # Pharo validation), and answering only real names of the image (after).
-LLM = ("llm05B", "llm15B", "llm3B", "llm7B")
+LLM = ("llm15B", "llm3B", "llm7B")
 BEFORE_VALIDATION = {name: name.replace("llm", "llmUnvalidated") for name in LLM}
 MEASURED = STRATEGIES + tuple(BEFORE_VALIDATION.values())
 RESULT_SETS = ("before", "after")
@@ -38,7 +38,7 @@ PREFIXES = range(2, 9)
 # Longest benchmarks first (largest model, then the unvalidated, validated and hybrid
 # runs): the slowest work never starts last, and concurrent workers query the same
 # model at the same time, which Ollama batches.
-ORDER = tuple(strategy for size in ("7B", "3B", "15B", "05B")
+ORDER = tuple(strategy for size in ("7B", "3B", "15B")
               for strategy in (f"llmUnvalidated{size}", f"llm{size}", f"hybrid{size}")) + (
     "heuristicsBaseline", "heuristicsDependency")
 assert sorted(ORDER) == sorted(MEASURED)
@@ -203,7 +203,7 @@ def task_directory(run, index, kind, strategy):
 
 
 def merge_parts(run, index, package, run_id):
-    """Combine a package's 28 benchmark parts into its checked result.json."""
+    """Combine a package's 22 benchmark parts into its checked result.json."""
     parts = [read_json(task_directory(run, index, kind, strategy) / "part.json")
              for kind in KINDS for strategy in MEASURED]
     corpus = parts[0]["corpus"]
@@ -416,7 +416,7 @@ def validation_table(rows):
             count, generated, valid = (sum(row[field] for row in chosen)
                                        for field in ("count", *CANDIDATES))
             share = f"{100 * valid / generated:.1f}" if generated else "--"
-            lines.append(f"& {after[3:].replace('05', '0.5').replace('15', '1.5')} & {count} & {generated} "
+            lines.append(f"& {after[3:].replace('15', '1.5')} & {count} & {generated} "
                          f"& {valid} & {share} \\\\" + (r" \cline{2-6}" if index < len(LLM) - 1 else ""))
         lines.append(r"\hline")
     return "\n".join(lines + [r"\end{tabular}", r"\end{table}"]) + "\n"

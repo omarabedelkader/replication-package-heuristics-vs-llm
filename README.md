@@ -23,7 +23,7 @@ Figures 1 and 2 are method diagrams and contain no results. The paper's Recall@1
 `./run.sh` then checks the regenerated results against the paper (`analysis/verify_paper.py`), with three checks:
 
 1. every generated file is identical to the paper's supplemental file (`expected/paper-supplemental/`, comment lines ignored);
-2. all 546 statistics are identical to `expected/analysis-stats.reference.json`;
+2. all 432 statistics are identical to `expected/analysis-stats.reference.json`;
 3. every result quoted in the paper's text (abstract to conclusion) is recomputed from the checkpoints, and the stated settings (prefix lengths, models, inference, search, timeout, image) are read from the benchmark source, the model list and the frozen image. Each one is listed in `results/verification-report.md`.
 
 Not checked, because the checkpoints do not record them: the execution environment of Section IV-C (GPUs, Ollama versions, workers per machine, rerunning failed tasks), the size of the image (about 740 packages), and the numbers cited from other work (e.g. public repositories per language). The models' F16 weights are recorded separately in `data/experiment/llm-model-digests.json`.
@@ -48,7 +48,7 @@ BENCHMARK_JOBS=2 OLLAMA_MAX_LOADED_MODELS=1 ./run.sh --rerun   # with less GPU m
 | Path | What |
 |---|---|
 | `run.sh` | The single entry point |
-| `data/checkpoints/<package>/benchmarks/<kind>-<strategy>/part.json` | 1,316 checkpoints, one directory for each of the 47 packages (47 × 28): per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
+| `data/checkpoints/<package>/benchmarks/<kind>-<strategy>/part.json` | 1,034 checkpoints, one directory for each of the 47 packages (47 × 22): per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
 | `data/experiment/` | The 47 packages, image/source pins, model tags (`llm-models.json`) and their registry digests and weight types on 2026-10-31 (`llm-model-digests.json`; the pipeline pulls by tag) |
 | `lib/HeuristicCompletion-Benchmarks-Multiples/` | Frozen Smalltalk benchmark source loaded in the image (SHA-256 pinned in `data/experiment/image-source.json`); the pipeline always uses this copy and downloads nothing from GitHub |
 | `frozen-image/` | The exact Pharo 14 image, changes and sources files |
@@ -67,8 +67,8 @@ The checkpoints use internal names; the paper uses these labels:
 |---|---|
 | `heuristicsBaseline` | Baseline |
 | `heuristicsDependency` | Dependency |
-| `llmUnvalidated{05B,15B,3B,7B}` | Unconstrained generation |
-| `llm{05B,15B,3B,7B}` | Constrained generation |
-| `hybrid{05B,15B,3B,7B}` | CLM reranking (of Dependency's candidates) |
+| `llmUnvalidated{15B,3B,7B}` | Unconstrained generation |
+| `llm{15B,3B,7B}` | Constrained generation |
+| `hybrid{15B,3B,7B}` | CLM reranking (of Dependency's candidates) |
 
 `messages` = method selectors; `variables` = class names.

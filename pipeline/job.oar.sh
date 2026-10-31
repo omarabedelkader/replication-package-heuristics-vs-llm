@@ -67,7 +67,6 @@ OLLAMA_PID=""
 PIPELINE_PID=""
 
 OLLAMA_MODELS_TO_PULL=(
-    "pharo-llm/Qwen2.5-Coder-SFT:0.5B"
     "pharo-llm/Qwen2.5-Coder-SFT:1.5B"
     "pharo-llm/Qwen2.5-Coder-SFT:3b"
     "pharo-llm/Qwen2.5-Coder-SFT:7b"
@@ -369,7 +368,7 @@ export OLLAMA_NOPRUNE=1
 
 export OLLAMA_HOST="127.0.0.1:11434"
 
-# One request slot per benchmark worker, and all four models kept loaded: the
+# One request slot per benchmark worker, and all three models kept loaded: the
 # concurrent workers are served in parallel instead of queuing or reloading models.
 export OLLAMA_NUM_PARALLEL="${OLLAMA_NUM_PARALLEL:-$BENCHMARK_JOBS}"
 export OLLAMA_MAX_LOADED_MODELS="${OLLAMA_MAX_LOADED_MODELS:-${#OLLAMA_MODELS_TO_PULL[@]}}"

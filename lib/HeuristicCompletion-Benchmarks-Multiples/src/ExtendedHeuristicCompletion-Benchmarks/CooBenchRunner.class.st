@@ -320,7 +320,6 @@ CooBenchRunner >> run [
 { #category : 'LLM configuration' }
 CooBenchRunner class >> llmModels [
 	^ OrderedDictionary new
-		at: #llm05B put: 'pharo-llm/Qwen2.5-Coder-SFT:0.5B';
 		at: #llm15B put: 'pharo-llm/Qwen2.5-Coder-SFT:1.5B';
 		at: #llm3B put: 'pharo-llm/Qwen2.5-Coder-SFT:3b';
 		at: #llm7B put: 'pharo-llm/Qwen2.5-Coder-SFT:7b';

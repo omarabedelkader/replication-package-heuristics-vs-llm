@@ -76,7 +76,7 @@ def release(path):
 
 
 def complete_packages(run, manifest):
-    """Merge every package whose 28 benchmarks are done; returns the packages left."""
+    """Merge every package whose 22 benchmarks are done; returns the packages left."""
     left = 0
     for index, package in enumerate(manifest["packages"]):
         result = workers.package_directory(run, index) / "result.json"

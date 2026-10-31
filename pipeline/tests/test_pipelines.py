@@ -79,7 +79,7 @@ elif 'ELIGIBLE_PACKAGES_FILE' in code:
     Path(os.environ['ELIGIBLE_PACKAGES_FILE']).write_text(json.dumps(packages))
 elif 'benchmarkPackages:' in code:
     path = Path(os.environ['BENCHMARK_SELECTION_FILE'])
-    (path.parent / 'llm-models.json').write_text(json.dumps(['model-05', 'model-15', 'model-3', 'model-7']))
+    (path.parent / 'llm-models.json').write_text(json.dumps(['model-15', 'model-3', 'model-7']))
     if path.exists():
         if set(json.loads(path.read_text())['eligible']) != set(packages):
             sys.exit('The image package pool changed')
@@ -117,7 +117,7 @@ elif 'CooPipelineStatistics' in code:
     data = json.loads(Path(os.environ['BENCHMARK_AGGREGATE']).read_text())
     count = len(data['packages'])
     assert data['corpus'] == dict(packages=count, classes=2 * count, methods=3 * count)
-    assert len(data['rows']) == 2 * 10 * 7
+    assert len(data['rows']) == 2 * 8 * 7
     publication = Path(os.environ['PUBLICATION_DIR'])
     which = Path(os.environ['BENCHMARK_AGGREGATE']).name
     assert which == 'aggregate-%s.json' % publication.name, which
@@ -263,7 +263,7 @@ time.sleep(30)
         self.assertEqual(set(self.results()), {
             *('results-after-pharo-validation/' + name for name in files),
             *('results-before-pharo-validation/' + name for name in files | {'pharo-validation.tex'})})
-        self.assertIn('& 0.5B & 14 & 56 & 14 & 25.0',
+        self.assertIn('& 1.5B & 14 & 56 & 14 & 25.0',
                       self.results()['results-before-pharo-validation/pharo-validation.tex'].decode())
         self.assertIn('[messages heuristicsBaseline]: Methods - Baseline done in 0.0 min', result.stdout)
         self.assertFalse((self.root / 'ollama-pid').exists(), 'Existing server must not be restarted')
@@ -395,7 +395,7 @@ time.sleep(30)
         (self.root / 'pharo-calls.jsonl').unlink()
         result = self.run_pipeline()
         # Only the benchmarks that had not finished run again.
-        self.assertEqual(len(self.calls('coo-package-part-v1')), 3 * 28 - done)
+        self.assertEqual(len(self.calls('coo-package-part-v1')), 3 * 22 - done)
         self.assertEqual(len(list(run.glob('packages/*/result.json'))), 3)
         self.assertEqual(self.runs(), [run])
         self.assertTrue((self.root / 'benchmark-complete').exists())
@@ -425,7 +425,7 @@ time.sleep(30)
         (self.experiment / '.running').rmdir()
         self.assertFalse((self.root / 'resutls/.running').exists())
         # Between them, the hosts run each unfinished benchmark exactly once.
-        self.assertEqual(len(self.calls('coo-package-part-v1')), 3 * 28 - done)
+        self.assertEqual(len(self.calls('coo-package-part-v1')), 3 * 22 - done)
         self.assertEqual(len(list(run.glob('packages/*/result.json'))), 3)
         self.assertEqual(self.runs(), [run])
         self.assertTrue((self.root / 'benchmark-complete').exists())
@@ -454,11 +454,11 @@ time.sleep(30)
         self.env.pop('BENCHMARK_OLLAMA_HOST')
         self.run_pipeline()
         pid = int((self.root / 'ollama-pid').read_text())
-        # Its own port, one request slot per worker, all four models kept loaded.
+        # Its own port, one request slot per worker, all three models kept loaded.
         env = json.loads((self.root / 'ollama-env.json').read_text())
         self.assertRegex(env['OLLAMA_HOST'], r'^127\.0\.0\.1:[1-9][0-9]*$')
         self.assertEqual(env['OLLAMA_NUM_PARALLEL'], '2')
-        self.assertEqual(env['OLLAMA_MAX_LOADED_MODELS'], '4')
+        self.assertEqual(env['OLLAMA_MAX_LOADED_MODELS'], '3')
         self.assertEqual(env['OLLAMA_MODELS'], str(self.root / 'models'))
         with self.assertRaises(ProcessLookupError):
             os.kill(pid, 0)

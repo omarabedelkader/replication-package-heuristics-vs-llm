@@ -53,7 +53,7 @@ if sys.argv[1]=='serve':
     time.sleep(30)
 elif sys.argv[1]=='list':
     print('NAME ID SIZE')
-    print('pharo-llm/Qwen2.5-Coder-SFT:0.5B cached 1GB')
+    print('pharo-llm/Qwen2.5-Coder-SFT:1.5B cached 1GB')
 elif sys.argv[1]=='pull':
     with (root/'pulls').open('a') as out: out.write(sys.argv[2]+'\\n')
 elif sys.argv[1]=='--version': print('test Ollama')
@@ -91,8 +91,7 @@ sys.exit(int(os.environ.get('TEST_PIPELINE_STATUS','0')))
         self.assertEqual(invocation['env']['RESULTS_DIR'], str(self.root / 'oar-runs/123/results'))
         self.assertIn('https://ollama.com/download/ollama-linux-', (self.root / 'ollama-download').read_text())
         self.assertEqual((self.root / 'pulls').read_text().splitlines(), [
-            'pharo-llm/Qwen2.5-Coder-SFT:1.5B', 'pharo-llm/Qwen2.5-Coder-SFT:3b',
-            'pharo-llm/Qwen2.5-Coder-SFT:7b'])
+            'pharo-llm/Qwen2.5-Coder-SFT:3b', 'pharo-llm/Qwen2.5-Coder-SFT:7b'])
 
     def test_user_counts_are_forwarded_and_pipeline_failure_cleans_up(self):
         self.env.update(BENCHMARK_PACKAGE_COUNT='100', BENCHMARK_JOBS='3', TEST_PIPELINE_STATUS='23')

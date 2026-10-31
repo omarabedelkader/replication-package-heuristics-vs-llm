@@ -10,10 +10,10 @@ Class {
 { #category : 'ranking' }
 CooAdaptiveHybridBenchmarks >> initialize [
 	super initialize.
-	name := 'AdaptiveRank + 0.5B'.
+	name := 'AdaptiveRank + 1.5B'.
 	marginThreshold := 0.2.
 	entropyThreshold := 0.8.
-	client model: (CooBenchRunner llmModels at: #llm05B)
+	client model: (CooBenchRunner llmModels at: #llm15B)
 ]
 
 { #category : 'ranking' }

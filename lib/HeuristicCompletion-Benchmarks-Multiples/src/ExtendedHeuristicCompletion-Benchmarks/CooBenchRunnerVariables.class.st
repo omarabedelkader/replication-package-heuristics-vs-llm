@@ -234,7 +234,7 @@ CooBenchRunnerVariables class >> runComparisonForPackages: aCol [
 				  package: pack;
 				  baseline: #heuristicsBaseline;
 				  others:
-					  #(heuristicsDependency llm05B llm15B llm3B llm7B hybrid05B hybrid15B hybrid3B hybrid7B);
+					  #(heuristicsDependency llm15B llm3B llm7B hybrid15B hybrid3B hybrid7B);
 				  run ]
 ]
 
@@ -393,11 +393,6 @@ CooBenchRunnerVariables >> heuristicsDependency [
 ]
 
 { #category : 'LLM' }
-CooBenchRunnerVariables >> llm05B [
-	^ self llmCompletionFor: #variables model: (CooBenchRunner llmModels at: #llm05B)
-]
-
-{ #category : 'LLM' }
 CooBenchRunnerVariables >> llm15B [
 	^ self llmCompletionFor: #variables model: (CooBenchRunner llmModels at: #llm15B)
 ]
@@ -413,11 +408,6 @@ CooBenchRunnerVariables >> llm7B [
 ]
 
 { #category : 'LLM' }
-CooBenchRunnerVariables >> llmUnvalidated05B [
-	^ self llmCompletionFor: #variables model: (CooBenchRunner llmModels at: #llm05B) validating: false
-]
-
-{ #category : 'LLM' }
 CooBenchRunnerVariables >> llmUnvalidated15B [
 	^ self llmCompletionFor: #variables model: (CooBenchRunner llmModels at: #llm15B) validating: false
 ]
@@ -430,13 +420,6 @@ CooBenchRunnerVariables >> llmUnvalidated3B [
 { #category : 'LLM' }
 CooBenchRunnerVariables >> llmUnvalidated7B [
 	^ self llmCompletionFor: #variables model: (CooBenchRunner llmModels at: #llm7B) validating: false
-]
-
-{ #category : 'Hybrid' }
-CooBenchRunnerVariables >> hybrid05B [
-	^ self hybridCompletionFor: #variables
-		model: (CooBenchRunner llmModels at: #llm05B)
-		builder: self dependencyBuilder
 ]
 
 { #category : 'Hybrid' }
@@ -486,6 +469,6 @@ CooBenchRunnerVariables >> candidateRecall [
 ]
 
 { #category : 'ranking' }
-CooBenchRunnerVariables >> adaptiveRank05B [
+CooBenchRunnerVariables >> adaptiveRank15B [
 	^ self rankingCompletionFor: #variables limit: 30 benchmarkClass: CooAdaptiveHybridBenchmarks
 ]
