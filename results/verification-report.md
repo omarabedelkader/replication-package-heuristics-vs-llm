@@ -21,6 +21,9 @@
 | RQ1 | Baseline -> Dependency MRR, classes | (0.407, 0.592) | (0.407, 0.592) | ok |
 | RQ1 | every CLM configuration has higher MRR than Dependency | True | True | ok |
 | RQ1 | unconstrained 1.5B MRR, methods / classes | (0.668, 0.746) | (0.668, 0.746) | ok |
+| RQ1 | unconstrained 3B / 7B MRR, methods / classes | ((0.698, 0.764), (0.722, 0.791)) | ((0.698, 0.764), (0.722, 0.791)) | ok |
+| RQ1 | unconstrained gap over Dependency increases with size, both tasks | True | True | ok |
+| RQ1 | constrained has the highest MRR at every size, both tasks | True | True | ok |
 | RQ1 | constrained 7B MRR, methods / classes | (0.774, 0.879) | (0.774, 0.879) | ok |
 | RQ1 | constrained 7B gain over Dependency, methods / classes (%) | (49.7, 48.4) | (49.7, 48.4) | ok |
 | RQ1 | constrained 7B has the highest MRR of all configurations (both tasks) | True | True | ok |
