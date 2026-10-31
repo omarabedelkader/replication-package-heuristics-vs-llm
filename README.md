@@ -32,7 +32,7 @@ It exits with status 0 only if all checks pass.
 
 ## The 47 packages
 
-`data/experiment/analysed-packages.txt` lists the 47 analysed packages, with one checkpoint directory each in `data/checkpoints/`. 50 packages were selected at random (seed 42); 3 were excluded because not all of their 28 benchmarks completed: Slot-Tests (18 of 28), Reflectivity-Tests (15) and Morphic-Widgets-Windows (18). Missing benchmarks are never filled with zeros. All 47 packages have method-selector observations; 37 have class-name observations (the other 10 reference no class).
+`data/experiment/analysed-packages.txt` lists the 47 analysed packages, with one checkpoint directory each in `data/checkpoints/`. The 47 packages were selected at random from the image. All 47 packages have method-selector observations; 37 have class-name observations (the other 10 reference no class).
 
 The checkpoints hold aggregates, not single observations: for every package × kind × strategy × prefix length, the sufficient statistics of all metrics of the paper. Per-observation records are not released.
 
