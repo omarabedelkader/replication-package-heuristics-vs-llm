@@ -336,8 +336,7 @@ def tab_reranking_coverage(A):
     row = lambda label, values, fmt=f1: label + " & " + " & ".join(fmt(v) for v in values) + r" \\"
     r = {kind: coverage_rows(A, kind) for kind in KINDS}
     main = [BEST, r"\begin{table*}[t]", r"\centering",
-            r"\caption{Coverage and ranking by prefix length for \dependency, CLM reranking (7B), and constrained generation (7B). "
-            r"Reranking reorders \dependency's list, so both have the same Recall@10. Shaded: best value in each column.}",
+            r"\caption{Coverage and ranking by prefix length for \dependency, CLM reranking (7B), and constrained generation (7B).}",
             r"\label{tab:reranking-coverage}", r"\setlength{\tabcolsep}{3.2pt}", r"\small",
             r"\begin{tabular}{lccccccc<{\hspace{3.6pt}}ccccccc}", TOP_RULE, r"\rowcolor{gray!15}",
             r"\rule{0pt}{2.4ex} & \multicolumn{7}{c}{\textbf{Method selectors}} & \multicolumn{7}{c}{\textbf{Class names}} \\",

@@ -1,6 +1,6 @@
 88882c8e371ada370bc523ba33e0c34496e8ca765da9c8294e1f19e22090c75e  ./.gitignore
 f9a37c0bca12cd1a679829c9be1e52d958e6d8cd1f43e6944aeedde824969852  ./README.md
-e33f1ef68ed39841eb16dc39f3d927b9294197f35ee27cc1c7dcca308f1d8cb0  ./analysis/reproduce_paper.py
+f86c3cbec31e6f77891d5b238553849f4c3d863d94af9ac4a445955a945c10e9  ./analysis/reproduce_paper.py
 24b1fec9a91854e5f9112971d4100d15a254afffba9da489da874d2bab4c0921  ./analysis/verify_paper.py
 efaef7cb11432b376b9c62a9bac4958d41ed04f1649f8a61687f65682e948522  ./data/checkpoints/Athens-Cairo/benchmarks/messages-heuristicsBaseline/part.json
 6190856118f494195ff0e4e3d0238eebcb324b68ae5f223c41631c1d3fe0b912  ./data/checkpoints/Athens-Cairo/benchmarks/messages-heuristicsDependency/part.json
@@ -1939,7 +1939,7 @@ ba1dd3b4ffe015c6b98e0a6b2ddfdc1de9d256fab211ac59a88639c5c4840644  ./data/experim
 db5d12faf0cdf8d25ef1ce78a96897bd982b0b656bb8318f804c9fb3ef6cec02  ./expected/paper-supplemental/tab-mrr-by-prefix.tex
 7c2f6bcf9214a0ab68f2d3f296899eef22d725a11d8f9ce848c21cc15eaf9919  ./expected/paper-supplemental/tab-name-validity-by-prefix.tex
 fc5a79255bba6b315078ba953300f2309e5856a9ed92268b842f22f19ba079c8  ./expected/paper-supplemental/tab-prefix-policies.tex
-68c9b7c8d453c01d67c980d0e92e608ed2a99a55c37180c676f2b5e2f21d441c  ./expected/paper-supplemental/tab-reranking-coverage.tex
+88296f69b36ad6c3dd6f161dc71a580b7af017f65aaebe7556b75f84488965d1  ./expected/paper-supplemental/tab-reranking-coverage.tex
 ebb9753b6d06b964bb343dfc70342c14dd8a0e8c5e2760849d95db981f81f563  ./expected/paper-supplemental/tab-top-k-accuracy.tex
 a2b848e31d44a05d590e15bcf03c29173f63e0fe64186a943fec85dec3469be2  ./expected/paper-supplemental/tab-vocabulary-constraints.tex
 77679dee33735080e1c3854b56167e7f1991f1def96141e547ebd652a4c835ac  ./frozen-image/pharo14-frozen-image.tar.gz
@@ -2020,9 +2020,9 @@ a3921683e4a09cfa6b17b06003a6f598dd396bee59c8a00a47d0ec49ed2b4421  ./pipeline/tes
 db5d12faf0cdf8d25ef1ce78a96897bd982b0b656bb8318f804c9fb3ef6cec02  ./results/paper/tab-mrr-by-prefix.tex
 7c2f6bcf9214a0ab68f2d3f296899eef22d725a11d8f9ce848c21cc15eaf9919  ./results/paper/tab-name-validity-by-prefix.tex
 fc5a79255bba6b315078ba953300f2309e5856a9ed92268b842f22f19ba079c8  ./results/paper/tab-prefix-policies.tex
-68c9b7c8d453c01d67c980d0e92e608ed2a99a55c37180c676f2b5e2f21d441c  ./results/paper/tab-reranking-coverage.tex
+88296f69b36ad6c3dd6f161dc71a580b7af017f65aaebe7556b75f84488965d1  ./results/paper/tab-reranking-coverage.tex
 ebb9753b6d06b964bb343dfc70342c14dd8a0e8c5e2760849d95db981f81f563  ./results/paper/tab-top-k-accuracy.tex
 a2b848e31d44a05d590e15bcf03c29173f63e0fe64186a943fec85dec3469be2  ./results/paper/tab-vocabulary-constraints.tex
-3f976d49c8da1a5e727a18b5bcf32bd05311803cebdb4aca7065f9174bd5ad30  ./results/verification-report.md
+1f8f787d835378865c0dea374a2f187890232d4dac2d06121392baae55afaf32  ./results/verification-report.md
 37d90b3138ea5684587ed05d7193bf780ad93e4aa15f71beebf25707e29d414f  ./run.sh
 3f043b58857cc09bfefec44d1e3352581b8d7328839837a74e7d594ccc22f17e  ./tests/test_analysis.py
