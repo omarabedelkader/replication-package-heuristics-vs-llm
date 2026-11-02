@@ -11,6 +11,8 @@ Needs Python 3.8+ only, and takes seconds. `./run.sh` does two things:
 1. It regenerates every table of the paper from the benchmark checkpoints into `results/paper/`.
 2. It checks them against the paper.
 
+## Summary :
+
 | Paper | File in `results/paper/` |
 |---|---|
 | Table I: MRR by prefix length | `tab-mrr-by-prefix.tex` |
