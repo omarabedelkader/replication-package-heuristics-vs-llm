@@ -14,6 +14,8 @@
 #                        EXPERIMENT_DIR        working directory (default: experiment)
 #                        BENCHMARK_JOBS        simultaneous benchmarks (default 8, as in the paper)
 #                        BENCHMARK_RESUME_DIR  continue an interrupted EXPERIMENT_DIR/benchmark-run.*
+#                        BENCHMARK_PACKAGES_FILE  run only the packages listed in this file (one
+#                                              per line), e.g. one small package to test the setup
 #                        OLLAMA_BIN, OLLAMA_MODELS_DIR  see pipeline/pipeline-benchmarks.sh --help
 #                      With less GPU memory: BENCHMARK_JOBS=2 OLLAMA_MAX_LOADED_MODELS=1.
 
@@ -21,6 +23,11 @@ set -euo pipefail
 PACKAGE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$PACKAGE_DIR"
 PYTHON="${PIPELINE_PYTHON:-python3}"
+# The packages of --rerun: the paper's 47, or your own list (a path relative to where you call run.sh).
+if [[ -n "${BENCHMARK_PACKAGES_FILE:-}" ]]; then
+    BENCHMARK_PACKAGES_FILE="$(cd "$OLDPWD" 2>/dev/null; cd "$(dirname "$BENCHMARK_PACKAGES_FILE")" && pwd -P)/$(basename "$BENCHMARK_PACKAGES_FILE")"
+fi
+export BENCHMARK_PACKAGES_FILE="${BENCHMARK_PACKAGES_FILE:-$PACKAGE_DIR/data/experiment/analysed-packages.txt}"
 
 tables() {
     # $1: checkpoints directory, $2: a re-run's workers.json (empty for the released
@@ -76,8 +83,7 @@ prepare_experiment() {
         5) echo "Image matches the pinned SHA-256 of the paper's run; lib/ will be loaded into it." ;;
         *) exit "$status" ;;
     esac
-    (cd "$dir/image" && BENCHMARK_PACKAGES_FILE="$PACKAGE_DIR/data/experiment/analysed-packages.txt" \
-        ./pharo --headless Pharo.image eval "
+    (cd "$dir/image" && ./pharo --headless Pharo.image eval "
 | names missing |
 names := ((OSEnvironment current at: 'BENCHMARK_PACKAGES_FILE') asFileReference contents lines
     collect: [ :each | (each copyUpTo: \$#) trim ]) reject: [ :each | each isEmpty ].
@@ -91,7 +97,6 @@ rerun() {
     export EXPERIMENT_DIR="$(cd "$EXPERIMENT_DIR" && pwd -P)"
     prepare_experiment "$EXPERIMENT_DIR"
     export BENCHMARK_REPO_DIR="$PACKAGE_DIR/lib/HeuristicCompletion-Benchmarks-Multiples"
-    export BENCHMARK_PACKAGES_FILE="$PACKAGE_DIR/data/experiment/analysed-packages.txt"
     export RESULTS_DIR="${RESULTS_DIR:-$EXPERIMENT_DIR/results}"
     export BENCHMARK_JOBS="${BENCHMARK_JOBS:-8}"
     # Ollama server settings of the paper's run. Every request sets num_ctx = 8,192 and
@@ -102,7 +107,7 @@ rerun() {
     export OLLAMA_KEEP_ALIVE="${OLLAMA_KEEP_ALIVE:--1}"
     export OLLAMA_CONTEXT_LENGTH="${OLLAMA_CONTEXT_LENGTH:-4096}"
 
-    echo "== Running the 1,034 benchmarks (after an interruption, continue with the"
+    echo "== Running the benchmarks of $(grep -cvE '^[[:space:]]*(#|$)' "$BENCHMARK_PACKAGES_FILE") packages (after an interruption, continue with the"
     echo "   BENCHMARK_RESUME_DIR the pipeline prints: completed benchmarks are kept)"
     local status=0
     bash pipeline/pipeline-benchmarks.sh --foreground || status=$?
@@ -124,7 +129,7 @@ case "${1:-}" in
     --rerun)
         rerun ;;
     -h|--help)
-        sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//' ;;
+        sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//' ;;
     *)
         echo "Unknown option: $1 (see ./run.sh --help)" >&2
         exit 2 ;;

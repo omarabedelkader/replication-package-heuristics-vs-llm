@@ -2026,5 +2026,5 @@ fc5a79255bba6b315078ba953300f2309e5856a9ed92268b842f22f19ba079c8  ./results/pape
 ebb9753b6d06b964bb343dfc70342c14dd8a0e8c5e2760849d95db981f81f563  ./results/paper/tab-top-k-accuracy.tex
 a622e0d8517a4269f0c5046690b1bfe0375d83e7fc6add4e69b09d4ab79268ec  ./results/paper/tab-vocabulary-constraints.tex
 7bd725527be380be8fc59527ef360e5f0edb60da1d19adb877c745dc277fedbd  ./results/verification-report.md
-89ccffe688412e49c66b2f380e48bac214bfb855cc858af2fac1ee41db049696  ./run.sh
+f20d4cf0b364d0cabeee2628961617a56371ae1cddea5c7b61a10d8b887540ca  ./run.sh
 5fcfd777f3b113e82bc68fd3ece055ea858e09aa0baa6061335476c5b3813a2a  ./tests/test_analysis.py
