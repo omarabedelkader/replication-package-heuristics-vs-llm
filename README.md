@@ -1,12 +1,18 @@
 # Replication package: Can Small Code Models Improve Semantic Code Completion? Evidence from Pharo
 
+## Setup
+
+Nothing to install: `./run.sh` only needs bash and Python 3.8+ (standard library, no `pip install`). It works on Linux and macOS; on Windows, use WSL.
+
+If `./run.sh` says "permission denied" (downloaded zips can lose it), run `chmod +x run.sh` or use `bash run.sh`.
+
 ## Run
 
 ```bash
 ./run.sh
 ```
 
-Runs on Linux or macOS with bash and Python 3.8+ (on Windows, use WSL) `./run.sh` does two things:
+It takes seconds and does two things:
 
 1. It regenerates every table and figure of the paper from the benchmark checkpoints into `results/paper/`.
 2. It checks them against the paper.
