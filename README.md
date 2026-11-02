@@ -8,12 +8,8 @@
 
 Needs Python 3.8+ only, and takes seconds. `./run.sh` does two things:
 
-1. It regenerates every result of the paper from the benchmark checkpoints into `results/paper/`.
-2. It checks them against the paper and exits with status 0 only if everything matches:
-   - every table and figure is byte-identical to the paper's file;
-   - every number and setting quoted in the paper's text is recomputed and compared.
-
-   The full list of checks is in `results/verification-report.md`. The checkpoints cannot show the GPUs used, the size of the whole image (about 740 packages) or numbers cited from other papers, so those are not checked.
+1. It regenerates every table of the paper from the benchmark checkpoints into `results/paper/`.
+2. It checks them against the paper.
 
 | Paper | File in `results/paper/` |
 |---|---|

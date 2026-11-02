@@ -267,7 +267,6 @@ def normalise(value):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--results", default=str(ROOT / "results"))
-    parser.add_argument("--report", default=None, help="Markdown report path (default: RESULTS/verification-report.md)")
     args = parser.parse_args(argv)
     results = Path(args.results)
     st = json.loads((results / "analysis-stats.json").read_text())
@@ -277,8 +276,6 @@ def main(argv=None):
     print("2. Statistics")
     failures += check_stats(st)
     print("3. Numbers quoted in the paper text")
-    report = ["# Paper claims recomputed from the checkpoints", "",
-              "| Section | Claim | Recomputed | Paper | |", "|---|---|---|---|---|"]
     try:
         checked = claims(st)
     except (TypeError, KeyError, ZeroDivisionError) as error:
@@ -293,13 +290,9 @@ def main(argv=None):
     for section, claim, computed, paper in checked:
         ok = normalise(computed) == normalise(paper)
         passed += ok
-        report.append(f"| {section} | {claim} | {computed} | {paper} | {'ok' if ok else 'MISMATCH'} |")
         if not ok:
             failures.append(f"{section}: {claim}: recomputed {computed}, paper {paper}")
     print(f"  {passed} of {len(checked)} claims match")
-    report_path = Path(args.report) if args.report else results / "verification-report.md"
-    report_path.write_text("\n".join(report) + "\n", encoding="utf-8")
-    print(f"  report: {report_path}")
     if failures:
         print("\nFAILED:")
         for failure in failures:

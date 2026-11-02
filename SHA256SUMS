@@ -1,7 +1,7 @@
 88882c8e371ada370bc523ba33e0c34496e8ca765da9c8294e1f19e22090c75e  ./.gitignore
-f2329d2acdcbd5da89cb1f93beeebc67d41bb9b72fb63a6c432700c84cc3a430  ./README.md
+7603a4fb2d0d363a6c165fa57f7c66537143710d40cd7d1f59b8c68e5ddcf68a  ./README.md
 bbee4e7dafbcf6ac84bf026be7f4a4705b56a846c38167a770abdffcd2cbd403  ./analysis/reproduce_paper.py
-5d4bd350c9b402eda55e958ca9a11666227579279020aa2b8bacd630f7af7bbc  ./analysis/verify_paper.py
+9a2f9493737160be84ebc4e1ccd37087f7dee8fda9aa86ca1dd7a05a8d2acb9c  ./analysis/verify_paper.py
 efaef7cb11432b376b9c62a9bac4958d41ed04f1649f8a61687f65682e948522  ./data/checkpoints/Athens-Cairo/benchmarks/messages-heuristicsBaseline/part.json
 6190856118f494195ff0e4e3d0238eebcb324b68ae5f223c41631c1d3fe0b912  ./data/checkpoints/Athens-Cairo/benchmarks/messages-heuristicsDependency/part.json
 16053793c699cd2ac6fe2e1f35e84ac5ed96b54482ed35eef5b03391608958c6  ./data/checkpoints/Athens-Cairo/benchmarks/messages-hybrid15B/part.json
@@ -2021,6 +2021,5 @@ fc5a79255bba6b315078ba953300f2309e5856a9ed92268b842f22f19ba079c8  ./results/pape
 346f7743330487c2f586528496cc90c5422f5414f03800b307905e37d5012ad9  ./results/paper/tab-reranking-coverage.tex
 ebb9753b6d06b964bb343dfc70342c14dd8a0e8c5e2760849d95db981f81f563  ./results/paper/tab-top-k-accuracy.tex
 a622e0d8517a4269f0c5046690b1bfe0375d83e7fc6add4e69b09d4ab79268ec  ./results/paper/tab-vocabulary-constraints.tex
-f8f6824f3ae32f9b2fec34627cfeb0b9dfa346f6e369c16ee33cce6f9a4a3f04  ./results/verification-report.md
 f20d4cf0b364d0cabeee2628961617a56371ae1cddea5c7b61a10d8b887540ca  ./run.sh
 5fcfd777f3b113e82bc68fd3ece055ea858e09aa0baa6061335476c5b3813a2a  ./tests/test_analysis.py
