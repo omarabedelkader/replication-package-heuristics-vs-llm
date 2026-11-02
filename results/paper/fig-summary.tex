@@ -1,0 +1,50 @@
+% Summary of all results: quality (overall MRR@10) vs. cost (mean completion time per observation)
+% for the 11 configurations. Colour = approach, marker shape = model size.
+% Values: Average column of tab-mrr-by-prefix.tex and fig-quality-and-time.tex.
+\definecolor{cA}{HTML}{2A78D6}\definecolor{cB}{HTML}{EB6834}\definecolor{cY}{HTML}{1BAF7A}\definecolor{cH}{HTML}{6B6A64}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.1cm},
+  width=0.49\textwidth, height=5.4cm, xmode=log, xmin=7, xmax=8000, ymin=0.22, ymax=0.92,
+  xtick={10,100,1000}, xticklabels={10,100,1\,000}, minor x tick num=0,
+  ytick={0.3,0.4,...,0.9}, yticklabel style={/pgf/number format/.cd,fixed,fixed zerofill,precision=1},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize},
+  xlabel={Mean completion time per observation (ms, log scale)},
+  title style={font=\footnotesize\bfseries, yshift=-1ex}, grid=major, grid style={gray!18}, axis line style={gray!60},
+  xtick pos=bottom, ytick pos=left]
+\nextgroupplot[title={Method selectors}, ylabel={MRR@10 (higher is better)}]
+\draw[cH, dashed, thin] (axis cs:7,0.517) -- (axis cs:8000,0.517);
+\addplot[only marks, mark=star, mark size=3pt, thick, color=cH, nodes near coords, point meta=explicit symbolic, every node near coord/.append style={font=\tiny, anchor=south west, xshift=1pt, yshift=1pt, inner sep=1pt}] coordinates {(104.7,0.262) [Baseline] (159.6,0.517) [Dependency]};
+\addplot[only marks, mark=square*, mark size=2.1pt, color=cB!75!black, fill=cB, fill opacity=0.9] coordinates {(2102.7,0.668)};
+\addplot[only marks, mark=triangle*, mark size=2.9pt, color=cB!75!black, fill=cB, fill opacity=0.9] coordinates {(2684.6,0.698)};
+\addplot[only marks, mark=diamond*, mark size=3.1pt, color=cB!75!black, fill=cB, fill opacity=0.9] coordinates {(3947.3,0.722)};
+\addplot[only marks, mark=square*, mark size=2.1pt, color=cA!75!black, fill=cA, fill opacity=0.9] coordinates {(834.6,0.729)};
+\addplot[only marks, mark=triangle*, mark size=2.9pt, color=cA!75!black, fill=cA, fill opacity=0.9] coordinates {(1698.5,0.754)};
+\addplot[only marks, mark=diamond*, mark size=3.1pt, color=cA!75!black, fill=cA, fill opacity=0.9] coordinates {(2074.3,0.774)};
+\addplot[only marks, mark=square*, mark size=2.1pt, color=cY!75!black, fill=cY, fill opacity=0.9] coordinates {(913.3,0.63)};
+\addplot[only marks, mark=triangle*, mark size=2.9pt, color=cY!75!black, fill=cY, fill opacity=0.9] coordinates {(1907.3,0.641)};
+\addplot[only marks, mark=diamond*, mark size=3.1pt, color=cY!75!black, fill=cY, fill opacity=0.9] coordinates {(2167.9,0.656)};
+\nextgroupplot[title={Class names}]
+\draw[cH, dashed, thin] (axis cs:7,0.592) -- (axis cs:8000,0.592);
+\addplot[only marks, mark=star, mark size=3pt, thick, color=cH, nodes near coords, point meta=explicit symbolic, every node near coord/.append style={font=\tiny, anchor=south west, xshift=1pt, yshift=1pt, inner sep=1pt}] coordinates {(11.2,0.407) [Baseline] (25.6,0.592) [Dependency]};
+\addplot[only marks, mark=square*, mark size=2.1pt, color=cB!75!black, fill=cB, fill opacity=0.9] coordinates {(758.7,0.746)};
+\addplot[only marks, mark=triangle*, mark size=2.9pt, color=cB!75!black, fill=cB, fill opacity=0.9] coordinates {(2984.3,0.764)};
+\addplot[only marks, mark=diamond*, mark size=3.1pt, color=cB!75!black, fill=cB, fill opacity=0.9] coordinates {(3801.9,0.791)};
+\addplot[only marks, mark=square*, mark size=2.1pt, color=cA!75!black, fill=cA, fill opacity=0.9] coordinates {(999.2,0.846)};
+\addplot[only marks, mark=triangle*, mark size=2.9pt, color=cA!75!black, fill=cA, fill opacity=0.9] coordinates {(1718.0,0.861)};
+\addplot[only marks, mark=diamond*, mark size=3.1pt, color=cA!75!black, fill=cA, fill opacity=0.9] coordinates {(1955.9,0.879)};
+\addplot[only marks, mark=square*, mark size=2.1pt, color=cY!75!black, fill=cY, fill opacity=0.9] coordinates {(1028.0,0.782)};
+\addplot[only marks, mark=triangle*, mark size=2.9pt, color=cY!75!black, fill=cY, fill opacity=0.9] coordinates {(2368.0,0.802)};
+\addplot[only marks, mark=diamond*, mark size=3.1pt, color=cY!75!black, fill=cY, fill opacity=0.9] coordinates {(2317.5,0.813)};
+\end{groupplot}
+\node[anchor=north, font=\scriptsize] (leg) at ($(group c1r1.south east)!0.5!(group c2r1.south west)+(0,-0.75cm)$) {%
+  \textbf{Approach:}\enspace
+  \tikz[baseline=-0.6ex]{\pgfsetplotmarksize{3pt}\pgfsetlinewidth{0.8pt}\color{cH}\pgfuseplotmark{star}}~Heuristics\quad
+  \tikz[baseline=-0.6ex]\fill[cB] (0,0) rectangle (6pt,6pt);~Unconstrained generation\quad
+  \tikz[baseline=-0.6ex]\fill[cA] (0,0) rectangle (6pt,6pt);~Constrained generation\quad
+  \tikz[baseline=-0.6ex]\fill[cY] (0,0) rectangle (6pt,6pt);~CLM reranking};
+\node[anchor=north, font=\scriptsize, yshift=-0.05cm] at (leg.south) {%
+  \textbf{Model size:}\enspace
+  \tikz[baseline=-0.6ex]{\pgfsetplotmarksize{2.1pt}\color{gray}\pgfuseplotmark{square*}}~1.5B\quad
+  \tikz[baseline=-0.6ex]{\pgfsetplotmarksize{2.9pt}\color{gray}\pgfuseplotmark{triangle*}}~3B\quad
+  \tikz[baseline=-0.6ex]{\pgfsetplotmarksize{3.1pt}\color{gray}\pgfuseplotmark{diamond*}}~7B};
+\end{tikzpicture}

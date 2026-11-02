@@ -7,7 +7,8 @@
 #
 #   ./run.sh --rerun   Re-run all 1,034 benchmarks of the 47 packages from scratch (frozen
 #                      Pharo image, benchmark source in lib/, the three models through Ollama),
-#                      then regenerate the tables from the new checkpoints and check them.
+#                      then regenerate the tables from the new checkpoints and check them
+#                      (completion times depend on the hardware, so those checks will differ).
 #                      Needs curl, Ollama >= 0.12.11 (0.40.5, as in the paper, is downloaded on Linux), a GPU and ~25 GB
 #                      for the models; takes days. Optional settings:
 #                        EXPERIMENT_DIR        working directory (default: experiment)
@@ -37,6 +38,7 @@ tables() {
   Table II   Names returned by (un)constrained generation tab-vocabulary-constraints.tex
   Table III  Coverage and ranking by prefix length        tab-reranking-coverage.tex
   Figure 3   Mean completion time per observation         fig-quality-and-time.tex
+  Figure 4   MRR against completion time                  fig-summary.tex
   Supplementary: tab-top-k-accuracy.tex, tab-name-validity-by-prefix.tex,
                  tab-prefix-policies.tex, fig-package-mrr.tex
   (Figures 1 and 2 are method diagrams and contain no results.)
@@ -63,9 +65,17 @@ prepare_experiment() {
     [[ -x "$dir/image/pharo" ]] || { echo "The VM installation did not create $dir/image/pharo" >&2; exit 1; }
     cp -R lib/HeuristicCompletion-Benchmarks-Multiples "$dir/repository"
     cp data/experiment/image-source.json data/experiment/llm-models.json "$dir/"
+    # 0: image and lib/ are exactly the run's; 5: the image is the run's, but lib/ differs
+    # from the source it holds (only in code for models the paper does not use), so the
+    # pipeline loads lib/ into the image before the first benchmark.
+    local status=0
     "$PYTHON" pipeline/scripts/benchmark_source.py check-image \
-        --repository "$dir/repository" --image "$dir/image/Pharo.image" --pin "$dir/image-source.json"
-    echo "Image and source match the pinned SHA-256 of the paper's run."
+        --repository "$dir/repository" --image "$dir/image/Pharo.image" --pin "$dir/image-source.json" || status=$?
+    case "$status" in
+        0) echo "Image and source match the pinned SHA-256 of the paper's run." ;;
+        5) echo "Image matches the pinned SHA-256 of the paper's run; lib/ will be loaded into it." ;;
+        *) exit "$status" ;;
+    esac
     (cd "$dir/image" && BENCHMARK_PACKAGES_FILE="$PACKAGE_DIR/data/experiment/analysed-packages.txt" \
         ./pharo --headless Pharo.image eval "
 | names missing |
@@ -92,13 +102,18 @@ rerun() {
     export OLLAMA_KEEP_ALIVE="${OLLAMA_KEEP_ALIVE:--1}"
     export OLLAMA_CONTEXT_LENGTH="${OLLAMA_CONTEXT_LENGTH:-4096}"
 
-    echo "== Running the 1,034 benchmarks (resumable: completed benchmarks are kept)"
+    echo "== Running the 1,034 benchmarks (after an interruption, continue with the"
+    echo "   BENCHMARK_RESUME_DIR the pipeline prints: completed benchmarks are kept)"
     local status=0
     bash pipeline/pipeline-benchmarks.sh --foreground || status=$?
 
-    # Analyse what is complete, even after an interruption (unfinished packages are skipped).
-    local runs=("$EXPERIMENT_DIR"/benchmark-run.*/)
-    local run="${BENCHMARK_RESUME_DIR:-${runs[${#runs[@]}-1]%/}}"
+    # Analyse what is complete, even after an interruption (unfinished packages are skipped):
+    # the resumed run, or else the run directory this call created (the most recent one).
+    local run="${BENCHMARK_RESUME_DIR:-$(ls -dt "$EXPERIMENT_DIR"/benchmark-run.* 2>/dev/null | head -n 1)}"
+    if [[ -z "$run" ]]; then
+        echo "No benchmark run directory in $EXPERIMENT_DIR: nothing to analyse." >&2
+        return 1
+    fi
     tables "$run/packages" "$run/workers.json" "$EXPERIMENT_DIR/paper-results" || status=$?
     return "$status"
 }
@@ -109,7 +124,7 @@ case "${1:-}" in
     --rerun)
         rerun ;;
     -h|--help)
-        sed -n '2,17p' "$0" | sed 's/^# \{0,1\}//' ;;
+        sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//' ;;
     *)
         echo "Unknown option: $1 (see ./run.sh --help)" >&2
         exit 2 ;;

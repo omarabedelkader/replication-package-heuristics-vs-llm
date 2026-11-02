@@ -1,74 +1,63 @@
 # Replication package: Can Small Code Models Improve Semantic Code Completion? Evidence from Pharo
 
-Everything is run with one command:
+## Run
 
 ```bash
 ./run.sh
 ```
 
-## What `./run.sh` produces
+Needs Python 3.8+ only, and takes seconds. `./run.sh` does two things:
 
-`results/paper/` holds every results table and figure of the paper, as drop-in replacements for the paper's `supplemental/` files:
+1. It regenerates every result of the paper from the benchmark checkpoints into `results/paper/`.
+2. It checks them against the paper and exits with status 0 only if everything matches:
+   - every table and figure is byte-identical to the paper's file;
+   - every number and setting quoted in the paper's text is recomputed and compared.
 
-| Paper | File |
+   The full list of checks is in `results/verification-report.md`. The checkpoints cannot show the GPUs used, the size of the whole image (about 740 packages) or numbers cited from other papers, so those are not checked.
+
+| Paper | File in `results/paper/` |
 |---|---|
 | Table I: MRR by prefix length | `tab-mrr-by-prefix.tex` |
 | Table II: names returned by (un)constrained generation | `tab-vocabulary-constraints.tex` |
 | Table III: coverage and ranking by prefix length | `tab-reranking-coverage.tex` |
-| Figure 3: mean completion time per observation | `fig-quality-and-time.tex` |
-| Additional analyses, not in the paper | `tab-top-k-accuracy.tex`, `tab-name-validity-by-prefix.tex`, `tab-prefix-policies.tex`, `fig-package-mrr.tex` |
+| Figure 3: mean completion time | `fig-quality-and-time.tex` |
+| Figure 4: MRR against completion time | `fig-summary.tex` |
+| Additional results (not in the paper) | `tab-top-k-accuracy.tex`, `tab-name-validity-by-prefix.tex`, `tab-prefix-policies.tex`, `fig-package-mrr.tex` |
 
-Figures 1 and 2 are method diagrams and contain no results. The paper's Recall@10 of Dependency (81.1% / 84.8%) is the Top-10 column of `tab-top-k-accuracy.tex`.
+Figures 1 and 2 show the method and contain no results.
 
-`./run.sh` then checks the regenerated results against the paper (`analysis/verify_paper.py`), with three checks:
-
-1. every generated file is identical to the paper's supplemental file (`expected/paper-supplemental/`, comment lines ignored);
-2. all 432 statistics are identical to `expected/analysis-stats.reference.json`;
-3. every result quoted in the paper's text (abstract to conclusion) is recomputed from the checkpoints, and the stated settings (prefix lengths, models, inference, search, timeout, image) are read from the benchmark source, the model list and the frozen image. Each one is listed in `results/verification-report.md`.
-
-Not checked, because the checkpoints do not record them: the execution environment of Section IV-C (GPUs, Ollama versions, workers per machine, rerunning failed tasks), the size of the image (about 740 packages), and the numbers cited from other work (e.g. public repositories per language). The models' F16 weights are recorded separately in `data/experiment/llm-model-digests.json`.
-
-It exits with status 0 only if all checks pass.
-
-## The 47 packages
-
-`data/experiment/analysed-packages.txt` lists the 47 analysed packages, with one checkpoint directory each in `data/checkpoints/`. The 47 packages were selected at random from the image. All 47 packages have method-selector observations; 37 have class-name observations (the other 10 reference no class).
-
-The checkpoints hold aggregates, not single observations: for every package × kind × strategy × prefix length, the sufficient statistics of all metrics of the paper. Per-observation records are not released.
-
-## Re-running the benchmarks
+## Re-run the benchmarks
 
 ```bash
-./run.sh --rerun                                               # EXPERIMENT_DIR=experiment, 8 benchmarks at once
-BENCHMARK_JOBS=2 OLLAMA_MAX_LOADED_MODELS=1 ./run.sh --rerun   # with less GPU memory
+./run.sh --rerun
 ```
+
+This re-runs the 1,034 benchmarks (47 packages × 2 tasks × 11 configurations) in the frozen Pharo image with the three models served by Ollama, then checks the new results the same way. It needs a GPU and about 25 GB for the models, and it takes days. Completion times depend on the hardware, so those checks will differ. `./run.sh --help` lists the options.
 
 ## Contents
 
 | Path | What |
 |---|---|
-| `run.sh` | The single entry point |
-| `data/checkpoints/<package>/benchmarks/<kind>-<strategy>/part.json` | 1,034 checkpoints, one directory for each of the 47 packages (47 × 22): per package × kind × strategy × prefix (2–8): observations, Top-1/2/3/10 hits, reciprocal-rank sum, time, Pharo memory change, generated/valid candidates |
-| `data/experiment/` | The 47 packages, image/source pins, model tags (`llm-models.json`) and their registry digests and weight types on 2026-10-31 (`llm-model-digests.json`; the pipeline pulls by tag) |
-| `lib/HeuristicCompletion-Benchmarks-Multiples/` | Frozen Smalltalk benchmark source loaded in the image (SHA-256 pinned in `data/experiment/image-source.json`); the pipeline always uses this copy and downloads nothing from GitHub |
-| `frozen-image/` | The exact Pharo 14 image, changes and sources files |
-| `pipeline/` | Benchmark pipeline used by `./run.sh --rerun`, with its tests; `job.oar.sh` is the Grid5000 job of the paper's run, `job.fir.sh` an equivalent Slurm job (H100) that was not used for the paper; on Linux it downloads Ollama 0.40.5, the release of the paper's run (`OLLAMA_DOWNLOAD_VERSION` to change it) |
-| `analysis/` | `reproduce_paper.py` (tables, figures, statistics) and `verify_paper.py` (checks against the paper), called by `./run.sh` |
-| `expected/` | The paper's supplemental files and reference statistics |
-| `results/` | Output of `./run.sh`, as shipped, including `verification-report.md` |
-| `tests/` | Tests of the analysis |
-| `SHA256SUMS` | Checksums of every shipped file (`shasum -a 256 -c SHA256SUMS`) |
+| `run.sh` | The only command |
+| `data/checkpoints/` | The results of the paper's run: one folder per package, one `part.json` per task × configuration, with the counts, hits, reciprocal-rank sums and times for each prefix length |
+| `data/experiment/` | The 47 packages, the model names and digests, and the SHA-256 of the image |
+| `lib/` | The Smalltalk benchmark source |
+| `frozen-image/` | The Pharo 14 image of the paper's run |
+| `pipeline/` | The benchmark pipeline used by `--rerun`, with its tests |
+| `analysis/` | `reproduce_paper.py` (builds the tables and figures) and `verify_paper.py` (compares them with the paper) |
+| `expected/` | The paper's table and figure files, and the reference statistics |
+| `results/` | The output of `./run.sh` |
+| `tests/` | Tests of the analysis (`python3 -m unittest tests/test_analysis.py`) |
+| `SHA256SUMS` | Checksums of every file (`shasum -a 256 -c SHA256SUMS`) |
 
-## Strategy names
+## Configuration names
 
-The checkpoints use internal names; the paper uses these labels:
-
-| Checkpoint | Paper |
+| In the checkpoints | In the paper |
 |---|---|
 | `heuristicsBaseline` | Baseline |
 | `heuristicsDependency` | Dependency |
-| `llmUnvalidated{15B,3B,7B}` | Unconstrained generation |
-| `llm{15B,3B,7B}` | Constrained generation |
-| `hybrid{15B,3B,7B}` | CLM reranking (of Dependency's candidates) |
+| `llmUnvalidated15B`, `llmUnvalidated3B`, `llmUnvalidated7B` | Unconstrained generation (1.5B, 3B, 7B) |
+| `llm15B`, `llm3B`, `llm7B` | Constrained generation |
+| `hybrid15B`, `hybrid3B`, `hybrid7B` | CLM reranking |
 
-`messages` = method selectors; `variables` = class names.
+`messages` are method selectors, and `variables` are class names.

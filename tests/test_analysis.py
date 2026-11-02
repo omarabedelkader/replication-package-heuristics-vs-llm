@@ -35,7 +35,7 @@ class ReleasedCheckpoints(unittest.TestCase):
                  for line in (ROOT / "data" / "experiment" / "analysed-packages.txt").read_text().splitlines()]
         self.assertEqual(self.stats["extra"]["packages"], [name for name in names if name])
         self.assertEqual(len(self.stats["extra"]["packages"]), 47)
-        self.assertEqual(self.stats["tasks_done"], 47 * 28)
+        self.assertEqual(self.stats["tasks_done"], 47 * 22)
 
     def test_one_directory_per_paper_package(self):
         names = [line.split("#", 1)[0].strip()
@@ -79,7 +79,7 @@ class IncompleteRun(unittest.TestCase):
             workers.write_text(json.dumps(dict(runId=run_id, packages=["Network-Mail", "Spec2-ListView"])))
             manifest, parts, complete, incomplete = reproduce_paper.load(str(copy), workers)
             self.assertEqual(complete, ["Network-Mail"])
-            self.assertEqual(incomplete["Spec2-ListView"], 27)
+            self.assertEqual(incomplete["Spec2-ListView"], 21)
             self.assertEqual(reproduce_paper.main(["--checkpoints", str(copy), "--workers", str(workers),
                                                    "--out", str(Path(tmp) / "out")]), 0)
 

@@ -38,6 +38,7 @@
 | RQ2 | all constrained names in the runtime (%) | 100.0 | 100.0 | ok |
 | RQ2 | unconstrained mean list length, close to ten | 10 | 10 | ok |
 | RQ2 | constrained mean list length range, methods | (4.4, 4.5) | (4.4, 4.5) | ok |
+| RQ2 answer | the MRR gains of constraints are larger for smaller models (1.5B > 3B > 7B), both tasks | True | True | ok |
 | RQ2 | constrained mean list length range, classes | (2.4, 2.8) | (2.4, 2.8) | ok |
 | RQ3 | reranking improves Dependency MRR at every size, both tasks | True | True | ok |
 | RQ3 | Dependency -> 7B reranking MRR, methods | (0.517, 0.656) | (0.517, 0.656) | ok |
@@ -83,6 +84,8 @@
 | VI Discussion | CLM mean time range (ms) | (759, 3947) | (759, 3947) | ok |
 | VII Conclusion | constrained 7B gain over Dependency, methods / classes (%) | (49.7, 48.4) | (49.7, 48.4) | ok |
 | III-A Observations | typed prefixes k = 2 .. min(L, 8) | ('2', '8') | ('2', '8') | ok |
+| III-A Observations | class-name prefixes k = 2 .. min(L, 8) | ('2', '8') | ('2', '8') | ok |
+| III-A Observations | prefix lengths present in the checkpoints | [2, 3, 4, 5, 6, 7, 8] | [2, 3, 4, 5, 6, 7, 8] | ok |
 | III-A Observations | OrderedCollection gives prefixes Or ... OrderedC (seven observations) | ['Or', 'OrderedC', 7] | ['Or', 'OrderedC', 7] | ok |
 | IV-A Corpus | application code, tools, tests and baseline packages | (True, True) | (True, True) | ok |
 | IV-A Models | three Pharo-specialized Qwen2.5-Coder models, 1.5B / 3B / 7B | ['1.5B', '3B', '7B'] | ['1.5B', '3B', '7B'] | ok |
@@ -92,6 +95,11 @@
 | IV-A Inference | next-token alternatives per request | 20 | 20 | ok |
 | IV-A Inference | beam width | 10 | 10 | ok |
 | IV-A Inference | maximum search steps | 12 | 12 | ok |
+| III-C Reranking | reranking: next-token alternatives / step limit | ('20', '12') | ('20', '12') | ok |
 | IV-A Inference | suggestions returned | 10 | 10 | ok |
 | IV-C Environment | request timeout (s) | 120 | 120 | ok |
+| IV-C Environment | benchmark workers per node (job.oar.sh) | 8 | 8 | ok |
+| IV-C Environment | Ollama release (job.oar.sh) | 0.40.5 | 0.40.5 | ok |
+| IV-C Environment | F16 weights for every model | ['F16'] | ['F16'] | ok |
+| IV-C Environment | frozen image is the pinned image of the run | True | True | ok |
 | IV-C Environment | Pharo 14.0 64-bit image, sources 74f3a1b | ['Pharo14.0-64bit-74f3a1b.sources'] | ['Pharo14.0-64bit-74f3a1b.sources'] | ok |

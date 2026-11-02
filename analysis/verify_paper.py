@@ -5,7 +5,7 @@ Run after reproduce_paper.py:
     python3 analysis/verify_paper.py [--results DIR]
 
 Three checks:
- 1. every generated table/figure equals the paper's supplemental file (comment lines ignored);
+ 1. every generated table/figure is byte-identical to the paper's supplemental file;
  2. every statistic equals the reference analysis-stats.json used to write the paper;
  3. every number and comparison stated in the paper's text is recomputed and compared.
 Exit status 0 only if all checks pass.
@@ -16,6 +16,7 @@ import math
 import re
 import sys
 import tarfile
+import hashlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,20 +25,19 @@ DEP = "heuristicsDependency"
 SIZES = ("15B", "3B", "7B")
 
 
-def strip_comments(path):
-    return [line for line in path.read_text(encoding="utf-8").splitlines() if not line.lstrip().startswith("%")]
-
-
 def check_files(results):
     failures = []
-    for expected in sorted((EXPECTED / "paper-supplemental").glob("*.tex")):
+    expected_files = sorted((EXPECTED / "paper-supplemental").glob("*.tex"))
+    for expected in expected_files:
         generated = results / "paper" / expected.name
         if not generated.exists():
             failures.append(f"missing {generated}")
-        elif strip_comments(expected) != strip_comments(generated):
+        elif expected.read_bytes() != generated.read_bytes():
             failures.append(f"{expected.name} differs from the paper (diff expected/paper-supplemental/{expected.name} {generated})")
         else:
-            print(f"  ok  {expected.name}")
+            print(f"  ok  {expected.name} (byte-identical)")
+    unexpected = sorted({p.name for p in (results / "paper").glob("*.tex")} - {p.name for p in expected_files})
+    failures += [f"{name} has no paper file to compare with in expected/paper-supplemental/" for name in unexpected]
     return failures
 
 
@@ -70,6 +70,7 @@ def claims(st):
     strategies = {key.split("/")[2] for key in st if key.startswith("mrr/")}
     pairs = [(k, s) for k in K for s in SIZES]
     faster = [(k, s) for k, s in pairs if ms(k, f"llm{s}") < ms(k, f"llmUnvalidated{s}")]
+    constraint_gain = lambda k, s: mrr(k, f"llm{s}") / mrr(k, f"llmUnvalidated{s}")
     return [
         ("Abstract", "packages", st["corpus_matched"]["packages"], 47),
         ("Abstract", "more than 100K completions", x["observations_total"] > 100000, True),
@@ -127,6 +128,8 @@ def claims(st):
          round(min(st[f"val/{k}/{s}/cand_before"] for k, s in pairs)), 10),
         ("RQ2", "constrained mean list length range, methods",
          (r1(min(st[f"val/messages/{s}/cand_after"] for s in SIZES)), r1(max(st[f"val/messages/{s}/cand_after"] for s in SIZES))), (4.4, 4.5)),
+        ("RQ2 answer", "the MRR gains of constraints are larger for smaller models (1.5B > 3B > 7B), both tasks",
+         all(constraint_gain(k, a) > constraint_gain(k, b) for k in K for a, b in zip(SIZES, SIZES[1:])), True),
         ("RQ2", "constrained mean list length range, classes",
          (r1(min(st[f"val/variables/{s}/cand_after"] for s in SIZES)), r1(max(st[f"val/variables/{s}/cand_after"] for s in SIZES))), (2.4, 2.8)),
         ("RQ3", "reranking improves Dependency MRR at every size, both tasks",
@@ -200,23 +203,35 @@ def claims(st):
     ]
 
 
-def settings():
+def settings(st):
     """Settings stated in the paper, read from the shipped benchmark source, image and model list."""
     src = ROOT / "lib" / "HeuristicCompletion-Benchmarks-Multiples" / "src" / "ExtendedHeuristicCompletion-Benchmarks"
     beam = (src / "CooLLMBeamCompleter.class.st").read_text(encoding="utf-8")
     message = (src / "CooStaticBenchmarksMessage.class.st").read_text(encoding="utf-8")
+    variables = (src / "CooStaticBenchmarksVariables.class.st").read_text(encoding="utf-8")
+    reranker = (src / "CooLLMBeamReranker.class.st").read_text(encoding="utf-8")
+    job = (ROOT / "pipeline" / "job.oar.sh").read_text(encoding="utf-8")
+    digests = json.loads((ROOT / "data" / "experiment" / "llm-model-digests.json").read_text())["models"]
+    pin = json.loads((ROOT / "data" / "experiment" / "image-source.json").read_text())
     client = (src / "CooLLMClient.class.st").read_text(encoding="utf-8")
     setting = lambda text, pattern: (lambda m: m.group(1) if m else None)(re.search(pattern, text))
     with tarfile.open(ROOT / "frozen-image" / "pharo14-frozen-image.tar.gz") as archive:
         sources = [n for n in archive.getnames() if n.endswith(".sources")]
+        image_sha = hashlib.sha256(archive.extractfile(next(
+            m for m in archive.getmembers() if m.name.endswith("Pharo.image"))).read()).hexdigest()
     models = json.loads((ROOT / "data" / "experiment" / "llm-models.json").read_text())
     analysed = [line.split("#", 1)[0].strip() for line in
                 (ROOT / "data" / "experiment" / "analysed-packages.txt").read_text().splitlines()]
     analysed = {name for name in analysed if name}
+    prefixes = sorted({int(key.rsplit("/", 1)[1]) for key in st["extra"]["exact"] if not key.endswith("/avg")})
     return [
         ("III-A Observations", "typed prefixes k = 2 .. min(L, 8)",
          (setting(message, r"(\d+) to: \(self maxPrefixSizeFor: originalSelector\)"),
           setting(message, r"\^ selector size min: (\d+)")), ("2", "8")),
+        ("III-A Observations", "class-name prefixes k = 2 .. min(L, 8)",
+         (setting(variables, r"(\d+) to: \(self maxPrefixSizeFor: aVariable\)"),
+          setting(variables, r"\^ aVariable name size min: (\d+)")), ("2", "8")),
+        ("III-A Observations", "prefix lengths present in the checkpoints", prefixes, list(range(2, 9))),
         ("III-A Observations", "OrderedCollection gives prefixes Or ... OrderedC (seven observations)",
          ["OrderedCollection"[:k] for k in range(2, min(len("OrderedCollection"), 8) + 1)][::6] + [min(len("OrderedCollection"), 8) - 1],
          ["Or", "OrderedC", 7]),
@@ -231,8 +246,15 @@ def settings():
         ("IV-A Inference", "next-token alternatives per request", setting(beam, r"topTokens := (\d+)"), "20"),
         ("IV-A Inference", "beam width", setting(beam, r"beamWidth := (\d+)"), "10"),
         ("IV-A Inference", "maximum search steps", setting(beam, r"maxSteps := (\d+)"), "12"),
+        ("III-C Reranking", "reranking: next-token alternatives / step limit",
+         (setting(reranker, r"topTokens := (\d+)"), setting(reranker, r"maxSteps := (\d+)")), ("20", "12")),
         ("IV-A Inference", "suggestions returned", setting(beam, r"candidateCount := (\d+)"), "10"),
         ("IV-C Environment", "request timeout (s)", setting(client, r"timeout := (\d+)"), "120"),
+        ("IV-C Environment", "benchmark workers per node (job.oar.sh)", setting(job, r'BENCHMARK_JOBS="\$\{BENCHMARK_JOBS:-(\d+)\}"'), "8"),
+        ("IV-C Environment", "Ollama release (job.oar.sh)",
+         setting(job, r'OLLAMA_DOWNLOAD_VERSION="\$\{OLLAMA_DOWNLOAD_VERSION:-([\d.]+)\}"'), "0.40.5"),
+        ("IV-C Environment", "F16 weights for every model", sorted({d["file_type"] for d in digests.values()}), ["F16"]),
+        ("IV-C Environment", "frozen image is the pinned image of the run", image_sha == pin["imageSHA256"], True),
         ("IV-C Environment", "Pharo 14.0 64-bit image, sources 74f3a1b", sources, ["Pharo14.0-64bit-74f3a1b.sources"]),
     ]
 
@@ -263,7 +285,7 @@ def main(argv=None):
         checked = []
         failures.append(f"the paper's text claims cannot be recomputed from these results ({error!r})")
     try:
-        checked += settings()
+        checked += settings(st)
     except (OSError, KeyError, ValueError) as error:
         failures.append(f"the paper's settings cannot be checked ({error!r})")
     passed = 0

@@ -36,7 +36,7 @@ CooPublicationTest >> comparison [
 ]
 
 { #category : 'tests' }
-CooPublicationTest >> testFourModelsUseSameOneTokenRequestsAndPopulations [
+CooPublicationTest >> testThreeModelsUseSameOneTokenRequestsAndPopulations [
 	"Every strategy scores every prefix, so LM populations equal the heuristic ones."
 	| comparison defaultModel |
 	defaultModel := CooLLMClient default model.
@@ -126,7 +126,7 @@ CooPublicationTest >> testExportWritesExactlyThreeArtifactsWithoutInference [
 	comparison := self comparison.
 	requests := transport requests size.
 	points := CooBenchmarkChart performancePointsFor: comparison.
-	self assert: points size equals: 20.
+	self assert: points size equals: 16.
 	folder := FileLocator temp / ('coo-publication-' , UUID new asString).
 	[
 		2 timesRepeat: [
@@ -136,9 +136,9 @@ CooPublicationTest >> testExportWritesExactlyThreeArtifactsWithoutInference [
 			self assert: folder children size equals: 3.
 			self assert: transport requests size equals: requests ].
 		latex := (folder / 'results-table.tex') contents.
-		self assert: (latex lines select: [ :line | line beginsWith: '& ' ]) size equals: 20.
-		self assert: (latex includesSubstring: '\multirow{10}{*}{\textbf{Methods}}').
-		self assert: (latex includesSubstring: '\multirow{10}{*}{\textbf{Classes}}').
+		self assert: (latex lines select: [ :line | line beginsWith: '& ' ]) size equals: 16.
+		self assert: (latex includesSubstring: '\multirow{8}{*}{\textbf{Methods}}').
+		self assert: (latex includesSubstring: '\multirow{8}{*}{\textbf{Classes}}').
 		self assert: (PNGReadWriter formFromFileNamed: (folder / 'performance.png') fullName) extent equals: 1200 @ 1150.
 		self assert: ((folder / 'dataset-summary.tex') contents includesSubstring: 'Packages & 1')
 	] ensure: [ folder ensureDeleteAll ]
@@ -302,21 +302,21 @@ CooPublicationTest >> testRankingRowsExtendTableWithoutChangingExistingValues [
 	extended := CooBenchmarkChart latexResultsTableFor: comparison.
 	originalRows := original lines select: [ :line | line beginsWith: '& ' ].
 	extendedRows := extended lines select: [ :line | line beginsWith: '& ' ].
-	self assert: extendedRows size equals: 30.
-	self assert: (extended includesSubstring: '\multirow{15}{*}{\textbf{Methods}}').
-	self assert: (extended includesSubstring: '\multirow{15}{*}{\textbf{Classes}}').
+	self assert: extendedRows size equals: 26.
+	self assert: (extended includesSubstring: '\multirow{13}{*}{\textbf{Methods}}').
+	self assert: (extended includesSubstring: '\multirow{13}{*}{\textbf{Classes}}').
 	originalRows do: [ :row |
 		"The old final row gains a cline because additional rows follow."
 		self assert: (extendedRows anySatisfy: [ :line | line beginsWith: row ]) ].
 	CooBenchmarkChart rankingStrategies do: [ :strategy |
 		self assert: (extended includesSubstring: '& ', (CooBenchmarkChart labelFor: strategy), ' & ') ].
 	points := CooBenchmarkChart performancePointsFor: comparison.
-	self assert: points size equals: 30.
-	self assert: (CooBenchmarkChart performanceFormFor: comparison) extent equals: 1200 @ 1270
+	self assert: points size equals: 26.
+	self assert: (CooBenchmarkChart performanceFormFor: comparison) extent equals: 1200 @ 1230
 ]
 
 { #category : 'tests' }
-CooPublicationTest >> testSixOriginalRowsPlusFiveRankingRows [
+CooPublicationTest >> testFiveOriginalRowsPlusFiveRankingRows [
 	| comparison strategies latex rows requests folder |
 	self timeLimit: 1 minute.
 	comparison := self comparison.
@@ -327,9 +327,9 @@ CooPublicationTest >> testSixOriginalRowsPlusFiveRankingRows [
 	[ CooBenchRunner export: comparison to: folder.
 		latex := (folder / 'results-table.tex') contents.
 		rows := latex lines select: [ :line | line beginsWith: '& ' ].
-		self assert: rows size equals: 22.
-		self assert: (latex includesSubstring: '\multirow{11}{*}{\textbf{Methods}}').
-		self assert: (latex includesSubstring: '\multirow{11}{*}{\textbf{Classes}}').
+		self assert: rows size equals: 20.
+		self assert: (latex includesSubstring: '\multirow{10}{*}{\textbf{Methods}}').
+		self assert: (latex includesSubstring: '\multirow{10}{*}{\textbf{Classes}}').
 		self assert: (latex includesSubstring: '& NeuralRank-20 & -- & --').
 		self deny: (latex includesSubstring: '& Hybrid Rerank').
 		self assert: transport requests size equals: requests.
