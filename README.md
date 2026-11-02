@@ -6,7 +6,7 @@
 ./run.sh
 ```
 
-Needs Python 3.8+ only, and takes seconds. `./run.sh` does two things:
+Runs on Linux or macOS with bash and Python 3.8+ (on Windows, use WSL) `./run.sh` does two things:
 
 1. It regenerates every table and figure of the paper from the benchmark checkpoints into `results/paper/`.
 2. It checks them against the paper.
@@ -30,7 +30,7 @@ Figures 1 and 2 show the method and contain no results.
 ./run.sh --rerun
 ```
 
-This re-runs the 1,034 benchmarks (47 packages × 2 tasks × 11 configurations) in the frozen Pharo image with the three models served by Ollama, then checks the new results the same way. It needs a GPU and about 25 GB for the models, and it takes days. Completion times depend on the hardware, so those checks will differ. `./run.sh --help` lists the options.
+This re-runs the 1,034 benchmarks (47 packages × 2 tasks × 11 configurations) in the frozen Pharo image with the three models served by Ollama, then checks the new results the same way. It needs Linux or macOS, a GPU and about 25 GB for the models, and it takes days. Completion times depend on the hardware, so those checks will differ. `./run.sh --help` lists the options.
 
 ## Contents
 

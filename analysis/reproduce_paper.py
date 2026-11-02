@@ -532,10 +532,7 @@ def fig_summary(A):
     point = lambda kind, s: f"({round(ms(A.get(kind, s)), 1)},{round(mrr(A.get(kind, s)), 3)})"
     marks = (("15B", "square*", "2.1pt"), ("3B", "triangle*", "2.9pt"), ("7B", "diamond*", "3.1pt"))
     families = (("llmUnvalidated", "cB"), ("llm", "cA"), ("hybrid", "cY"))
-    L = [r"% Summary of all results: quality (overall MRR@10) vs. cost (mean completion time per observation)",
-         r"% for the 11 configurations. Colour = approach, marker shape = model size.",
-         r"% Values: Average column of tab-mrr-by-prefix.tex and fig-quality-and-time.tex.",
-         r"\definecolor{cA}{HTML}{2A78D6}\definecolor{cB}{HTML}{EB6834}\definecolor{cY}{HTML}{1BAF7A}\definecolor{cH}{HTML}{6B6A64}",
+    L = [r"\definecolor{cA}{HTML}{2A78D6}\definecolor{cB}{HTML}{EB6834}\definecolor{cY}{HTML}{1BAF7A}\definecolor{cH}{HTML}{6B6A64}",
          r"\begin{tikzpicture}",
          r"\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.1cm},",
          r"  width=0.49\textwidth, height=5.4cm, xmode=log, xmin=7, xmax=8000, ymin=0.22, ymax=0.92,",

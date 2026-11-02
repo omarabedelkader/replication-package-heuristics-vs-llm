@@ -3,7 +3,7 @@
 #
 #   ./run.sh           Regenerate every table and figure of the paper from the released
 #                      checkpoints (results/paper/) and check them against the paper.
-#                      Needs Python 3.8+ only; takes seconds.
+#                      Needs bash and Python 3.8+ (Linux or macOS; on Windows, use WSL); takes seconds.
 #
 #   ./run.sh --rerun   Re-run all 1,034 benchmarks of the 47 packages from scratch (frozen
 #                      Pharo image, benchmark source in lib/, the three models through Ollama),
