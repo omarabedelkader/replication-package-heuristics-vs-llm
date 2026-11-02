@@ -98,8 +98,8 @@
 | III-C Reranking | reranking: next-token alternatives / step limit | ('20', '12') | ('20', '12') | ok |
 | IV-A Inference | suggestions returned | 10 | 10 | ok |
 | IV-C Environment | request timeout (s) | 120 | 120 | ok |
-| IV-C Environment | benchmark workers per node (job.oar.sh) | 8 | 8 | ok |
-| IV-C Environment | Ollama release (job.oar.sh) | 0.40.5 | 0.40.5 | ok |
+| IV-C Environment | benchmark workers per node (run.sh) | 8 | 8 | ok |
+| IV-C Environment | Ollama release (pipeline-benchmarks.sh) | 0.40.5 | 0.40.5 | ok |
 | IV-C Environment | F16 weights for every model | ['F16'] | ['F16'] | ok |
 | IV-C Environment | frozen image is the pinned image of the run | True | True | ok |
 | IV-C Environment | Pharo 14.0 64-bit image, sources 74f3a1b | ['Pharo14.0-64bit-74f3a1b.sources'] | ['Pharo14.0-64bit-74f3a1b.sources'] | ok |

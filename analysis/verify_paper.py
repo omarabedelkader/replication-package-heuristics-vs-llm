@@ -210,7 +210,8 @@ def settings(st):
     message = (src / "CooStaticBenchmarksMessage.class.st").read_text(encoding="utf-8")
     variables = (src / "CooStaticBenchmarksVariables.class.st").read_text(encoding="utf-8")
     reranker = (src / "CooLLMBeamReranker.class.st").read_text(encoding="utf-8")
-    job = (ROOT / "pipeline" / "job.oar.sh").read_text(encoding="utf-8")
+    run_sh = (ROOT / "run.sh").read_text(encoding="utf-8")
+    pipeline_sh = (ROOT / "pipeline" / "pipeline-benchmarks.sh").read_text(encoding="utf-8")
     digests = json.loads((ROOT / "data" / "experiment" / "llm-model-digests.json").read_text())["models"]
     pin = json.loads((ROOT / "data" / "experiment" / "image-source.json").read_text())
     client = (src / "CooLLMClient.class.st").read_text(encoding="utf-8")
@@ -250,9 +251,9 @@ def settings(st):
          (setting(reranker, r"topTokens := (\d+)"), setting(reranker, r"maxSteps := (\d+)")), ("20", "12")),
         ("IV-A Inference", "suggestions returned", setting(beam, r"candidateCount := (\d+)"), "10"),
         ("IV-C Environment", "request timeout (s)", setting(client, r"timeout := (\d+)"), "120"),
-        ("IV-C Environment", "benchmark workers per node (job.oar.sh)", setting(job, r'BENCHMARK_JOBS="\$\{BENCHMARK_JOBS:-(\d+)\}"'), "8"),
-        ("IV-C Environment", "Ollama release (job.oar.sh)",
-         setting(job, r'OLLAMA_DOWNLOAD_VERSION="\$\{OLLAMA_DOWNLOAD_VERSION:-([\d.]+)\}"'), "0.40.5"),
+        ("IV-C Environment", "benchmark workers per node (run.sh)", setting(run_sh, r'BENCHMARK_JOBS="\$\{BENCHMARK_JOBS:-(\d+)\}"'), "8"),
+        ("IV-C Environment", "Ollama release (pipeline-benchmarks.sh)",
+         setting(pipeline_sh, r'OLLAMA_DOWNLOAD_VERSION="\$\{OLLAMA_DOWNLOAD_VERSION:-([\d.]+)\}"'), "0.40.5"),
         ("IV-C Environment", "F16 weights for every model", sorted({d["file_type"] for d in digests.values()}), ["F16"]),
         ("IV-C Environment", "frozen image is the pinned image of the run", image_sha == pin["imageSHA256"], True),
         ("IV-C Environment", "Pharo 14.0 64-bit image, sources 74f3a1b", sources, ["Pharo14.0-64bit-74f3a1b.sources"]),

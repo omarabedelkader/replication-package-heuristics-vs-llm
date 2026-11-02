@@ -62,8 +62,8 @@ prepare_run_directory
 # The benchmarks use their own Ollama server, on a free port next to any desktop
 # Ollama, started with one request slot per worker and every model kept loaded, so
 # the concurrent workers are served in parallel instead of queuing. This pipeline owns
-# it and stops it. BENCHMARK_OLLAMA_HOST=host:port uses that server instead (job.oar.sh
-# starts one with the same settings), or starts one there if nothing answers.
+# it and stops it. BENCHMARK_OLLAMA_HOST=host:port uses that server instead, or starts
+# one there if nothing answers.
 # Either way the server must be recent enough to return log-probabilities.
 OLLAMA_MIN_VERSION="${OLLAMA_MIN_VERSION:-0.12.11}"
 # Release downloaded on Linux when no recent enough Ollama is installed: the paper's (Grid5000) one.
@@ -117,7 +117,7 @@ if ! curl -fsS --connect-timeout 2 --max-time 5 \
         done
     fi
     if [[ -z "$OLLAMA_BIN" ]]; then
-        # Local installation, without sudo or system services (also works on OAR).
+        # Local installation, without sudo or system services (also works on clusters).
         if [[ "$(uname -s)" != Linux ]]; then
             echo "Ollama is not installed. Install it or set OLLAMA_BIN to its executable." >&2
             exit 1

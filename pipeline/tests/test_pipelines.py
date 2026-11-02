@@ -171,8 +171,8 @@ time.sleep(30)
     def runs(self):
         return sorted(self.experiment.glob('benchmark-run.*'))
 
-    def test_only_the_benchmark_and_cluster_entry_points_remain(self):
-        self.assertEqual(sorted(p.name for p in ROOT.glob('*.sh')), ['job.fir.sh', 'job.oar.sh', 'pipeline-benchmarks.sh', 'submit-shared.sh'])
+    def test_only_the_benchmark_entry_point_remains(self):
+        self.assertEqual(sorted(p.name for p in ROOT.glob('*.sh')), ['pipeline-benchmarks.sh'])
         for name in ('ranking_corpus.py', 'reranker_workflow.py', 'download_snapshot.py', 'runtime_estimate.py'):
             self.assertFalse((ROOT / 'scripts' / name).exists(), name)
 
